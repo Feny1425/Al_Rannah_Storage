@@ -1,4 +1,4 @@
-package feny.business.alrannahstorage;
+package feny.business.alrannahstorage.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import feny.business.alrannahstorage.Objects.Branches;
+import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.models.Branch;
 
@@ -18,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
         Branches.addBranch("branch1","Al zzaidy");
         Branch branch = Branches.getBranch(0);
         branch.setName("BR1");
-        TextView textView = findViewById(R.id.textview);
-        textView.setText(Branches.getBranch(0).getName());
+
     }
 }

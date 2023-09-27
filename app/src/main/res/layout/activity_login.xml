@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.LoginActivity">
 
     <ImageView
         android:layout_width="569dp"
@@ -13,13 +13,23 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="-496dp"
-        android:layout_marginBottom="500dp"
+        android:layout_marginTop="-196dp"
+        android:layout_marginBottom="-70dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_baseline_circle_24"
         android:tint="?colorSecondary"
         tools:ignore="UseAppTint"
         android:id="@+id/upper_circle"
         android:transitionName="upper_circle"/>
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignBottom="@+id/upper_circle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="107dp"
+        android:src="@drawable/ic_baseline_warehouse_24"
+        android:id="@+id/login"
+        android:onClick="login_btn"/>
 
 </RelativeLayout>
