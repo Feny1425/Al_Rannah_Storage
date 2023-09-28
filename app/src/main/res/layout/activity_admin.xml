@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MainActivity"
+    tools:context=".activities.AdminActivity"
     android:background="?colorPrimary">
 
 
@@ -44,12 +44,15 @@
         android:textSize="32dp"
         android:textStyle="bold"
         android:transitionName="text" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/logo2"
+        android:layout_marginTop="30dp"
+        android:text="الإدارة"
         android:textColor="@color/black"
         android:textSize="32dp"
-        android:layout_centerInParent="true"
-        android:id="@+id/textView"/>
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

@@ -6,11 +6,23 @@ public class Branch {
     String name;
     String Location;
     Storage storage;
+    int password;
+    int permission;
 
-    public Branch(String name, String location) {
+    public int getPassword() {
+        return password;
+    }
+
+    public int getPermission() {
+        return permission;
+    }
+
+    public Branch(String name, String location, int password, int permission) {
         this.name = name;
         Location = location;
         this.storage = new Storage();
+        this.password = password;
+        this.permission = permission;
     }
 
     public String getName() {

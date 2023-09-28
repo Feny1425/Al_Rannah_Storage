@@ -7,29 +7,76 @@
     tools:context=".activities.LoginActivity">
 
     <ImageView
-        android:layout_width="569dp"
-        android:layout_height="1000dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="-196dp"
-        android:layout_marginBottom="-70dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_baseline_circle_24"
-        android:tint="?colorSecondary"
-        tools:ignore="UseAppTint"
         android:id="@+id/upper_circle"
-        android:transitionName="upper_circle"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:src="@drawable/ic_baseline_square_24"
+        android:tint="?colorSecondary"
+        android:transitionName="upper_circle"
+        tools:ignore="UseAppTint" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/input"
+        android:id="@+id/Commercial"
+        android:textColor="@color/black"
+        android:layout_centerInParent="true"
+        android:textColorHint="@drawable/edit"
+        android:gravity="center"
+        android:hint="رقم السجل التجاري"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/input"
+        android:id="@+id/password"
+        android:textColor="@color/black"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:inputType="numberDecimal"
+        android:layout_below="@id/Commercial"
+        android:textColorHint="@drawable/edit"
+        android:layout_marginTop="16dp"
+        android:hint="الرمز السري"/>
 
     <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignBottom="@+id/upper_circle"
+        android:id="@+id/logo"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="107dp"
+        android:layout_marginTop="80dp"
         android:src="@drawable/ic_baseline_warehouse_24"
-        android:id="@+id/login"
-        android:onClick="login_btn"/>
+        android:transitionName="logo"
+/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="المخزن"
+        android:textColor="@color/black"
+        android:textSize="64dp"
+        android:id="@+id/label"
+        android:textStyle="bold"
+        android:layout_below="@id/logo"
+        android:gravity="center"
+        android:transitionName="text"
+        />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:text="تسجيل الدخول"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_below="@+id/password"
+        android:layout_marginTop="88dp"
+        android:layout_centerHorizontal="true"
+        android:onClick="login_btn"
+        tools:ignore="UsingOnClickInXml" />
 
 </RelativeLayout>
