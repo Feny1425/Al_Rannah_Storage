@@ -25,10 +25,8 @@ public class AdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-        TextView textView = findViewById(R.id.textView);
         sharedPreferences= getSharedPreferences(Data.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         permission = Branches.getPermissionByPassword(sharedPreferences.getInt("pass",-1));
-        textView.setText("The Permission That You Have is : " + (permission==0?"Administrator":(permission+"")));
 
 
     }
