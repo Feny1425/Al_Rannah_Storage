@@ -5,11 +5,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -96,40 +100,42 @@ public class BranchesAdaper extends RecyclerView.Adapter<BranchesAdaper.ViewHold
         viewHolder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final String[] pass = new String[1];
                 AlertDialog.Builder alert = new AlertDialog.Builder(context);
                 alert.setTitle("حذف الفرع");
                 alert.setMessage("متأكد بقرارك لحذف الفرع؟");
                 alert.setPositiveButton(Data.YES, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface d, int which) {
                         // continue with delete
-                        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                        final EditText input = new EditText(context);
+                        input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
                         alert.setTitle("تأكيد حذف الفرع");
                         alert.setMessage("أنت على بعد خطوتين لحذف الفرع, هل انت متأكد أنك تريد الحذف؟");
                         alert.setPositiveButton(Data.YES, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onClick(DialogInterface dd, int which) {
                                 // continue with delete
                                 AlertDialog.Builder alert = new AlertDialog.Builder(context);
                                 alert.setTitle("التأكيد النهائي");
-                                alert.setMessage("لن تستطيع استرجاع الفرع بعد هذا التأكيد الأخير");
+                                alert.setView(input);
+                                alert.setMessage("لن تستطيع استرجاع الفرع بعد هذا التأكيد الأخير, \nللتأكيد اكتب رمز الفرع");
+                                alert.setNegativeButton(Data.CANCEL, (dialog, which1) ->{});
                                 alert.setPositiveButton(Data.YES, new DialogInterface.OnClickListener() {
+                                    @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        // continue with delete
-                                        Branches.deleteBranch(_position, AdminActivity.getShared());
-                                    }
-                                });
-                                alert.setNegativeButton(Data.CANCEL, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // close dialog
-                                        dialog.cancel();
+                                        pass[0] = input.getText().toString();
+                                        if(pass[0].equals(String.valueOf(localDataSet.get(_position).getPermission()))){
+                                            Branches.deleteBranch(_position, AdminActivity.getShared());
+                                            Toast.makeText(context,"تم الحذف بنجاح", Toast.LENGTH_LONG).show();
+                                            AdminActivity.refresh(context);
+
+                                        }
+                                        else {
+                                            Toast.makeText(context,"الرمز غير صحيح", Toast.LENGTH_LONG).show();
+                                        }
                                     }
                                 });
                                 alert.show();
-                            }
-                        });
-                        alert.setNegativeButton(Data.CANCEL, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // close dialog
-                                dialog.cancel();
                             }
                         });
                         alert.show();
@@ -142,6 +148,7 @@ public class BranchesAdaper extends RecyclerView.Adapter<BranchesAdaper.ViewHold
                     }
                 });
                 alert.show();
+
             }
         });
     }

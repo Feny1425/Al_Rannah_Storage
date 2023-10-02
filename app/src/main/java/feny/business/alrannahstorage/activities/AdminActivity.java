@@ -32,7 +32,7 @@ public class AdminActivity extends AppCompatActivity {
     public static SharedPreferences getShared() {
         return sharedPreferences;
     }
-
+    static RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,10 +44,8 @@ public class AdminActivity extends AppCompatActivity {
             add();
             //Toast.makeText(AdminActivity.this,"clicked", Toast.LENGTH_LONG).show();
         });
-        RecyclerView recyclerView = findViewById(R.id.list_of_branches);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new BranchesAdaper(Branches.getBranches(), this));
-
+        recyclerView = findViewById(R.id.list_of_branches);
+        refresh(this);
 
     }
 
@@ -114,6 +112,12 @@ public class AdminActivity extends AppCompatActivity {
         });
         cancel.setOnClickListener(v -> dialog.cancel());
         dialog.show();
+
+    }
+    public static void refresh(Context context){
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(new BranchesAdaper(Branches.getBranches(), context));
+
 
     }
 }
