@@ -1,9 +1,9 @@
 package feny.business.alrannahstorage.models;
 
 public class Item {
-    private String name;
-    private int quantity;
-    private String Unit;
+    private String name = "";
+    private int quantity = 0;
+    private String Unit = "";
     private ItemType type;
 
     public Item(String name, int quantity, String unit, ItemType type) {

@@ -2,7 +2,7 @@ package feny.business.alrannahstorage.models;
 
 import static feny.business.alrannahstorage.data.Data.ITEM_TYPES;
 
-public abstract class ItemType {
+public class ItemType {
     private static ItemType Food = new Food();
     private static ItemType Reusable = new Reusable();
     private static ItemType NonReusable = new NonReusable();

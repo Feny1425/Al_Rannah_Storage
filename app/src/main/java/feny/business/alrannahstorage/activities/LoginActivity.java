@@ -2,6 +2,7 @@ package feny.business.alrannahstorage.activities;
 
 import static feny.business.alrannahstorage.data.Data.PERMISSION;
 import static feny.business.alrannahstorage.data.Data.SHARED_PREFERENCES;
+import static feny.business.alrannahstorage.data.Data.Tomato;
 import static feny.business.alrannahstorage.data.Data.getCOMMERCIAL;
 import static feny.business.alrannahstorage.data.Data.getPassword;
 
@@ -48,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         PushPullData pushPullData = new PushPullData(sharedPreferences);
         pushPullData.receiveMemory();
+
 
     }
 

@@ -25,7 +25,7 @@ public class Branches {
     }
 
     public static void addBranch(String name, String location, int pass, SharedPreferences sharedPreferences){
-        branches.add(new Branch(name,location,pass,branches.size()+1));
+        branches.add(new Branch(name,location,pass,pass));
         PushPullData pushPullData = new PushPullData(sharedPreferences);
         pushPullData.saveMemory();
     }

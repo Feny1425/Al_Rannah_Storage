@@ -27,7 +27,7 @@ public class PushPullData {
 
 
     public void receiveMemory(){
-        String data = sharedPreferences.getString("branches","");
+        String data = sharedPreferences.getString(Data.SHARED_PREFERENCES,"");
         Type branchesType = new TypeToken<ArrayList<Branch>>(){}.getType();
         ArrayList<Branch> branches = gson.fromJson(data, branchesType);
         Branches.setBranches(branches);
@@ -35,10 +35,9 @@ public class PushPullData {
     public void saveMemory(){
         String data = gson.toJson(Branches.getBranches());
         @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("branches",data);
+        editor.putString(Data.SHARED_PREFERENCES,data);
         editor.apply();
+        editor.commit();
         receiveMemory();
-
-
     }
 }

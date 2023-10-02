@@ -1,5 +1,6 @@
 package feny.business.alrannahstorage.Objects;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
@@ -9,17 +10,25 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import feny.business.alrannahstorage.activities.AdminActivity;
+import feny.business.alrannahstorage.data.Data;
+import feny.business.alrannahstorage.data.PushPullData;
 import feny.business.alrannahstorage.models.Item;
 import feny.business.alrannahstorage.models.ItemType;
 
 public class Storage {
     private ArrayList<Item> items = new ArrayList<>();
 
+    public Storage() {
+    }
+
     public void addItem(Item item){
         items.add(item);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             addHistory(item);
         }
+        PushPullData pushPullData = new PushPullData(AdminActivity.getShared());
+        pushPullData.saveMemory();
     }
     public void editItem(int position, Item item){
         items.set(position,item);
@@ -65,7 +74,7 @@ public class Storage {
         String data;
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
-        data = "History : " + dtf.format(now);
+        data =dtf.format(now) + ":";
         data = data + " \n new item added;name:"+item.getName()+";unit:"+item.getUnit()+";quantity:"+item.getQuantity();
         history.add(data);
 

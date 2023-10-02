@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MainActivity"
+    tools:context=".activities.DetailsActivity"
     android:background="?colorPrimary">
 
 
@@ -30,10 +29,23 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:transitionName="logo"
-        android:onClick="back"
         android:src="@drawable/ic_baseline_warehouse_24"
+        android:contentDescription="@string/todo" />
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="14dp"
         android:contentDescription="@string/todo"
-        tools:ignore="UsingOnClickInXml" />
+        android:onClick="back"
+        android:src="@drawable/ic_baseline_arrow_back_ios_24"
+        android:transitionName="logo"
+        tools:ignore="UsingOnClickInXml,DuplicateSpeakableTextCheck" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -43,18 +55,34 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:id="@+id/label2"
-        android:text="@string/warehouse"
+        android:id="@+id/label"
+        android:text="@string/BranchSumm"
         android:textColor="@color/black"
         android:textSize="32sp"
         android:textStyle="bold"
-        android:transitionName="text" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="32sp"
-        android:layout_centerInParent="true"
-        android:id="@+id/textView"/>
+        android:transitionName="text"
+        tools:ignore="RelativeOverlap" />
+
+    <view
+        android:id="@+id/storage_list"
+        class="androidx.recyclerview.widget.RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_below="@+id/logo2"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        tools:listitem="@layout/storage_list" />
+    <view
+        android:id="@+id/history_list"
+        android:layout_marginHorizontal="16dp"
+        class="androidx.recyclerview.widget.RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="16dp"
+        android:layout_below="@+id/storage_list"
+        tools:listitem="@layout/history_list" />
+
 
 </RelativeLayout>

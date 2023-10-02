@@ -23,6 +23,10 @@ public final class Data {
     //endregion items
 
 
+    public static final String YES = "نعم";
+    public static final String CANCEL = "إلغاء";
+
+
 
     public static final class Items{
         public static final class Foods extends Item {

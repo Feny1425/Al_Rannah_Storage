@@ -7,10 +7,12 @@
     android:layout_margin="16dp"
     android:orientation="vertical">
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:minWidth="70dp"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:text="اسم الفرع"
-        android:textSize="23dp"
+        android:text="@string/BranchName"
+        android:textSize="23sp"
         android:gravity="center"
         android:textStyle="bold"
         android:textColor="@color/black"
@@ -18,14 +20,29 @@
         android:layout_marginBottom="16dp"
         />
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:minWidth="70dp"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:text="موقع الفرع"
-        android:textSize="23dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/BranchLocation"
+        android:textSize="23sp"
         android:gravity="center"
         android:textStyle="bold"
         android:textColor="@color/black"
         android:id="@+id/branch_location"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:minWidth="70dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="@string/BranchCode"
+        android:textSize="23sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:id="@+id/branch_pass"
         />
     <RelativeLayout
         android:layout_width="match_parent"
@@ -36,16 +53,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_delete_24"
-            android:layout_alignParentLeft="true"
-            android:id="@+id/delete_branch"/>
+            android:layout_alignParentStart="true"
+            android:id="@+id/delete_branch"
+            android:contentDescription="@string/todo" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_remove_red_eye_24"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:id="@+id/more_branch_details"
-            />
+            android:contentDescription="@string/todo" />
 
     </RelativeLayout>
 </LinearLayout>

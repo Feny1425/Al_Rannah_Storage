@@ -1,17 +1,23 @@
 package feny.business.alrannahstorage.activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import feny.business.alrannahstorage.Objects.Branches;
@@ -21,22 +27,26 @@ import feny.business.alrannahstorage.data.Data;
 
 public class AdminActivity extends AppCompatActivity {
     int permission;
-    SharedPreferences sharedPreferences ;
+    static SharedPreferences sharedPreferences;
+
+    public static SharedPreferences getShared() {
+        return sharedPreferences;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-        sharedPreferences= getSharedPreferences(Data.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        permission = Branches.getPermissionByPassword(sharedPreferences.getInt("pass",-1));
+        sharedPreferences = getSharedPreferences(Data.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        permission = Branches.getPermissionByPassword(sharedPreferences.getInt("pass", -1));
         ImageView add = findViewById(R.id.add_brnch);
         add.setOnClickListener(v -> {
             add();
             //Toast.makeText(AdminActivity.this,"clicked", Toast.LENGTH_LONG).show();
         });
         RecyclerView recyclerView = findViewById(R.id.list_of_branches);
-
-        recyclerView.setAdapter(new BranchesAdaper(Branches.getBranches()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new BranchesAdaper(Branches.getBranches(), this));
 
 
     }
@@ -45,10 +55,10 @@ public class AdminActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("login", false);
         editor.putInt("pass", -1);
-        editor.commit();
+        editor.apply();
 
         Intent intent = new Intent(this, LoginActivity.class);
-        intent.putExtra("Back",true);
+        intent.putExtra("Back", true);
         ImageView img = findViewById(R.id.upper_circle2);
         ImageView login = findViewById(R.id.logo2);
         TextView label = findViewById(R.id.label2);
@@ -63,12 +73,12 @@ public class AdminActivity extends AppCompatActivity {
                 ActivityOptionsCompat.makeSceneTransitionAnimation(this, pairs);
 
         startActivity(intent, b.toBundle());
-        editor.commit();
+        editor.apply();
         finish();
     }
 
     public void add() {
-   /*     final Dialog dialog = new Dialog(AdminActivity.this);
+        final Dialog dialog = new Dialog(AdminActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.add_branch_dialog);
@@ -79,16 +89,31 @@ public class AdminActivity extends AppCompatActivity {
                 cancel = dialog.findViewById(R.id.cancel_dilg);
 
         submit.setOnClickListener(v -> {
+            if (!name.getText().toString().equals("")) {
+                if (!location.getText().toString().equals("")) {
+                    if (!pass.getText().toString().equals("")) {
+                        if(Branches.getPermissionByPassword(Integer.parseInt(pass.getText().toString()))==-1){
+                            {
+                                Branches.addBranch(name.getText().toString(),
+                                        location.getText().toString(),
+                                        Integer.parseInt(pass.getText().toString()),
+                                        getSharedPreferences(Data.SHARED_PREFERENCES, MODE_PRIVATE));
+                                dialog.cancel();
+                                Toast.makeText(AdminActivity.this, "تمت الاضافة", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        else
+                            pass.setError("الرمز مستخدم في فرع آخر!");
+                    }else
+                        pass.setError("فارغ");
+                }else
+                    location.setError("فارغ");
+            }else
+                name.setError("فارغ");
 
-            Branches.addBranch(name.getText().toString(),
-                    location.getText().toString(),
-                    Integer.parseInt(pass.getText().toString()),
-                    getSharedPreferences(Data.SHARED_PREFERENCES,MODE_PRIVATE));
-            dialog.cancel();
-            Toast.makeText(AdminActivity.this,"تمت الاضافة", Toast.LENGTH_LONG).show();
         });
         cancel.setOnClickListener(v -> dialog.cancel());
         dialog.show();
-*/
+
     }
 }

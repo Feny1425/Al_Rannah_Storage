@@ -18,7 +18,8 @@
         android:src="@drawable/ic_baseline_square_24"
         android:tint="?colorSecondary"
         android:transitionName="upper_circle"
-        tools:ignore="UseAppTint" />
+        tools:ignore="UseAppTint"
+        android:contentDescription="@string/todo" />
 
     <ImageView
         android:id="@+id/logo2"
@@ -28,43 +29,52 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:transitionName="logo"
+        android:contentDescription="@string/todo"
         android:onClick="back"
-        android:src="@drawable/ic_baseline_warehouse_24" />
+        android:src="@drawable/ic_baseline_warehouse_24"
+        android:transitionName="logo"
+        tools:ignore="UsingOnClickInXml,DuplicateSpeakableTextCheck" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:minWidth="70dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:id="@+id/label2"
-        android:text="إدارة المخزن"
+        android:text="@string/WarehaouseAdmin"
         android:textColor="@color/black"
-        android:textSize="32dp"
+        android:textSize="32sp"
         android:textStyle="bold"
-        android:transitionName="text" />
+        android:transitionName="text"
+        tools:ignore="RelativeOverlap" />
 
+
+    <view
+        android:id="@+id/list_of_branches"
+        class="androidx.recyclerview.widget.RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_below="@+id/logo2"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="100dp"
+        tools:listitem="@layout/branches_list" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_add_circle_24"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
         android:onClick="add"
-        android:id="@+id/add_brnch"/>
-
-    <view
-        android:id="@+id/list_of_branches"
-        class="androidx.appcompat.app.AlertController$RecycleListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/logo2"
-        android:layout_margin="20dp"
-        android:layout_marginTop="0dp"
-        tools:listitem="@layout/branches_list" />
-
+        android:id="@+id/add_brnch"
+        android:contentDescription="@string/todo"
+        tools:ignore="UsingOnClickInXml" />
 
 </RelativeLayout>

@@ -10,74 +10,85 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="إضافة فرع"
+        android:text="@string/addBranch"
         android:gravity="center"
-        android:textSize="32dp"
+        android:textSize="32sp"
         android:textColor="@color/black"
         android:textStyle="bold"/>
 
     <EditText
-        android:layout_margin="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/input"
         android:id="@+id/Name"
-        android:textColor="@color/black"
-        android:textColorHint="@drawable/edit"
-        android:gravity="center"
-        android:hint="اسم الفرع"/>
-
-    <EditText
-        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:autofillHints="الفرع رقم"
         android:background="@drawable/input"
-        android:id="@+id/Location"
+        android:gravity="center"
+        android:hint="@string/branchName"
+        android:inputType="text"
         android:textColor="@color/black"
         android:textColorHint="@drawable/edit"
-        android:gravity="center"
-        android:hint="الموقع"/>
+        tools:ignore="TextContrastCheck" />
 
     <EditText
-        android:layout_margin="16dp"
-        android:layout_width="200dp"
-        android:layout_gravity="center"
+        android:id="@+id/Location"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:autofillHints="النورية"
         android:background="@drawable/input"
+        android:gravity="center"
+        android:hint="@string/location"
+        android:inputType="text"
+        android:textColor="@color/black"
+        android:textColorHint="@drawable/edit"
+        tools:ignore="TextContrastCheck" />
+
+    <EditText
         android:id="@+id/Pass"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:background="@drawable/input"
+        android:gravity="center"
+        android:hint="@string/pass"
+        android:importantForAutofill="no"
         android:inputType="numberDecimal"
         android:textColor="@color/black"
         android:textColorHint="@drawable/edit"
-        android:gravity="center"
-        android:hint="الرمز السري"/>
+        tools:ignore="TextContrastCheck" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:text="إلغاء"
-            android:textColor="@color/black"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_gravity="right"
-            android:id="@+id/cancel_dilg"/>
 
         <Button
+            android:id="@+id/cancel_dilg"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:text="حفظ"
-            android:textColor="@color/black"
-            android:textSize="16dp"
-            android:textStyle="bold"
+            android:layout_gravity="right"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
+            android:text="@string/cancel"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="ButtonStyle,RtlHardcoded,TextContrastCheck" />
+
+        <Button
+            android:id="@+id/save_dilg"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
             android:layout_gravity="left"
-            android:id="@+id/save_dilg"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/save"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="ButtonStyle,RtlHardcoded,TextContrastCheck" />
     </LinearLayout>
 
 

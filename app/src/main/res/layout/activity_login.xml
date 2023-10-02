@@ -16,32 +16,38 @@
         android:src="@drawable/ic_baseline_square_24"
         android:tint="?colorSecondary"
         android:transitionName="upper_circle"
-        tools:ignore="UseAppTint" />
+        tools:ignore="UseAppTint"
+        android:contentDescription="@string/todo" />
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/input"
         android:id="@+id/Commercial"
-        android:textColor="@color/black"
-        android:layout_centerInParent="true"
-        android:textColorHint="@drawable/edit"
-        android:gravity="center"
-        android:hint="رقم السجل التجاري"/>
-
-    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/input"
-        android:id="@+id/password"
-        android:textColor="@color/black"
         android:layout_centerInParent="true"
+        android:background="@drawable/input"
         android:gravity="center"
-        android:inputType="numberDecimal"
-        android:layout_below="@id/Commercial"
+        android:hint="@string/CommNum"
+        android:textColor="@color/black"
         android:textColorHint="@drawable/edit"
+        tools:ignore="TextContrastCheck"
+        android:inputType="numberDecimal"
+        android:importantForAutofill="no" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Commercial"
+        android:layout_centerInParent="true"
         android:layout_marginTop="16dp"
-        android:hint="الرمز السري"/>
+        android:background="@drawable/input"
+        android:gravity="center"
+        android:hint="@string/Pass"
+        android:inputType="numberDecimal"
+        android:textColor="@color/black"
+        android:textColorHint="@drawable/edit"
+        tools:ignore="TextContrastCheck,TextFields"
+        android:importantForAutofill="no" />
 
     <ImageView
         android:id="@+id/logo"
@@ -52,13 +58,13 @@
         android:layout_marginTop="80dp"
         android:src="@drawable/ic_baseline_warehouse_24"
         android:transitionName="logo"
-/>
+        android:contentDescription="@string/todo" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="المخزن"
+        android:text="@string/warehouse"
         android:textColor="@color/black"
-        android:textSize="64dp"
+        android:textSize="64sp"
         android:id="@+id/label"
         android:textStyle="bold"
         android:layout_below="@id/logo"
@@ -69,14 +75,14 @@
     <Button
         android:layout_width="200dp"
         android:layout_height="60dp"
-        android:text="تسجيل الدخول"
-        android:textColor="@color/black"
-        android:textSize="16dp"
-        android:textStyle="bold"
         android:layout_below="@+id/password"
-        android:layout_marginTop="88dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="88dp"
         android:onClick="login_btn"
-        tools:ignore="UsingOnClickInXml" />
+        android:text="@string/login"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:ignore="UsingOnClickInXml,TextContrastCheck" />
 
 </RelativeLayout>
