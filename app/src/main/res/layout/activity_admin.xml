@@ -39,20 +39,32 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:id="@+id/label2"
-        android:text="المخزن"
+        android:text="إدارة المخزن"
         android:textColor="@color/black"
         android:textSize="32dp"
         android:textStyle="bold"
         android:transitionName="text" />
 
-    <TextView
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_add_circle_24"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:onClick="add"
+        android:id="@+id/add_brnch"/>
+
+    <view
+        android:id="@+id/list_of_branches"
+        class="androidx.appcompat.app.AlertController$RecycleListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/logo2"
-        android:layout_marginTop="30dp"
-        android:text="الإدارة"
-        android:textColor="@color/black"
-        android:textSize="32dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_margin="20dp"
+        android:layout_marginTop="0dp"
+        tools:listitem="@layout/branches_list" />
+
 
 </RelativeLayout>

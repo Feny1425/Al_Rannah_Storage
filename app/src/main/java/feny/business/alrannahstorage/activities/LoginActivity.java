@@ -25,6 +25,7 @@ import android.widget.TextView;
 import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.data.Data;
+import feny.business.alrannahstorage.data.PushPullData;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -45,13 +46,8 @@ public class LoginActivity extends AppCompatActivity {
         if (sharedPreferences.getBoolean("login", false)) {
             login(sharedPreferences.getInt("pass", -100));
         }
-
-
-        Branches.addBranch("b1", "l1", 1);
-        Branches.addBranch("b2", "l2", 2);
-        Branches.addBranch("b3", "l3", 3);
-        Branches.addBranch("b4", "l4", 4);
-        Branches.addBranch("b5", "l5", 5);
+        PushPullData pushPullData = new PushPullData(sharedPreferences);
+        pushPullData.receiveMemory();
 
     }
 

@@ -18,17 +18,28 @@ public final class Data {
         return PASSWORD;
     }
 
+    //region items
+    public static final Items.Foods Tomato = new Items.Foods("Tomato",0,"كيلو");
+    //endregion items
+
 
 
     public static final class Items{
-        public static final class Foods {
-            public static final Item Chicken = new Item("Chicken",1,"حبة", new ItemType.Food());
+        public static final class Foods extends Item {
+
+            public Foods(String name, int quantity, String unit) {
+                super(name, quantity, unit, ItemType.getFood());
+            }
         }
-        public static final class Reusable {
-            public static final Item Broom = new Item("Broom",1,"حبة", new ItemType.Reusable());
+        public static final class Reusable extends Item {
+            public Reusable(String name, int quantity, String unit) {
+                super(name, quantity, unit, ItemType.getReusable());
+            }
         }
-        public static final class NonReusable {
-            public static final Item Gloves = new Item("Gloves",1,"كرتون", new ItemType.NonReusable());
+        public static final class NonReusable extends Item {
+            public NonReusable(String name, int quantity, String unit) {
+                super(name, quantity, unit, ItemType.getNonReusable());
+            }
         }
     }
 }
