@@ -4,14 +4,14 @@ plugins {
 
 android {
     namespace 'feny.business.alrannahstorage'
-    compileSdk 33
-
+    compileSdk 34
     defaultConfig {
+        multiDexEnabled true
         applicationId "feny.business.alrannahstorage"
         minSdk 21
-        targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        targetSdk 34
+        versionCode 2
+        versionName "1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -32,6 +32,7 @@ android {
 }
 
 dependencies {
+
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.appcompat:appcompat:1.6.0'
@@ -43,4 +44,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation('com.squareup.okhttp3:okhttp:4.9.1')
+
+    implementation group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.9.0' // Use the appropriate version
 }

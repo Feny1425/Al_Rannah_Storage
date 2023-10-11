@@ -1,6 +1,7 @@
 package feny.business.alrannahstorage.models;
 
 public class Item {
+    private int ID = 0;
     private String name = "";
     private int quantity = 0;
     private String Unit = "";

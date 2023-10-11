@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.adapters.BranchesAdaper;
@@ -29,13 +32,15 @@ public class DetailsActivity extends AppCompatActivity {
         Gson gson = new Gson();
         branch = gson.fromJson(getIntent().getStringExtra("branch"),Branch.class);
 
-        textView.setText("ملخص الفرع رقم " + branch.getPermission());
+        ArrayList history = branch.getStorage().getHistory();
+        Collections.reverse(history);
+        textView.setText("ملخص الفرع :\n" + branch.getName());
         RecyclerView storageView = findViewById(R.id.storage_list);
         storageView.setLayoutManager(new LinearLayoutManager(this));
         storageView.setAdapter(new StorageAdapter(branch.getStorage().getItems(),this));
         RecyclerView historyView = findViewById(R.id.history_list);
         historyView.setLayoutManager(new LinearLayoutManager(this));
-        historyView.setAdapter(new HistoryAdapter(branch.getStorage().getHistory(),this));
+        historyView.setAdapter(new HistoryAdapter(history,this));
 
     }
 

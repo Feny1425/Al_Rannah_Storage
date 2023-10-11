@@ -2,7 +2,6 @@ package feny.business.alrannahstorage.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,23 +10,29 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 
 import feny.business.alrannahstorage.R;
-import feny.business.alrannahstorage.activities.DetailsActivity;
+import feny.business.alrannahstorage.activities.MainActivity;
 import feny.business.alrannahstorage.models.Branch;
 import feny.business.alrannahstorage.models.Item;
 
-public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.ViewHolder> {
+public class StorageControlAdapter extends RecyclerView.Adapter<StorageControlAdapter.ViewHolder> {
 
     private ArrayList<Item> localDataSet;
     private Context context;
+    private MainActivity main;
 
-    public StorageAdapter(ArrayList<Item> localDataSet, Context context) {
+    public void setBranch(Branch branch) {
+        this.branch = branch;
+    }
+
+    private Branch branch;
+
+    public StorageControlAdapter(ArrayList<Item> localDataSet, Context context,MainActivity main) {
         this.localDataSet = localDataSet;
         this.context = context;
+        this.main = main;
     }
 
     /**
@@ -36,6 +41,7 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.ViewHold
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView name,quantity;
+        private final ImageView inc,dec;
 
         public ViewHolder(View view) {
             super(view);
@@ -43,6 +49,8 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.ViewHold
 
             name = (TextView) view.findViewById(R.id.name);
             quantity = (TextView) view.findViewById(R.id.quantity);
+            inc = (ImageView) view.findViewById(R.id.increase);
+            dec = (ImageView) view.findViewById(R.id.decrease);
 
         }
 
@@ -53,6 +61,14 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.ViewHold
         public TextView getQuantity() {
             return quantity;
         }
+
+        public ImageView getInc() {
+            return inc;
+        }
+
+        public ImageView getDec() {
+            return dec;
+        }
     }
 
 
@@ -61,7 +77,7 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.ViewHold
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.storage_list, viewGroup, false);
+                .inflate(R.layout.storage_list_control, viewGroup, false);
 
         return new ViewHolder(view);
     }
@@ -73,8 +89,16 @@ public class StorageAdapter extends RecyclerView.Adapter<StorageAdapter.ViewHold
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.name.setText(localDataSet.get(position).getName()+"");
-        viewHolder.quantity.setText(localDataSet.get(position).getQuantity() + " " + localDataSet.get(position).getUnit());
+        viewHolder.getName().setText(localDataSet.get(position).getName());
+        viewHolder.getQuantity().setText(localDataSet.get(position).getQuantity() + " " + localDataSet.get(position).getUnit());
+        viewHolder.getInc().setOnClickListener(v -> {
+            branch.getStorage().increaseItem(position,1);
+            main.refresh(context);
+        });
+        viewHolder.getDec().setOnClickListener(v -> {
+            branch.getStorage().decreaseItem(position,1);
+            main.refresh(context);
+        });
 
     }
 

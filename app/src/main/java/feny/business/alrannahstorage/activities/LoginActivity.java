@@ -1,37 +1,37 @@
 package feny.business.alrannahstorage.activities;
 
-import static feny.business.alrannahstorage.data.Data.PERMISSION;
 import static feny.business.alrannahstorage.data.Data.SHARED_PREFERENCES;
-import static feny.business.alrannahstorage.data.Data.Tomato;
 import static feny.business.alrannahstorage.data.Data.getCOMMERCIAL;
-import static feny.business.alrannahstorage.data.Data.getPassword;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.util.Pair;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.transition.Fade;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import feny.business.alrannahstorage.Objects.Branches;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
+import androidx.core.view.ViewCompat;
+
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.data.PushPullData;
+import feny.business.alrannahstorage.database.LoginHttpRequest;
+import feny.business.alrannahstorage.network.NetworkUtil;
+
 
 public class LoginActivity extends AppCompatActivity {
 
     EditText comm, pass;
-    SharedPreferences sharedPreferences;
+    static SharedPreferences sharedPreferences;
+
+    public static SharedPreferences getShared() {
+        return sharedPreferences;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
             comm.setText(getCOMMERCIAL());
         }
         if (sharedPreferences.getBoolean("login", false)) {
-            login(sharedPreferences.getInt("pass", -100));
+            login(sharedPreferences.getInt("permission", 0),sharedPreferences.getString("user",""));
         }
         PushPullData pushPullData = new PushPullData(sharedPreferences);
         pushPullData.receiveMemory();
@@ -53,23 +53,42 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void login_btn(View view) {
-        pass = findViewById(R.id.password);
+    public void login(String state){
+         if (!state.contains("failed")) {
 
-        if (pass.getText().toString().equals("")) {
-            pass.setError("فارغ");
-        } else if (Branches.getPermissionByPassword(Integer.parseInt(String.valueOf(pass.getText()))) >= 0 && comm.getText().toString().equals(getCOMMERCIAL())) {
-            login(Integer.parseInt(String.valueOf(pass.getText())));
+            comm.setError("correct " + state);
+            Data.setUserPermission(Integer.parseInt(state));
+            login(Data.getUserPermission(),comm.getText().toString());
         } else {
             comm.setError("كلمة السر او رقم السجل التجاري خاطئ");
         }
     }
 
-    public void login(int pass) {
+    public void login_btn(View view) {
+        pass = findViewById(R.id.password);
+
+        String password = pass.getText().toString();
+        String user = comm.getText().toString();
+        if (password.equals("")) {
+            pass.setError("فارغ");
+        }
+        else if(NetworkUtil.isNetworkAvailable(this)) {
+            checkAccount(user,password);
+        }
+        else comm.setError("لا يوجد انترنت!");
+    }
+
+    private void checkAccount(String user, String password) {
+        new LoginHttpRequest(this,user,password);
+    }
+
+    public void login(int permission,String user) {
+
+        if(permission == -1) return;
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        Intent intent = new Intent(this, pass== Data.getPassword()?AdminActivity.class:MainActivity.class);
+        Intent intent = new Intent(this, permission == Data.getAdminPermssion()?AdminActivity.class:MainActivity.class);
         ImageView img = findViewById(R.id.upper_circle);
         ImageView login = findViewById(R.id.logo);
         TextView label = findViewById(R.id.label);
@@ -85,7 +104,8 @@ public class LoginActivity extends AppCompatActivity {
 
         startActivity(intent, b.toBundle());
         editor.putBoolean("login", true);
-        editor.putInt("pass", pass);
+        editor.putInt("permission", permission);
+        editor.putString("user", user);
         editor.commit();
         finish();
     }

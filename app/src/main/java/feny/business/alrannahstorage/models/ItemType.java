@@ -7,6 +7,16 @@ public class ItemType {
     private static ItemType Reusable = new Reusable();
     private static ItemType NonReusable = new NonReusable();
 
+    public static ItemType getTypeByPos(int pos){
+        switch (pos){
+            case 1:
+                return Reusable;
+            case 2:
+                return NonReusable;
+            default:
+                return Food;
+        }
+    }
     public static ItemType getFood() {
         return Food;
     }

@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import feny.business.alrannahstorage.activities.AdminActivity;
+import feny.business.alrannahstorage.activities.LoginActivity;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.data.PushPullData;
 import feny.business.alrannahstorage.models.Item;
@@ -18,17 +19,18 @@ import feny.business.alrannahstorage.models.ItemType;
 
 public class Storage {
     private ArrayList<Item> items = new ArrayList<>();
+    private ArrayList<Item> oldItems = new ArrayList<>();
+
 
     public Storage() {
     }
 
     public void addItem(Item item){
         items.add(item);
+        oldItems.add(item);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             addHistory(item);
         }
-        PushPullData pushPullData = new PushPullData(AdminActivity.getShared());
-        pushPullData.saveMemory();
     }
     public void editItem(int position, Item item){
         items.set(position,item);
@@ -43,17 +45,35 @@ public class Storage {
     }
     public void increaseItem(int position, int add){
         items.get(position).increaseQuantity(add);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            addHistory(items.get(position),true,add);
-        }
     }
 
     public void decreaseItem(int position, int subtract){
-        items.get(position).increaseQuantity(subtract);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            addHistory(items.get(position),true,subtract);
+        if(items.get(position).getQuantity()>0) {
+            items.get(position).increaseQuantity(-subtract);
         }
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void checkChanges(){
+        for(int i = 0 ; i < items.size();i++){
+            if(items.get(i).getQuantity() != oldItems.get(i).getQuantity()){
+                if (items.get(i).getQuantity() - oldItems.get(i).getQuantity() > 0){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        addHistory(items.get(i), true, (items.get(i).getQuantity() - oldItems.get(i).getQuantity()));
+                    }
+                }
+                else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    addHistory(items.get(i), false, -(items.get(i).getQuantity() - oldItems.get(i).getQuantity()));
+                }
+                setOldItems();
+            }
+        }
+    }
+
+    public void setOldItems(){
+        oldItems = items;
+    }
+
 
     public ArrayList<Item> getItems() {
         return items;

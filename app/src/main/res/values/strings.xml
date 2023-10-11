@@ -5,7 +5,8 @@
     <string name="BranchCode">رمز الفرع</string>
     <string name="todo">TODO</string>
     <string name="WarehaouseAdmin">إدارة المخزن</string>
-    <string name="BranchSumm">ملخص الفرع</string>
+    <string name="BranchSumm">ملخص الفرع
+    sadasda</string>
     <string name="CommNum">رقم السجل التجاري</string>
     <string name="Pass">الرمز السري</string>
     <string name="warehouse">المخزن</string>
@@ -16,9 +17,15 @@
     <string name="pass">الرمز السري</string>
     <string name="cancel">إلغاء</string>
     <string name="save">حفظ</string>
-    <string name="item_name">item name</string>
+    <string name="item_name">اسم العنصر</string>
     <!-- Preference framework strings. {@deprecated Do not use. Incorrectly matches android.R.string.ok rather than "yes".} -->
     <string name="yes">نعم</string>
     <!-- Preference framework strings. {@deprecated Do not use. Incorrectly matches android.R.string.cancel rather than "no".} -->
     <string name="no">إلغاء</string>
+    <string name="add_item">إضافة عنصر</string>
+    <string-array name="item_types">
+        <item>طعام</item>
+        <item>قابل لإعادة الاستخدام</item>
+        <item>غير قابل لإعادة الاستخدام</item>
+    </string-array>
 </resources>

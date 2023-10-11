@@ -39,22 +39,38 @@
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
         android:minWidth="70dp"
+        android:maxWidth="200dp"
+        android:maxHeight="60dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="13dp"
         android:gravity="center"
-        android:id="@+id/label2"
-        android:text="@string/warehouse"
+        android:id="@+id/labelM"
+        android:text="مخزن فرع:\nالاول"
         android:textColor="@color/black"
-        android:textSize="32sp"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:transitionName="text" />
-    <TextView
+        android:transitionName="text"
+        tools:ignore="RelativeOverlap" />
+    <view
+        class="androidx.recyclerview.widget.RecyclerView"
+        tools:listitem="@layout/storage_list_control"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="18dp"
+        android:layout_below="@id/upper_circle2"
+        android:layout_marginTop="41dp"
+        android:layout_height="520dp"
+        android:id="@+id/items_list" />
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="32sp"
-        android:layout_centerInParent="true"
-        android:id="@+id/textView"/>
-
+        android:src="@drawable/ic_baseline_add_circle_24"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:onClick="add"
+        android:id="@+id/add_brnch"
+        android:contentDescription="@string/todo"
+        tools:ignore="UsingOnClickInXml" />
 </RelativeLayout>

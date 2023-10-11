@@ -1,21 +1,31 @@
 package feny.business.alrannahstorage.data;
 
-import feny.business.alrannahstorage.models.Account;
 import feny.business.alrannahstorage.models.Item;
 import feny.business.alrannahstorage.models.ItemType;
 
 public final class Data {
     public final static String[] ITEM_TYPES = {"Food","Reusable","NonReusable"};
+    public static final String URLBASE = "https://www.eny.sa/api/database/";
     private final static String COMMERCIAL  = "4031059413";
-    private final static int PASSWORD = 3432;
+    private final static int ADMIN_PERMSSION = 3432;
     public final static String PERMISSION = "PERMISSION";
     public final static String SHARED_PREFERENCES = "SP";
+
+    public static int getUserPermission() {
+        return USER_PERMISSION;
+    }
+
+    public static void setUserPermission(int userPermission) {
+        USER_PERMISSION = userPermission;
+    }
+
+    private static int USER_PERMISSION = 0;
 
     public static String getCOMMERCIAL() {
         return COMMERCIAL;
     }
-    public static int getPassword() {
-        return PASSWORD;
+    public static int getAdminPermssion() {
+        return ADMIN_PERMSSION;
     }
 
     //region items

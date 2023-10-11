@@ -34,7 +34,7 @@ public class PushPullData {
     }
     public void saveMemory(){
         String data = gson.toJson(Branches.getBranches());
-        @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = sharedPreferences.edit();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(Data.SHARED_PREFERENCES,data);
         editor.apply();
         editor.commit();

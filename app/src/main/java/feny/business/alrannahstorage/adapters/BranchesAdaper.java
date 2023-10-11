@@ -84,7 +84,7 @@ public class BranchesAdaper extends RecyclerView.Adapter<BranchesAdaper.ViewHold
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         viewHolder.name.setText(localDataSet.get(position).getName());
-        viewHolder.pass.setText("رمز الفرع : "+localDataSet.get(position).getPassword());
+        viewHolder.pass.setText("رمز الفرع : "+localDataSet.get(position).getPermission());
         viewHolder.location.setText(localDataSet.get(position).getLocation());
         int _position = position;
         viewHolder.details.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +108,8 @@ public class BranchesAdaper extends RecyclerView.Adapter<BranchesAdaper.ViewHold
                     public void onClick(DialogInterface d, int which) {
                         // continue with delete
                         final EditText input = new EditText(context);
-                        input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+
 
                         alert.setTitle("تأكيد حذف الفرع");
                         alert.setMessage("أنت على بعد خطوتين لحذف الفرع, هل انت متأكد أنك تريد الحذف؟");

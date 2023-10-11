@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,10 +10,18 @@
     android:paddingTop="8dp"
     android:paddingHorizontal="16dp"
     >
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_baseline_add_circle_24"
+        app:tint="@color/black"
+        android:layout_marginHorizontal="6dp"
+        android:id="@+id/increase"/>
     <TextView
+        android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="zxcasasd"
+        android:text="34 Unit"
         android:textSize="23sp"
         android:gravity="center"
         android:textStyle="bold"
@@ -20,7 +29,15 @@
         android:id="@+id/quantity"
         android:layout_marginBottom="16dp"
         />
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_baseline_remove_circle_24"
+        app:tint="@color/black"
+        android:layout_marginHorizontal="6dp"
+        android:id="@+id/decrease"/>
     <TextView
+        android:layout_marginTop="5dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/item_name"

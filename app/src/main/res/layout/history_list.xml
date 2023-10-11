@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:minWidth="70dp"
         android:gravity="left"
+        android:text="2000/22/02 22:33:42\nadded 1 item"
         android:textStyle="bold"
         android:textColor="#959595"
         android:id="@+id/history"
