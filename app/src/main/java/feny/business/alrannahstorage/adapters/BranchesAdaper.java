@@ -126,9 +126,7 @@ public class BranchesAdaper extends RecyclerView.Adapter<BranchesAdaper.ViewHold
                                     public void onClick(DialogInterface dialog, int which) {
                                         pass[0] = input.getText().toString();
                                         if(pass[0].equals(String.valueOf(localDataSet.get(_position).getPermission()))){
-                                            Branches.deleteBranch(_position, AdminActivity.getShared());
-                                            Toast.makeText(context,"تم الحذف بنجاح", Toast.LENGTH_LONG).show();
-                                            AdminActivity.refresh(context);
+                                           Branches.deleteBranch(context,localDataSet.get(_position).getUser(),localDataSet.get(_position).getPermission());
 
                                         }
                                         else {

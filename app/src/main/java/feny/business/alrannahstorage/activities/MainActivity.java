@@ -2,6 +2,7 @@ package feny.business.alrannahstorage.activities;
 
 import static feny.business.alrannahstorage.data.Data.PERMISSION;
 import static feny.business.alrannahstorage.data.Data.SHARED_PREFERENCES;
+import static feny.business.alrannahstorage.data.Data.getUSER;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
@@ -29,34 +30,71 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.adapters.StorageControlAdapter;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.data.PushPullData;
+import feny.business.alrannahstorage.database.FetchBranchesFromServer;
 import feny.business.alrannahstorage.models.Branch;
 import feny.business.alrannahstorage.models.Item;
 import feny.business.alrannahstorage.models.ItemType;
+import feny.business.alrannahstorage.models.Pages;
+import feny.business.alrannahstorage.network.NetworkUtil;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Pages {
     static Branch branch;
-    SharedPreferences sharedPreferences ;
-    static RecyclerView recyclerView;
-    StorageControlAdapter storageControlAdapter;
+    SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TextView textView = findViewById(R.id.labelM);
-        sharedPreferences= getSharedPreferences(Data.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        branch = Branches.getBranchByPermission(sharedPreferences.getInt("pass",-1));
-        textView.setText("مخزن فرع:\n"+branch.getName());
-        recyclerView = findViewById(R.id.items_list);
-        storageControlAdapter = new StorageControlAdapter(branch.getStorage().getItems(),this,this);
-        storageControlAdapter.setBranch(branch);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(storageControlAdapter);
+        sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        new FetchBranchesFromServer(this, getUSER());
+        retrieve();
+        recyclerView = new RecyclerView(this);
 
+
+    }
+
+    private void retrieve() {
+
+
+        int maxRetries = 1000;  // You can adjust this to control the number of retries
+        int retryCount = 0;
+        boolean success = false;
+
+        success = Branches.getSize() > 0;
+        try {
+            branch = Branches.getBranchByPermission(Data.getUserPermission());
+            TextView textView;
+            textView = findViewById(R.id.mainLable);
+            textView.setText(branch.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // If the operation failed, increment the retryCount and potentially add a delay
+        retryCount++;
+        if (retryCount < maxRetries) {
+            // You can add a delay between retries to avoid overwhelming the system
+            try {
+                Thread.sleep(2000);  // Adjust the sleep duration as needed (2 seconds in this example)
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        // You can check if the operation was successful after the loop
+        if (success) {
+            System.out.println("Operation succeeded after " + retryCount + " retries.");
+        } else {
+            System.out.println("Operation failed after " + maxRetries + " retries.");
+        }
     }
 
     @Override
@@ -68,56 +106,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @SuppressLint("NotifyDataSetChanged")
-    public void refresh(Context context){
-        storageControlAdapter.notifyDataSetChanged();
-    }
-    public void add() {
-        final Dialog dialog = new Dialog(MainActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.add_item_dialog);
-        final EditText name = dialog.findViewById(R.id.name),
-                unit = dialog.findViewById(R.id.unit),
-                quantity = dialog.findViewById(R.id.quantity);
-        Button submit = dialog.findViewById(R.id.save_dilg),
-                cancel = dialog.findViewById(R.id.cancel_dilg);
-        Spinner spinner = dialog.findViewById(R.id.types);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.item_types,
-                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item
-        );
-        adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        submit.setOnClickListener(v -> {
-            if (!name.getText().toString().equals("")) {
-                if (!unit.getText().toString().equals("")) {
-                    if (!quantity.getText().toString().equals("")) {
-                           {
-                               branch.getStorage().addItem(new Item(name.getText().toString(),
-                                               Integer.parseInt(quantity.getText().toString()),
-                                       unit.getText().toString(), ItemType.getTypeByPos(spinner.getSelectedItemPosition())));
-                                dialog.cancel();
-                                Toast.makeText(MainActivity.this, "تمت الاضافة", Toast.LENGTH_LONG).show();
-                                refresh(this);
-                            }
-                    }else
-                        quantity.setError("فارغ");
-                }else
-                    unit.setError("فارغ");
-            }else
-                name.setError("فارغ");
-
-        });
-        cancel.setOnClickListener(v -> dialog.cancel());
-        dialog.show();
-
-    }
-    public void add(View view) {
-        add();
-    }
     public void back(View view) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("تسجيل خروج");
@@ -125,24 +113,17 @@ public class MainActivity extends AppCompatActivity {
         alert.setPositiveButton(Data.YES, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    branch.getStorage().checkChanges();
-                    PushPullData pushPullData = new PushPullData(LoginActivity.getShared());
-                    pushPullData.saveMemory();
-                }
 
-                PushPullData pushPullData = new PushPullData(LoginActivity.getShared());
-                pushPullData.saveMemory();
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean("login", false);
                 editor.putInt("pass", -1);
                 editor.commit();
 
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                intent.putExtra("Back",true);
+                intent.putExtra("Back", true);
                 ImageView img = findViewById(R.id.upper_circle2);
                 ImageView login = findViewById(R.id.logo2);
-                TextView label = findViewById(R.id.labelM);
+                TextView label = findViewById(R.id.mainLable);
                 Pair<View, String>[] pairs = new Pair[3];
                 Pair<View, String> p1 = Pair.create(img, ViewCompat.getTransitionName(img));
                 Pair<View, String> p2 = Pair.create(login, ViewCompat.getTransitionName(login));
@@ -167,4 +148,73 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
+    public void add(View view) {
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.account_dialog);
+        final TextView label = dialog.findViewById(R.id.label_code);
+        final EditText code = dialog.findViewById(R.id.code);
+        Button submit = dialog.findViewById(R.id.save_dilg),
+                cancel = dialog.findViewById(R.id.cancel_dilg);
+
+        submit.setOnClickListener(v -> {
+            if (code.getText().toString().equals("01")) {
+
+                dialog.cancel();
+
+            } else
+                code.setError("خطأ");
+
+        });
+        cancel.setOnClickListener(v -> dialog.cancel());
+        dialog.show();
+
+    }
+
+    public void close(View view) {
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.account_dialog);
+        final TextView label = dialog.findViewById(R.id.label_code);
+        final EditText code = dialog.findViewById(R.id.code);
+        Button submit = dialog.findViewById(R.id.save_dilg),
+                cancel = dialog.findViewById(R.id.cancel_dilg);
+
+        submit.setOnClickListener(v -> {
+            if (code.getText().toString().equals("10")) {
+
+                dialog.cancel();
+
+            } else
+                code.setError("خطأ");
+
+        });
+        cancel.setOnClickListener(v -> dialog.cancel());
+        dialog.show();
+    }
+
+    public void inc(View view) {
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.account_dialog);
+        final TextView label = dialog.findViewById(R.id.label_code);
+        final EditText code = dialog.findViewById(R.id.code);
+        Button submit = dialog.findViewById(R.id.save_dilg),
+                cancel = dialog.findViewById(R.id.cancel_dilg);
+
+        submit.setOnClickListener(v -> {
+            if (code.getText().toString().equals("11")) {
+
+                dialog.cancel();
+
+            } else
+                code.setError("خطأ");
+
+        });
+        cancel.setOnClickListener(v -> dialog.cancel());
+        dialog.show();
+    }
 }

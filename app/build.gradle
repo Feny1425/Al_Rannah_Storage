@@ -45,6 +45,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation('com.squareup.okhttp3:okhttp:4.9.1')
+    implementation('org.apache.commons:commons-lang3:3.8.1')
 
     implementation group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.9.0' // Use the appropriate version
 }

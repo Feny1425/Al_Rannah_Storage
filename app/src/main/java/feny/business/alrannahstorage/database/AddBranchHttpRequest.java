@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import feny.business.alrannahstorage.activities.AdminActivity;
 import feny.business.alrannahstorage.activities.LoginActivity;
 import feny.business.alrannahstorage.data.Data;
+import feny.business.alrannahstorage.data.JsonMaker;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -13,7 +14,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class AddBranchHttpRequest extends AsyncTask<String, Void, String> {
-    private static final String API_URL = Data.URLBASE+"add_branch.php"; // Replace with your script URL
+    private static final String API_URL = Data.BASE_URL("add_branch"); // Replace with your script URL
     AdminActivity context;
 
     public AddBranchHttpRequest(Context context,String permission, String name, String pass,String username) {
@@ -32,13 +33,13 @@ public class AddBranchHttpRequest extends AsyncTask<String, Void, String> {
         String username = params[3];
 
             // Construct a JSON object with username and password
-            String json = "{\"permission\":\"" + permission
-                    + "\", \"name\": \"" + name
-                    + "\", \"location\": \"" + location
-                    +"\", \"username\": \"" + username
-                    +"\"}";
+        JsonMaker jsonMaker = new JsonMaker();
+        jsonMaker.addItem("permission",permission);
+        jsonMaker.addItem("name",name);
+        jsonMaker.addItem("location",location);
+        jsonMaker.addItem("username",username);
 
-            RequestBody body = RequestBody.create(JSON, json);
+            RequestBody body = RequestBody.create(JSON, jsonMaker.getJson());
 
             Request request = new Request.Builder()
                     .url(API_URL)

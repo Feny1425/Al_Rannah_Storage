@@ -30,7 +30,7 @@ public class PushPullData {
         String data = sharedPreferences.getString(Data.SHARED_PREFERENCES,"");
         Type branchesType = new TypeToken<ArrayList<Branch>>(){}.getType();
         ArrayList<Branch> branches = gson.fromJson(data, branchesType);
-        Branches.setBranches(branches);
+        //Branches.setBranches(branches);
     }
     public void saveMemory(){
         String data = gson.toJson(Branches.getBranches());

@@ -1,5 +1,6 @@
 package feny.business.alrannahstorage.activities;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -22,33 +23,50 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.adapters.BranchesAdaper;
 import feny.business.alrannahstorage.data.Data;
+import feny.business.alrannahstorage.database.FetchBranchesFromServer;
+import feny.business.alrannahstorage.models.Pages;
 import feny.business.alrannahstorage.network.NetworkUtil;
 
-public class AdminActivity extends AppCompatActivity {
-    int permission;
+public class AdminActivity extends Pages {
     static SharedPreferences sharedPreferences;
-
+    BranchesAdaper branchesAdaper;
     public static SharedPreferences getShared() {
         return sharedPreferences;
     }
-    static RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
         sharedPreferences = getSharedPreferences(Data.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        permission = Branches.getPermissionByPassword(sharedPreferences.getInt("pass", -1));
         ImageView add = findViewById(R.id.add_brnch);
         add.setOnClickListener(v -> {
             add();
             //Toast.makeText(AdminActivity.this,"clicked", Toast.LENGTH_LONG).show();
         });
         recyclerView = findViewById(R.id.list_of_branches);
-        refresh(this);
+        Timer pollingTimer = new Timer();
+        pollingTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                // Make an HTTP request to check for changes on the server
+                // Process the response and update the UI
+                if (!NetworkUtil.isNetworkAvailable(AdminActivity.this)) {
+                    Toast.makeText(AdminActivity.this, "No Internet", Toast.LENGTH_LONG).show();
+                }
+                runOnUiThread(() ->{
+                    new FetchBranchesFromServer(AdminActivity.this, Data.getUSER());
+                refresh();
+                });
+            }
+        }, 0, 5000);
+        refresh();
 
         if(!NetworkUtil.isNetworkAvailable(this)){
             Toast.makeText(this, "No Internet", Toast.LENGTH_LONG).show();
@@ -113,12 +131,11 @@ public class AdminActivity extends AppCompatActivity {
             if (!name.getText().toString().equals("")) {
                 if (!location.getText().toString().equals("")) {
                     if (!pass.getText().toString().equals("")) {
-                        if(Branches.getPermissionByPassword(Integer.parseInt(pass.getText().toString()))==-1){
+                        if(Branches.getPermissionByPassword(pass.getText().toString()).equals("-1")){
                             {
                                 Branches.addBranch(this,name.getText().toString(),
                                         location.getText().toString(),
                                         Integer.parseInt(pass.getText().toString()),
-                                        getSharedPreferences(Data.SHARED_PREFERENCES, MODE_PRIVATE),
                                         sharedPreferences.getString("user","user"));
                                 dialog.cancel();
                                 //Toast.makeText(AdminActivity.this, "تمت الاضافة", Toast.LENGTH_LONG).show();
@@ -138,14 +155,13 @@ public class AdminActivity extends AppCompatActivity {
         dialog.show();
 
     }
-    public static void refresh(Context context){
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new BranchesAdaper(Branches.getBranches(), context));
 
-
-    }
-
+    @SuppressLint("NotifyDataSetChanged")
     public void addResult(String result) {
         Toast.makeText(this, result , Toast.LENGTH_SHORT).show();
+        new FetchBranchesFromServer(this,Data.getUSER());
+    }
+
+    public void retrieveBranches(String result) {
     }
 }

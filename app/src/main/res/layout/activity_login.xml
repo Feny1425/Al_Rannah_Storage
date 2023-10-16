@@ -30,7 +30,6 @@
         android:textColor="@color/black"
         android:textColorHint="@drawable/edit"
         tools:ignore="TextContrastCheck"
-        android:inputType="numberDecimal"
         android:importantForAutofill="no" />
 
     <EditText

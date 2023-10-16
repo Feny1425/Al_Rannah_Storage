@@ -8,7 +8,7 @@ import feny.business.alrannahstorage.data.Data;
 import okhttp3.*;
 
 public class LoginHttpRequest extends AsyncTask<String, Void, String> {
-    private static final String API_URL = Data.URLBASE+"login.php"; // Replace with your script URL
+    private static final String API_URL = Data.BASE_URL("login"); // Replace with your script URL
     LoginActivity context;
 
     public LoginHttpRequest(Context context, String user, String pass) {

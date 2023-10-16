@@ -13,45 +13,37 @@ import feny.business.alrannahstorage.Objects.Storage;
 import feny.business.alrannahstorage.data.Data;
 
 public class Branch {
-    String name;
-    String Location;
-    Storage storage;
-    int permission;
+    private final String name;
+    private final int id;
+    private final String permission;
+    private final String location;
+    private final String user;
 
-
-    public int getPermission() {
-        return permission;
-    }
-
-    public Branch(String name, String location, int permission) {
+    public Branch(String name, int id, String permission, String location, String user) {
         this.name = name;
-        Location = location;
-        this.storage = new Storage();
+        this.id = id;
         this.permission = permission;
+        this.location = location;
+        this.user = user;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getId() {
+        return id;
+    }
+
+    public String getPermission() {
+        return permission;
     }
 
     public String getLocation() {
-        return Location;
+        return location;
     }
 
-    public void setLocation(String location) {
-        Location = location;
+    public String getUser() {
+        return user;
     }
-
-    public Storage getStorage() {
-        return storage;
-    }
-
-    public void setStorage(Storage storage) {
-        this.storage = storage;
-    }
-
 }

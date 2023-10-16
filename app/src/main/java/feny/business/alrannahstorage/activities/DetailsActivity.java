@@ -32,7 +32,7 @@ public class DetailsActivity extends AppCompatActivity {
         Gson gson = new Gson();
         branch = gson.fromJson(getIntent().getStringExtra("branch"),Branch.class);
 
-        ArrayList history = branch.getStorage().getHistory();
+        /*ArrayList history = branch.getStorage().getHistory();
         Collections.reverse(history);
         textView.setText("ملخص الفرع :\n" + branch.getName());
         RecyclerView storageView = findViewById(R.id.storage_list);
@@ -40,7 +40,7 @@ public class DetailsActivity extends AppCompatActivity {
         storageView.setAdapter(new StorageAdapter(branch.getStorage().getItems(),this));
         RecyclerView historyView = findViewById(R.id.history_list);
         historyView.setLayoutManager(new LinearLayoutManager(this));
-        historyView.setAdapter(new HistoryAdapter(history,this));
+        historyView.setAdapter(new HistoryAdapter(history,this));*/
 
     }
 

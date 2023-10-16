@@ -2,6 +2,7 @@ package feny.business.alrannahstorage.activities;
 
 import static feny.business.alrannahstorage.data.Data.SHARED_PREFERENCES;
 import static feny.business.alrannahstorage.data.Data.getCOMMERCIAL;
+import static feny.business.alrannahstorage.data.Data.getUSER;
 
 import android.content.Context;
 import android.content.Intent;
@@ -42,10 +43,10 @@ public class LoginActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
         if (getIntent().getBooleanExtra("Back", false)) {
-            comm.setText(getCOMMERCIAL());
+            comm.setText(getUSER());
         }
         if (sharedPreferences.getBoolean("login", false)) {
-            login(sharedPreferences.getInt("permission", 0),sharedPreferences.getString("user",""));
+            login(sharedPreferences.getString("permission", "0"),sharedPreferences.getString("user",""));
         }
         PushPullData pushPullData = new PushPullData(sharedPreferences);
         pushPullData.receiveMemory();
@@ -57,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
          if (!state.contains("failed")) {
 
             comm.setError("correct " + state);
-            Data.setUserPermission(Integer.parseInt(state));
+            Data.setUserPermission(state);
             login(Data.getUserPermission(),comm.getText().toString());
         } else {
             comm.setError("كلمة السر او رقم السجل التجاري خاطئ");
@@ -82,13 +83,13 @@ public class LoginActivity extends AppCompatActivity {
         new LoginHttpRequest(this,user,password);
     }
 
-    public void login(int permission,String user) {
+    public void login(String permission,String user) {
 
-        if(permission == -1) return;
+        if(permission.equals("-1")) return;
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        Intent intent = new Intent(this, permission == Data.getAdminPermssion()?AdminActivity.class:MainActivity.class);
+        Intent intent = new Intent(this, permission.equals(Data.getAdminPermssion()) ?AdminActivity.class:MainActivity.class);
         ImageView img = findViewById(R.id.upper_circle);
         ImageView login = findViewById(R.id.logo);
         TextView label = findViewById(R.id.label);
@@ -104,8 +105,9 @@ public class LoginActivity extends AppCompatActivity {
 
         startActivity(intent, b.toBundle());
         editor.putBoolean("login", true);
-        editor.putInt("permission", permission);
+        editor.putString("permission", permission);
         editor.putString("user", user);
+        Data.setUSER(user);
         editor.commit();
         finish();
     }

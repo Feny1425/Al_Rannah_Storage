@@ -7,7 +7,7 @@
     <string name="WarehaouseAdmin">إدارة المخزن</string>
     <string name="BranchSumm">ملخص الفرع
     sadasda</string>
-    <string name="CommNum">رقم السجل التجاري</string>
+    <string name="CommNum">اسم المستخدم</string>
     <string name="Pass">الرمز السري</string>
     <string name="warehouse">المخزن</string>
     <string name="login">تسجيل الدخول</string>

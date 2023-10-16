@@ -91,14 +91,14 @@ public class StorageControlAdapter extends RecyclerView.Adapter<StorageControlAd
         // contents of the view with that element
         viewHolder.getName().setText(localDataSet.get(position).getName());
         viewHolder.getQuantity().setText(localDataSet.get(position).getQuantity() + " " + localDataSet.get(position).getUnit());
-        viewHolder.getInc().setOnClickListener(v -> {
+        /*viewHolder.getInc().setOnClickListener(v -> {
             branch.getStorage().increaseItem(position,1);
             main.refresh(context);
         });
         viewHolder.getDec().setOnClickListener(v -> {
             branch.getStorage().decreaseItem(position,1);
             main.refresh(context);
-        });
+        });*/
 
     }
 
