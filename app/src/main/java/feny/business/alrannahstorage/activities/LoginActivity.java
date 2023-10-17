@@ -12,20 +12,24 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
 
+import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.data.PushPullData;
+import feny.business.alrannahstorage.database.FetchBranchesFromServer;
 import feny.business.alrannahstorage.database.LoginHttpRequest;
+import feny.business.alrannahstorage.models.Pages;
 import feny.business.alrannahstorage.network.NetworkUtil;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends Pages {
 
     EditText comm, pass;
     static SharedPreferences sharedPreferences;
@@ -46,7 +50,9 @@ public class LoginActivity extends AppCompatActivity {
             comm.setText(getUSER());
         }
         if (sharedPreferences.getBoolean("login", false)) {
-            login(sharedPreferences.getString("permission", "0"),sharedPreferences.getString("user",""));
+            String user = sharedPreferences.getString("user","");
+            checkAccount(user,sharedPreferences.getString("permission", "0"));
+            Data.setUSER(user);
         }
         PushPullData pushPullData = new PushPullData(sharedPreferences);
         pushPullData.receiveMemory();
@@ -56,12 +62,19 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login(String state){
          if (!state.contains("failed")) {
-
-            comm.setError("correct " + state);
             Data.setUserPermission(state);
-            login(Data.getUserPermission(),comm.getText().toString());
+            String user = comm.getText().toString()==""?sharedPreferences.getString("user",""):comm.getText().toString();
+             Toast.makeText(this, user, Toast.LENGTH_SHORT).show();
+            new FetchBranchesFromServer(this,user);
         } else {
             comm.setError("كلمة السر او رقم السجل التجاري خاطئ");
+        }
+    }
+
+    @Override
+    public void refresh() {
+        if(Branches.getSize() > 0){
+            login(Data.getUserPermission(), comm.getText().toString().isEmpty()?sharedPreferences.getString("user",""):comm.getText().toString());
         }
     }
 
@@ -86,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
     public void login(String permission,String user) {
 
         if(permission.equals("-1")) return;
+        if(user.isEmpty()) return;
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
 

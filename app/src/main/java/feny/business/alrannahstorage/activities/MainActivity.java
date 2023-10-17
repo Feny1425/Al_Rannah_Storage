@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +37,7 @@ import java.util.TimerTask;
 
 import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.R;
+import feny.business.alrannahstorage.activities.fragments.AccountsFragment;
 import feny.business.alrannahstorage.adapters.StorageControlAdapter;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.data.PushPullData;
@@ -54,10 +57,24 @@ public class MainActivity extends Pages {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
-        new FetchBranchesFromServer(this, getUSER());
         retrieve();
         recyclerView = new RecyclerView(this);
+        fragments();
 
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish(); // Close the app when the back button is pressed
+    }
+    private void fragments() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        AccountsFragment fragment = new AccountsFragment();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null); // Optional: Add the transaction to the back stack
+        transaction.commit();
 
     }
 
@@ -79,14 +96,11 @@ public class MainActivity extends Pages {
         }
         // If the operation failed, increment the retryCount and potentially add a delay
         retryCount++;
-        if (retryCount < maxRetries) {
-            // You can add a delay between retries to avoid overwhelming the system
-            try {
-                Thread.sleep(2000);  // Adjust the sleep duration as needed (2 seconds in this example)
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+        // You can add a delay between retries to avoid overwhelming the system
+        try {
+            Thread.sleep(2000);  // Adjust the sleep duration as needed (2 seconds in this example)
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         // You can check if the operation was successful after the loop
@@ -147,7 +161,7 @@ public class MainActivity extends Pages {
         });
         alert.show();
     }
-
+/*
     public void add(View view) {
         final Dialog dialog = new Dialog(MainActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -216,5 +230,5 @@ public class MainActivity extends Pages {
         });
         cancel.setOnClickListener(v -> dialog.cancel());
         dialog.show();
-    }
+    }*/
 }

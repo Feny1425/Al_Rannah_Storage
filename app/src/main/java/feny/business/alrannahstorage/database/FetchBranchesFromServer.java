@@ -26,11 +26,7 @@ public class FetchBranchesFromServer extends AsyncTask<String, Void, String> {
     private static final String API_URL = Data.BASE_URL("get_branches"); // Replace with your script URL
     Context context;
 
-    public FetchBranchesFromServer(AdminActivity context, String user) {
-        this.context = context;
-        execute(user);
-    }
-    public FetchBranchesFromServer(MainActivity context, String user) {
+    public FetchBranchesFromServer(Pages context, String user) {
         this.context = context;
         execute(user);
     }

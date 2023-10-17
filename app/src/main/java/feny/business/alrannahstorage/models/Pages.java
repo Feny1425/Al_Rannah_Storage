@@ -16,4 +16,5 @@ public abstract class Pages extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new BranchesAdaper(Branches.getBranches(), this));
     }
+
 }

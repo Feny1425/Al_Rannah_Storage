@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +30,7 @@ import java.util.TimerTask;
 
 import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.R;
+import feny.business.alrannahstorage.activities.fragments.AccountsFragment;
 import feny.business.alrannahstorage.adapters.BranchesAdaper;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.database.FetchBranchesFromServer;
@@ -44,6 +47,11 @@ public class AdminActivity extends Pages {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+        init();
+
+    }
+
+    private void init() {
         sharedPreferences = getSharedPreferences(Data.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         ImageView add = findViewById(R.id.add_brnch);
         add.setOnClickListener(v -> {
@@ -71,7 +79,6 @@ public class AdminActivity extends Pages {
         if(!NetworkUtil.isNetworkAvailable(this)){
             Toast.makeText(this, "No Internet", Toast.LENGTH_LONG).show();
         }
-
     }
 
     public void back(View view) {

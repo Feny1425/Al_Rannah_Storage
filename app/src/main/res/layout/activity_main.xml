@@ -54,49 +54,10 @@
         tools:ignore="RelativeOverlap" />
 
 
-    <Button
-        android:id="@+id/increase_quantities"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/mainLable"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="177dp"
-        android:backgroundTint="@color/light_foreground"
-        android:onClick="add"
-        android:text="اضافة كميات"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        tools:ignore="UsingOnClickInXml,TextContrastCheck" />
-
-    <Button
-        android:id="@+id/close_day"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/decrease_quantities"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="23dp"
-        android:backgroundTint="@color/light_foreground"
-        android:onClick="close"
-        android:text="تقفيل الوردية"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        tools:ignore="UsingOnClickInXml,TextContrastCheck" />
-
-
-    <Button
-        android:id="@+id/decrease_quantities"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/increase_quantities"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="23dp"
-        android:backgroundTint="@color/light_foreground"
-        android:onClick="inc"
-        android:text="خصم كميات"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        tools:ignore="UsingOnClickInXml,TextContrastCheck" />
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/mainLable"
+        android:layout_marginTop="32dp" />
 </RelativeLayout>
