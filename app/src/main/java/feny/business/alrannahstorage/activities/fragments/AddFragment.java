@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import feny.business.alrannahstorage.R;
+import feny.business.alrannahstorage.adapters.dialogs.AddItemDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,6 +63,20 @@ public class AddFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add, container, false);
+
+        View rootView = inflater.inflate(R.layout.fragment_add, container, false);
+        // Inflate the layout for this fragment
+        rootView.findViewById(R.id.buy_btn).setOnClickListener(view -> {buy();});
+        rootView.findViewById(R.id.import_btn).setOnClickListener(view -> {importBTN();});
+        return rootView;
+    }
+
+    private void importBTN() {
+    }
+
+    private void buy() {
+        AddItemDialog customDialog = new AddItemDialog(getContext());
+        customDialog.show();
+
     }
 }

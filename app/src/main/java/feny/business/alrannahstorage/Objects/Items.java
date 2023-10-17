@@ -1,0 +1,25 @@
+package feny.business.alrannahstorage.Objects;
+
+import java.util.ArrayList;
+
+import feny.business.alrannahstorage.models.Item;
+import feny.business.alrannahstorage.models.ItemType;
+
+public class Items {
+    private static ArrayList<Item> items = new ArrayList<>();
+    private static ArrayList<ItemType> itemTypes = new ArrayList<>();
+    public static void addItem(String name, int id, String unit){
+        items.add(new Item(name,id,unit));
+    }
+    public static void addItemType(String type, int id){
+        itemTypes.add(new ItemType(id,type));
+    }
+    public static void reset(){
+        items = new ArrayList<>();
+        itemTypes = new ArrayList<>();
+    }
+
+    public static ArrayList<Item> getItems() {
+        return items;
+    }
+}

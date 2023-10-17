@@ -63,8 +63,7 @@ public class LoginActivity extends Pages {
     public void login(String state){
          if (!state.contains("failed")) {
             Data.setUserPermission(state);
-            String user = comm.getText().toString()==""?sharedPreferences.getString("user",""):comm.getText().toString();
-             Toast.makeText(this, user, Toast.LENGTH_SHORT).show();
+            String user = Data.getUSER();
             new FetchBranchesFromServer(this,user);
         } else {
             comm.setError("كلمة السر او رقم السجل التجاري خاطئ");

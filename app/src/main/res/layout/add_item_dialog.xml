@@ -10,39 +10,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_item"
+        android:text="إضافة للمخزون"
         android:gravity="center"
         android:textSize="32sp"
         android:textColor="@color/black"
         android:textStyle="bold"/>
-
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:autofillHints="الفرع رقم"
-        android:background="@drawable/input"
-        android:gravity="center"
-        android:hint="@string/item_name"
-        android:inputType="text"
-        android:textColor="@color/black"
-        android:textColorHint="@drawable/edit"
-        tools:ignore="TextContrastCheck" />
-
-    <EditText
-        android:id="@+id/unit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:autofillHints="كيلو"
-        android:background="@drawable/input"
-        android:gravity="center"
-        android:hint="اسم الوحدة"
-        android:inputType="text"
-        android:textColor="@color/black"
-        android:textColorHint="@drawable/edit"
-        tools:ignore="TextContrastCheck" />
 
     <LinearLayout
         android:paddingHorizontal="16dp"
@@ -54,9 +26,12 @@
         <Spinner
             android:layout_width="wrap_content"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@drawable/input"
             android:id="@+id/types"
+            android:textColorHint="@drawable/edit"
+            android:hint="اكتب ما تريد اضافته ثم اختار"
+            style="@style/MyAutoCompleteTextView"
             />
 
         <EditText

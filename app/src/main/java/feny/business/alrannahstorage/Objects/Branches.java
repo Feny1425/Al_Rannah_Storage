@@ -15,7 +15,6 @@ import feny.business.alrannahstorage.models.Pages;
 
 public class Branches {
     private static ArrayList<Branch> branches = new ArrayList<>();
-
     public static void setBranches(ArrayList<Branch> branches, Pages pages){
         Branches.branches = new ArrayList<>();
         Branches.branches.addAll(branches==null?new ArrayList<>():branches);
@@ -39,6 +38,13 @@ public class Branches {
     public static Branch getBranchByPermission(String permission){
         for (int i = 0; i < getSize();i++){
             if(getBranch(i).getPermission().equals(permission)){
+                return getBranch(i);
+            }
+        }
+        return null;
+    }public static Branch getBranchByID(int id){
+        for (int i = 0; i < getSize();i++){
+            if(getBranch(i).getId() == id){
                 return getBranch(i);
             }
         }

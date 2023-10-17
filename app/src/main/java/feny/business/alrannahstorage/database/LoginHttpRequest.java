@@ -54,5 +54,6 @@ public class LoginHttpRequest extends AsyncTask<String, Void, String> {
             // The 'result' contains the response from your PHP script
             //Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
             context.login(result);
+            new FetchItemsFromServer(context);
         }
     }

@@ -1,52 +1,30 @@
 package feny.business.alrannahstorage.activities;
 
-import static feny.business.alrannahstorage.data.Data.PERMISSION;
 import static feny.business.alrannahstorage.data.Data.SHARED_PREFERENCES;
-import static feny.business.alrannahstorage.data.Data.getUSER;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.activities.fragments.AccountsFragment;
-import feny.business.alrannahstorage.adapters.StorageControlAdapter;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.data.PushPullData;
-import feny.business.alrannahstorage.database.FetchBranchesFromServer;
 import feny.business.alrannahstorage.models.Branch;
-import feny.business.alrannahstorage.models.Item;
-import feny.business.alrannahstorage.models.ItemType;
 import feny.business.alrannahstorage.models.Pages;
-import feny.business.alrannahstorage.network.NetworkUtil;
 
 public class MainActivity extends Pages {
     static Branch branch;
@@ -88,6 +66,7 @@ public class MainActivity extends Pages {
         success = Branches.getSize() > 0;
         try {
             branch = Branches.getBranchByPermission(Data.getUserPermission());
+            Data.setBranchId(branch.getId());
             TextView textView;
             textView = findViewById(R.id.mainLable);
             textView.setText(branch.getName());

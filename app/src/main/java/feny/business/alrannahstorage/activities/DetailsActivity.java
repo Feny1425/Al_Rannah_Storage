@@ -1,10 +1,7 @@
 package feny.business.alrannahstorage.activities;
 
-import static feny.business.alrannahstorage.data.Data.Tomato;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
@@ -12,14 +9,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
-import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.R;
-import feny.business.alrannahstorage.adapters.BranchesAdaper;
-import feny.business.alrannahstorage.adapters.HistoryAdapter;
-import feny.business.alrannahstorage.adapters.StorageAdapter;
 import feny.business.alrannahstorage.models.Branch;
 
 public class DetailsActivity extends AppCompatActivity {

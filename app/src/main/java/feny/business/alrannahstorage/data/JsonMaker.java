@@ -21,4 +21,20 @@ public class JsonMaker {
         json += "}";
         return json;
     }
+
+    public String returnWithQuotation(String input){
+        String output = "\""+input+"\"";
+        return output;
+    }
+    public String getIntJson(){
+        String json = "{";
+        for (Pair<String,String> item : jsonItems){
+            json += "\""+item.getFirst()+"\":";
+            json += ""+item.getSecond()+",";
+        }
+        if(json.charAt(json.length()-1)==',') json = StringUtils.chop(json);
+        json += "}";
+        return json;
+    }
+
 }
