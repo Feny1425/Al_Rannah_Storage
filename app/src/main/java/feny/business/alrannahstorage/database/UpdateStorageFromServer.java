@@ -80,7 +80,7 @@ public class UpdateStorageFromServer extends AsyncTask<String, Void, String> {
         // Handle the response here
         // The 'result' contains the response from your PHP script
         //Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
-        new FetchStorageFromServer((Pages) context,branchID);
+        new FetchStorageFromServer((Pages) context, branchID);
         new AddHistoryHttpRequest((Pages) context,
                 id,
                 quantity,
@@ -89,5 +89,6 @@ public class UpdateStorageFromServer extends AsyncTask<String, Void, String> {
                 add,
                 importB,
                 exportB);
+        // This is an example of calling the callback from within your adapter.
     }
 }

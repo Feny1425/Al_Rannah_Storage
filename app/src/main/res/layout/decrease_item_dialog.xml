@@ -3,32 +3,53 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="16dp"
     android:orientation="vertical"
     android:padding="8dp"
     android:background="@drawable/dialog">
     <TextView
-        android:id="@+id/label_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="التسجيل كمسؤول مخزن"
+        android:text="إخراج من المخزون"
         android:gravity="center"
-        android:textSize="25sp"
+        android:textSize="32sp"
         android:textColor="@color/black"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
-    <EditText
-        android:id="@+id/code"
-        android:inputType="numberDecimal"
+    <LinearLayout
+        android:paddingHorizontal="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@drawable/input"
-        android:gravity="center"
-        android:hint="رمز الدخول"
-        android:textColor="@color/black"
-        android:textColorHint="@drawable/edit"
-        tools:ignore="TextContrastCheck" />
+        android:orientation="horizontal"
+        android:gravity="center">
 
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:background="@drawable/input"
+            android:id="@+id/types"
+            android:textColorHint="@drawable/edit"
+            android:hint="اكتب ما تريد اضافته ثم اختار"
+            style="@style/MyAutoCompleteTextView"
+            />
+
+        <EditText
+            android:id="@+id/quantity"
+            android:layout_width="wrap_content"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:background="@drawable/input"
+            android:gravity="center"
+            android:hint="الكمية"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:textColor="@color/black"
+            android:textColorHint="@drawable/edit"
+            tools:ignore="TextContrastCheck" />
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

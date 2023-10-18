@@ -92,6 +92,7 @@ public class LoginActivity extends Pages {
     }
 
     private void checkAccount(String user, String password) {
+        Data.setUSER(user);
         new LoginHttpRequest(this,user,password);
     }
 

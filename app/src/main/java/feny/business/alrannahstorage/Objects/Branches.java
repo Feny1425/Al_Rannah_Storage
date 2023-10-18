@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import feny.business.alrannahstorage.activities.AdminActivity;
 import feny.business.alrannahstorage.data.Data;
@@ -49,6 +50,8 @@ public class Branches {
             }
         }
         return null;
+    }public static Branch getBranchByStorageID(int id){
+        return getBranchByID(Objects.requireNonNull(getStorageByID(id)).getBranchID());
     }
     public static int getSize(){
         return branches.size();
@@ -66,6 +69,16 @@ public class Branches {
             }
         }
         return "-1";
+    }
+    public static Storage getStorageByID(int id){
+        for (Branch branch : branches){
+            for(Storage storage : branch.getStorage()){
+                if(storage.getStorageID() == id){
+                    return storage;
+                }
+            }
+        }
+        return null;
     }
 
 }

@@ -35,6 +35,7 @@ public class AccountsFragment extends Fragment {
     private String mParam2;
 
     public AccountsFragment() {
+        MainActivity.page = 0;
         // Required empty public constructor
     }
 
@@ -118,7 +119,7 @@ public class AccountsFragment extends Fragment {
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.account_dialog);
         final TextView label = dialog.findViewById(R.id.label_code);
-        label.setText("تقفيل الوردية");
+        label.setText("إقفال الوردية");
         final EditText code = dialog.findViewById(R.id.code);
         Button submit = dialog.findViewById(R.id.save_dilg),
                 cancel = dialog.findViewById(R.id.cancel_dilg);
@@ -143,14 +144,24 @@ public class AccountsFragment extends Fragment {
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.account_dialog);
         final TextView label = dialog.findViewById(R.id.label_code);
-        label.setText("إخراج المونة");
+        label.setText("إخراج المخزون");
         final EditText code = dialog.findViewById(R.id.code);
         Button submit = dialog.findViewById(R.id.save_dilg),
                 cancel = dialog.findViewById(R.id.cancel_dilg);
 
         submit.setOnClickListener(v -> {
             if (code.getText().toString().equals("11")) {
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
 
+                // Replace the current fragment with a new one
+                transaction.replace(R.id.fragment_container, new StorageFragment(true));
+
+                // Add the transaction to the back stack for back navigation
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
                 dialog.cancel();
 
             } else

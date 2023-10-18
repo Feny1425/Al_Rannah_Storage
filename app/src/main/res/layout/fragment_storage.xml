@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.fragments.StorageFragment">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?colorPrimary"
+        android:padding="16dp"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:background="@drawable/input"
+            android:gravity="center"
+            android:backgroundTint="#BDBDBD"
+            android:hint="بحث"
+            android:importantForAutofill="no"
+            android:textColor="@color/black"
+            android:textColorHint="@drawable/edit"
+            tools:ignore="TextContrastCheck"
+            android:inputType="text" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/search"
+            android:layout_alignTop="@+id/search"
+            android:layout_marginEnd="4dp"
+            android:layout_marginTop="2dp"
+            android:src="@drawable/ic_baseline_search_24"
+            android:contentDescription="@string/search" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_below="@id/search"
+            android:layout_height="match_parent"
+            android:id="@+id/storage_list"
+            tools:listitem="@layout/storage_list_control"/>
+<!--
+
+        <Button
+            android:id="@+id/buy_btn"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            android:backgroundTint="@color/light_foreground"
+            android:text="إخراج من المخزون"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="UsingOnClickInXml,TextContrastCheck" />
+-->
+
+    </RelativeLayout>
+
+
+</FrameLayout>

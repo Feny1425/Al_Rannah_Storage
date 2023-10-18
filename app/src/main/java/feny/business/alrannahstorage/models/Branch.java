@@ -73,4 +73,8 @@ public class Branch {
     public void resetStorage() {
         storages = new ArrayList<>();
     }
+
+    public ArrayList<Storage> getStorage() {
+        return storages;
+    }
 }

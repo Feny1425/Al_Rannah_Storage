@@ -6,13 +6,14 @@
     android:background="@drawable/list"
     android:layout_margin="4dp"
     android:orientation="horizontal"
-    android:paddingTop="8dp"
-    android:paddingHorizontal="16dp"
+    android:id="@+id/layout"
+    android:paddingTop="16dp"
+    android:paddingHorizontal="23dp"
     >
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="zxcasasd"
+        android:text="50 كرتون"
         android:textSize="23sp"
         android:gravity="center"
         android:textStyle="bold"

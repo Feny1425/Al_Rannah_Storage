@@ -91,6 +91,6 @@ public class FetchBranchesFromServer extends AsyncTask<String, Void, String> {
             e.printStackTrace();
         }
 
-        Branches.setBranches(branches,(Pages)context);
+        Branches.setBranches(branches, context);
     }
 }

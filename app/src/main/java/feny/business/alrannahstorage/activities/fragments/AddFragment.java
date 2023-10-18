@@ -3,12 +3,15 @@ package feny.business.alrannahstorage.activities.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import feny.business.alrannahstorage.R;
+import feny.business.alrannahstorage.activities.MainActivity;
 import feny.business.alrannahstorage.adapters.dialogs.AddItemDialog;
 
 /**
@@ -29,6 +32,7 @@ public class AddFragment extends Fragment {
     private String mParam2;
 
     public AddFragment() {
+        MainActivity.page = 1;
         // Required empty public constructor
     }
 
@@ -75,8 +79,21 @@ public class AddFragment extends Fragment {
     }
 
     private void buy() {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        // Replace the current fragment with a new one
+        transaction.replace(R.id.fragment_container, new StorageFragment(false));
+
+        // Add the transaction to the back stack for back navigation
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
+
+        /*
         AddItemDialog customDialog = new AddItemDialog(getContext());
         customDialog.show();
-
+*/
     }
 }

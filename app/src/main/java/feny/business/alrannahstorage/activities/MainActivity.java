@@ -29,6 +29,13 @@ import feny.business.alrannahstorage.models.Pages;
 public class MainActivity extends Pages {
     static Branch branch;
     SharedPreferences sharedPreferences;
+    public static int page = 0;
+
+    @Override
+    public void refresh() {
+        super.refresh();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +49,29 @@ public class MainActivity extends Pages {
     }
     @Override
     public void onBackPressed() {
+        if(page!=0)
         super.onBackPressed();
-        finish(); // Close the app when the back button is pressed
+        if(page == 0){
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("تأكيد خروج");
+            alert.setMessage("هل تريد الخروج؟");
+            alert.setPositiveButton(Data.YES, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    finish();
+                }
+            });
+            alert.setNegativeButton(Data.CANCEL, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            alert.show();
+            // Close the app when the back button is pressed
+        }
+        else page--;
     }
     private void fragments() {
         FragmentManager fragmentManager = getSupportFragmentManager();

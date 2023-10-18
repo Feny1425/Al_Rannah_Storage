@@ -85,6 +85,19 @@ public class FetchStorageFromServer extends AsyncTask<String, Void, String> {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }if (onDataChangedListener != null) {
+            onDataChangedListener.onDataChanged();
         }
+
+
+    }
+
+
+    public interface OnDataChangedListener {
+        void onDataChanged();
+    }
+    private static OnDataChangedListener onDataChangedListener;
+    public static void setOnDataChangedListener(OnDataChangedListener listener) {
+        onDataChangedListener = listener;
     }
 }

@@ -40,6 +40,10 @@ public class Storage {
         return quantity;
     }
 
+    public Item getItem(){
+        return Items.getItemByID(itemID);
+    }
+
     public int getState() {
         return state;
     }
