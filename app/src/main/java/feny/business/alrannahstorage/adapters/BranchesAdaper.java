@@ -9,7 +9,6 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,8 +23,6 @@ import java.util.ArrayList;
 
 import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.R;
-import feny.business.alrannahstorage.activities.AdminActivity;
-import feny.business.alrannahstorage.activities.DetailsActivity;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.models.Branch;
 
@@ -91,10 +88,6 @@ public class BranchesAdaper extends RecyclerView.Adapter<BranchesAdaper.ViewHold
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context, DetailsActivity.class);
-                Gson gson = new Gson();
-                intent.putExtra("branch",gson.toJson(localDataSet.get(_position)));
-                context.startActivity(intent);
             }
         });
         viewHolder.delete.setOnClickListener(new View.OnClickListener() {

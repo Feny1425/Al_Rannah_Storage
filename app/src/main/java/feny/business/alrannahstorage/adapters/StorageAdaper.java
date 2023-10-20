@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Vector;
 
 import feny.business.alrannahstorage.Objects.Items;
 import feny.business.alrannahstorage.Objects.Storage;
@@ -20,17 +21,29 @@ import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.adapters.dialogs.AddItemDialog;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.models.Item;
+import feny.business.alrannahstorage.models.ItemType;
 
 public class StorageAdaper extends RecyclerView.Adapter<StorageAdaper.ViewHolder> {
 
     private final ArrayList<Storage> localDataSet;
     private final Context context;
-    private boolean extract;
+    private boolean extract, e2,Import;
+    private Vector<Integer> quantities = new Vector<>();
 
-    public StorageAdaper(ArrayList<Storage> localDataSet, Context context, boolean extract) {
+    public StorageAdaper(ArrayList<Storage> localDataSet, Context context, boolean extract, boolean e2) {
         this.localDataSet = localDataSet;
         this.context = context;
-        this.extract =extract;
+        this.extract = extract;
+        this.e2 = e2;
+    }
+
+    public StorageAdaper(ArrayList<Storage> storages, Context context, Vector<Integer> quantities) {
+        this.localDataSet = storages;
+        this.context = context;
+        this.extract = false;
+        this.e2 = false;
+        Import = true;
+        this.quantities = quantities;
     }
 
     /**
@@ -38,7 +51,7 @@ public class StorageAdaper extends RecyclerView.Adapter<StorageAdaper.ViewHolder
      * (custom ViewHolder)
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView name,quantity;
+        private final TextView name, quantity;
         private final LinearLayout layout;
 
         public ViewHolder(View view) {
@@ -59,8 +72,7 @@ public class StorageAdaper extends RecyclerView.Adapter<StorageAdaper.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(context)
-                .inflate(R.layout.storage_list, viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.storage_list, viewGroup, false);
 
         return new ViewHolder(view);
     }
@@ -72,22 +84,16 @@ public class StorageAdaper extends RecyclerView.Adapter<StorageAdaper.ViewHolder
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        Item item = Items.getItemByID(localDataSet.get(position).getItemID());
-        viewHolder.name.setText(Objects.requireNonNull(item).getName());
-        viewHolder.quantity.setText(localDataSet.get(position).getQuantity() + "  " + item.getUnit());
+        ItemType itemType = localDataSet.get(position).getStateType();
+        Item item = localDataSet.get(position).getItem();
+        viewHolder.name.setText(e2 ? Objects.requireNonNull(itemType).getType() : item.getName());
+        viewHolder.quantity.setText((Import?quantities.get(position):localDataSet.get(position).getQuantity()) + "  " + item.getUnit());
         int _position = position;
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(extract){
-                    AddItemDialog customDialog = new AddItemDialog(context,localDataSet.get(_position).getStorageID(),extract, Data.getBranchId(),0);
-                    customDialog.show();
-                }
-                else {
-                    AddItemDialog customDialog = new AddItemDialog(context,localDataSet.get(_position).getStorageID(),extract,Data.getBranchId(),Data.getBranchId());
-                    customDialog.show();
-                }
-
+                AddItemDialog customDialog = new AddItemDialog(context, localDataSet.get(_position).getStorageID(), extract, Data.getBranchId(), 0, e2);
+                customDialog.show();
             }
         });
 

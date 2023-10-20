@@ -1,14 +1,19 @@
 package feny.business.alrannahstorage.data;
 
-import feny.business.alrannahstorage.models.Item;
-import feny.business.alrannahstorage.models.ItemType;
-
 public final class Data {
     public final static String[] ITEM_TYPES = {"Food","Reusable","NonReusable"};
     public static final String URLBASE = "https://www.eny.sa/api/database/al_rannah/";
     private final static String COMMERCIAL  = "4031059413";
     private final static String ADMIN_PERMSSION = "3432";
     private static int BRANCH_ID = 0;
+
+    public static String[] getCLOSE() {
+        return CLOSE;
+    }
+
+    private static String[] CLOSE = {"مباع","صدقة","إعاشة","تالف"};
+
+    public static final int EXPORTED = -1;
 
     public static int getBranchId() {
         return BRANCH_ID;

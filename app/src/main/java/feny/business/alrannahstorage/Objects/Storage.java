@@ -43,6 +43,9 @@ public class Storage {
     public Item getItem(){
         return Items.getItemByID(itemID);
     }
+    public ItemType getStateType(){
+        return Items.getItemTypesByID(state);
+    }
 
     public int getState() {
         return state;

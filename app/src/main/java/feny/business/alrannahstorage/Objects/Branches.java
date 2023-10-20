@@ -1,17 +1,20 @@
 package feny.business.alrannahstorage.Objects;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Vector;
 
-import feny.business.alrannahstorage.activities.AdminActivity;
+import feny.business.alrannahstorage.models.Item;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.data.PushPullData;
 import feny.business.alrannahstorage.database.AddBranchHttpRequest;
 import feny.business.alrannahstorage.database.DeleteBranchHttpRequest;
 import feny.business.alrannahstorage.models.Branch;
+import feny.business.alrannahstorage.models.ItemType;
 import feny.business.alrannahstorage.models.Pages;
 
 public class Branches {
@@ -20,6 +23,14 @@ public class Branches {
         Branches.branches = new ArrayList<>();
         Branches.branches.addAll(branches==null?new ArrayList<>():branches);
         pages.refresh();
+    }
+
+    public static Vector<Integer> getAllBranchesIDs(){
+        Vector<Integer> IDs = new Vector<>();
+        for(Branch branch : branches){
+            IDs.add(branch.getId());
+        }
+        return IDs;
     }
 
     public static ArrayList<Branch> getBranches() {
@@ -50,8 +61,23 @@ public class Branches {
             }
         }
         return null;
+    }public static Branch getBranchByNameAndLocation(String nameAndLocation){
+        for (Branch branch : branches){
+            String _nameAndLocation = branch.getName() + " " + branch.getLocation();
+            if(nameAndLocation.equals(_nameAndLocation)) return branch;
+        }
+        return null;
     }public static Branch getBranchByStorageID(int id){
         return getBranchByID(Objects.requireNonNull(getStorageByID(id)).getBranchID());
+    }
+    public static Storage getStorageByItemItemTypeBranchID(Item item, ItemType itemType, int branchID){
+        Branch branch = getBranchByID(branchID);
+        for(Storage storage : branch.getStorage()){
+            if(storage.getItem() == item && storage.getState() == itemType.getId()){
+                return storage;
+            }
+        }
+        return null;
     }
     public static int getSize(){
         return branches.size();

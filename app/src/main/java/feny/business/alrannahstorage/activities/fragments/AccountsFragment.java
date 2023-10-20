@@ -126,7 +126,17 @@ public class AccountsFragment extends Fragment {
 
         submit.setOnClickListener(v -> {
             if (code.getText().toString().equals("10")) {
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
 
+                // Replace the current fragment with a new one
+                transaction.replace(R.id.fragment_container, new StorageFragment(false,true,false));
+
+                // Add the transaction to the back stack for back navigation
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
                 dialog.cancel();
 
             } else
@@ -155,7 +165,7 @@ public class AccountsFragment extends Fragment {
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
 
                 // Replace the current fragment with a new one
-                transaction.replace(R.id.fragment_container, new StorageFragment(true));
+                transaction.replace(R.id.fragment_container, new StorageFragment(true,false,false));
 
                 // Add the transaction to the back stack for back navigation
                 transaction.addToBackStack(null);

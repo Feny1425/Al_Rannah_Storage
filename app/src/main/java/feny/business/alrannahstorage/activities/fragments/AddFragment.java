@@ -76,6 +76,17 @@ public class AddFragment extends Fragment {
     }
 
     private void importBTN() {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        // Replace the current fragment with a new one
+        transaction.replace(R.id.fragment_container, new StorageFragment(false,false,true));
+
+        // Add the transaction to the back stack for back navigation
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
     }
 
     private void buy() {
@@ -83,7 +94,7 @@ public class AddFragment extends Fragment {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         // Replace the current fragment with a new one
-        transaction.replace(R.id.fragment_container, new StorageFragment(false));
+        transaction.replace(R.id.fragment_container, new StorageFragment(false,false,false));
 
         // Add the transaction to the back stack for back navigation
         transaction.addToBackStack(null);

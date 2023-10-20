@@ -18,7 +18,7 @@ public class AddHistoryHttpRequest extends AsyncTask<String, Void, String> {
     private static final String API_URL = Data.BASE_URL("add_history"); // Replace with your script URL
     Pages context;
 
-    public AddHistoryHttpRequest(Context context, int id, int quantity, int new_quantity, int old_quantity, boolean add, int importB, int exportB) {
+    public AddHistoryHttpRequest(Context context, int id, int quantity, int new_quantity, int old_quantity, boolean add, int importB, int exportB, int closed ) {
         this.context = (Pages) context;
         execute(String.valueOf(id),
                 String.valueOf(quantity),
@@ -26,7 +26,8 @@ public class AddHistoryHttpRequest extends AsyncTask<String, Void, String> {
                 String.valueOf(old_quantity),
                 String.valueOf(add?1:0),
                 String.valueOf(importB),
-                String.valueOf(exportB)
+                String.valueOf(exportB),
+                String.valueOf(closed)
         );
     }
 
@@ -49,6 +50,7 @@ public class AddHistoryHttpRequest extends AsyncTask<String, Void, String> {
         String importq = params[i++];
 
         String export = params[i++];
+        String closed = params[i++];
 
         jsonMaker.addItem("id",id);
         jsonMaker.addItem("quantity",qunt);
@@ -57,6 +59,7 @@ public class AddHistoryHttpRequest extends AsyncTask<String, Void, String> {
         jsonMaker.addItem("add",add);
         jsonMaker.addItem("import",importq);
         jsonMaker.addItem("export",export);
+        jsonMaker.addItem("closed",closed);
 
         String json = jsonMaker.getIntJson();
         RequestBody body = RequestBody.create(JSON,json );
@@ -84,5 +87,6 @@ public class AddHistoryHttpRequest extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
         // Handle the response here
         // The 'result' contains the response from your PHP script
+        Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
     }
 }

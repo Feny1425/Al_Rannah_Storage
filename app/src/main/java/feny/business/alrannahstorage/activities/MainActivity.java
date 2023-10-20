@@ -17,19 +17,28 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.activities.fragments.AccountsFragment;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.data.PushPullData;
+import feny.business.alrannahstorage.database.FetchBranchesFromServer;
+import feny.business.alrannahstorage.database.FetchHistoryFromServer;
 import feny.business.alrannahstorage.models.Branch;
 import feny.business.alrannahstorage.models.Pages;
+import feny.business.alrannahstorage.network.NetworkUtil;
 
 public class MainActivity extends Pages {
     static Branch branch;
     SharedPreferences sharedPreferences;
     public static int page = 0;
+    Timer pollingTimer = new Timer();
+
 
     @Override
     public void refresh() {
@@ -46,6 +55,22 @@ public class MainActivity extends Pages {
         recyclerView = new RecyclerView(this);
         fragments();
 
+        pollingTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                // Make an HTTP request to check for changes on the server
+                // Process the response and update the UI
+                if (!NetworkUtil.isNetworkAvailable(MainActivity.this)) {
+                    Toast.makeText(MainActivity.this, "No Internet", Toast.LENGTH_LONG).show();
+                }
+                runOnUiThread(() ->{
+                    new FetchHistoryFromServer(MainActivity.this);
+//                    Toast.makeText(AdminActivity.this, Histories.getNonFinishedOperations().size()+"", Toast.LENGTH_SHORT).show();
+
+                });
+            }
+        }, 0, 5000);
+
     }
     @Override
     public void onBackPressed() {
@@ -59,6 +84,7 @@ public class MainActivity extends Pages {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
+                    pollingTimer.cancel();
                     finish();
                 }
             });
@@ -128,7 +154,7 @@ public class MainActivity extends Pages {
 
 
     public void back(View view) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        /*AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("تسجيل خروج");
         alert.setMessage("تأكيد تسجيل الخروج");
         alert.setPositiveButton(Data.YES, new DialogInterface.OnClickListener() {
@@ -166,7 +192,7 @@ public class MainActivity extends Pages {
                 dialog.cancel();
             }
         });
-        alert.show();
+        alert.show();*/
     }
 /*
     public void add(View view) {

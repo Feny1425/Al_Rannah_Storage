@@ -24,6 +24,7 @@ import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.data.PushPullData;
 import feny.business.alrannahstorage.database.FetchBranchesFromServer;
+import feny.business.alrannahstorage.database.FetchHistoryFromServer;
 import feny.business.alrannahstorage.database.LoginHttpRequest;
 import feny.business.alrannahstorage.models.Pages;
 import feny.business.alrannahstorage.network.NetworkUtil;
@@ -50,9 +51,15 @@ public class LoginActivity extends Pages {
             comm.setText(getUSER());
         }
         if (sharedPreferences.getBoolean("login", false)) {
-            String user = sharedPreferences.getString("user","");
-            checkAccount(user,sharedPreferences.getString("permission", "0"));
-            Data.setUSER(user);
+            comm.setVisibility(View.GONE);
+            findViewById(R.id.password).setVisibility(View.GONE);
+            findViewById(R.id.login_btn).setVisibility(View.GONE);
+            if(NetworkUtil.isNetworkAvailable(this)) {
+                String user = sharedPreferences.getString("user","");
+                checkAccount(user,sharedPreferences.getString("permission", "0"));
+                Data.setUSER(user);
+            }
+            else comm.setError("لا يوجد انترنت!");
         }
         PushPullData pushPullData = new PushPullData(sharedPreferences);
         pushPullData.receiveMemory();
@@ -94,6 +101,7 @@ public class LoginActivity extends Pages {
     private void checkAccount(String user, String password) {
         Data.setUSER(user);
         new LoginHttpRequest(this,user,password);
+
     }
 
     public void login(String permission,String user) {

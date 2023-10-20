@@ -29,17 +29,20 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import feny.business.alrannahstorage.Objects.Branches;
+import feny.business.alrannahstorage.Objects.Histories;
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.activities.fragments.AccountsFragment;
 import feny.business.alrannahstorage.adapters.BranchesAdaper;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.database.FetchBranchesFromServer;
+import feny.business.alrannahstorage.database.FetchHistoryFromServer;
 import feny.business.alrannahstorage.models.Pages;
 import feny.business.alrannahstorage.network.NetworkUtil;
 
 public class AdminActivity extends Pages {
     static SharedPreferences sharedPreferences;
     BranchesAdaper branchesAdaper;
+    Timer pollingTimer = new Timer();
     public static SharedPreferences getShared() {
         return sharedPreferences;
     }
@@ -51,6 +54,11 @@ public class AdminActivity extends Pages {
 
     }
 
+    @Override
+    public void refresh() {
+        super.refresh();
+    }
+
     private void init() {
         sharedPreferences = getSharedPreferences(Data.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         ImageView add = findViewById(R.id.add_brnch);
@@ -59,7 +67,6 @@ public class AdminActivity extends Pages {
             //Toast.makeText(AdminActivity.this,"clicked", Toast.LENGTH_LONG).show();
         });
         recyclerView = findViewById(R.id.list_of_branches);
-        Timer pollingTimer = new Timer();
         pollingTimer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -70,7 +77,10 @@ public class AdminActivity extends Pages {
                 }
                 runOnUiThread(() ->{
                     new FetchBranchesFromServer(AdminActivity.this, Data.getUSER());
-                refresh();
+                    new FetchHistoryFromServer(AdminActivity.this);
+                    refresh();
+//                    Toast.makeText(AdminActivity.this, Histories.getNonFinishedOperations().size()+"", Toast.LENGTH_SHORT).show();
+
                 });
             }
         }, 0, 5000);
@@ -111,6 +121,7 @@ public class AdminActivity extends Pages {
 
                 startActivity(intent, b.toBundle());
                 editor.commit();
+                pollingTimer.cancel();
                 finish();
             }
         });

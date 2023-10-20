@@ -21,12 +21,13 @@ public class UpdateStorageFromServer extends AsyncTask<String, Void, String> {
     private boolean add;
     private final int importB;
     private final int exportB;
+    private int closed = 0;
     Context context;
     String branchID;
 
     public UpdateStorageFromServer(Pages context, String storageID, String _quantity, String branchID,
                                    int id, int quantity, int new_quantity, int old_quantity,
-                                   boolean add, int importB, int exportB) {
+                                   boolean add, int importB, int exportB, int closed) {
         this.context = context;
         this.branchID = branchID;
         execute(storageID,_quantity);
@@ -37,6 +38,7 @@ public class UpdateStorageFromServer extends AsyncTask<String, Void, String> {
         this.add = add;
         this.importB = importB;
         this.exportB = exportB;
+        this.closed = closed;
 
     }
 
@@ -88,7 +90,8 @@ public class UpdateStorageFromServer extends AsyncTask<String, Void, String> {
                 oldQuantity,
                 add,
                 importB,
-                exportB);
+                exportB,
+                closed);
         // This is an example of calling the callback from within your adapter.
     }
 }

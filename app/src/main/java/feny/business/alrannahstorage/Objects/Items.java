@@ -31,8 +31,23 @@ public class Items {
         }
         return null;
     }
+    public static int getItemTypeID(String type){
+        for (ItemType itemType : itemTypes){
+            if(itemType.getType().equals(type)) return itemType.getId();
+        }
+        return 0;
+    }
 
     public static ArrayList<Item> getItems() {
         return items;
+    }
+
+    public static ItemType getItemTypesByID(int state) {
+        for(ItemType item : itemTypes){
+            if(item.getId() == state){
+                return item;
+            }
+        }
+        return null;
     }
 }

@@ -13,7 +13,9 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.Vector;
 
 import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.Objects.Items;
@@ -21,7 +23,6 @@ import feny.business.alrannahstorage.Objects.Storage;
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.database.UpdateStorageFromServer;
-import feny.business.alrannahstorage.models.Item;
 import feny.business.alrannahstorage.models.ItemType;
 import feny.business.alrannahstorage.models.Pages;
 
@@ -34,14 +35,14 @@ public class AddItemDialog extends Dialog {
     private int selection = -1;
     private int storageID;
     private Context context;
-    private String[] itemsList;
-    private boolean extract;
+    private Vector<String> itemsList;
+    private boolean extract,close;
     private int exportB;
     private int importB;
 
-    public AddItemDialog(Context context, int storageID,boolean extract,int exportB, int importB) {
+    public AddItemDialog(Context context, int storageID, boolean extract, int exportB, int importB, boolean e2) {
         super(context); this.context=context; this.storageID = storageID;
-        this.extract = extract;
+        this.extract = extract; close = e2;
     }
 
 
@@ -56,16 +57,36 @@ public class AddItemDialog extends Dialog {
         items = findViewById(R.id.types);
         save = findViewById(R.id.save_dilg);
         cancel = findViewById(R.id.cancel_dilg);
-        itemsList = new String[Items.getItemTypes().size()-1];
-        if(!extract){
+        itemsList = new Vector<>();
+        if(!extract && !close){
             items.setVisibility(View.GONE);
         }
-        for (ItemType itemType : Items.getItemTypes()){
-            int index = Items.getItemTypes().indexOf(itemType);
-            if(index != 0)
-            itemsList[index-1]=itemType.getType();
+
+        if(extract){
+            for (ItemType itemType : Items.getItemTypes()){
+                int index = Items.getItemTypes().indexOf(itemType);
+                if(index != 0) {
+                    if(itemType.getType().contains(Branches.getStorageByID(storageID).getItem().getName())){
+                        itemsList.add(itemType.getType());
+                    }
+                }
+            }
+        }else if(close){
+            itemsList.addAll(Arrays.asList(Data.getCLOSE()));
+            for (Integer id : Branches.getAllBranchesIDs()){
+                    if(Data.getBranchId() != id){
+                        itemsList.add(Objects.requireNonNull(Branches.getBranchByID(id)).getName() + " " + Objects.requireNonNull(Branches.getBranchByID(id)).getLocation());
+                    }
+            }
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.text, itemsList);
+        if(itemsList.size() == 0){
+            itemsList.add(Items.getItemTypes().get(1).getType());
+        }
+        String[] s = new String[itemsList.size()];
+        for (int i = 0; i < itemsList.size(); i++){
+            s[i] = itemsList.get(i);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.text, s);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         items.setAdapter(adapter);
 
@@ -100,22 +121,23 @@ public class AddItemDialog extends Dialog {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Storage storage = Objects.requireNonNull(Branches.getStorageByID(storageID));
-                                int newQuantity = extract?storage.getQuantity()-Integer.parseInt(quantity.getText().toString()):storage.getQuantity()+Integer.parseInt(quantity.getText().toString());
-                                if(extract & newQuantity<0){
+                                int newQuantity = (extract||close)?storage.getQuantity()-Integer.parseInt(quantity.getText().toString()):storage.getQuantity()+Integer.parseInt(quantity.getText().toString());
+                                if((extract||close) & newQuantity<0){
                                     quantity.setError("الكمية غير متوفرة في المخزون");
                                 }
                                 else {
                                     new UpdateStorageFromServer((Pages) context, String.valueOf(storage.getStorageID()), String.valueOf(newQuantity), String.valueOf(Data.getBranchId()),
-                                            storageID,
+                                            storage.getStorageID(),
                                             Integer.parseInt(quantity.getText().toString()),
                                             newQuantity,
                                             storage.getQuantity(),
-                                            !extract,
+                                            !(extract || close),
+                                            (selection > 3 && close)?Branches.getBranchByNameAndLocation(itemsList.get(selection)).getId():storage.getBranchID(),
                                             storage.getBranchID(),
-                                            storage.getBranchID());
+                                            close?((selection > 3)?-1:selection+1):0);
                                     if(extract) {
                                         for (Storage _storage : Branches.getBranchByID(storage.getBranchID()).getStorage()) {
-                                            if (_storage.getState() == selection + 1 && _storage.getItem() == storage.getItem()) {
+                                            if (_storage.getState() == Items.getItemTypeID(itemsList.get(selection)) && _storage.getItem() == storage.getItem()) {
                                                 newQuantity = _storage.getQuantity() + Integer.parseInt(quantity.getText().toString());
                                                 new UpdateStorageFromServer((Pages) context, String.valueOf(_storage.getStorageID()), String.valueOf(newQuantity), String.valueOf(Data.getBranchId()),
                                                         _storage.getStorageID(),
@@ -124,7 +146,8 @@ public class AddItemDialog extends Dialog {
                                                         _storage.getQuantity(),
                                                         true,
                                                         _storage.getBranchID(),
-                                                        _storage.getBranchID());
+                                                        _storage.getBranchID(),
+                                                        0);
                                                 break;
                                             }
                                         }

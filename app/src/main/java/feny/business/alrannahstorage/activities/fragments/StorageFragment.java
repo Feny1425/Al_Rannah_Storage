@@ -15,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Vector;
 
 import feny.business.alrannahstorage.Objects.Branches;
+import feny.business.alrannahstorage.Objects.Histories;
 import feny.business.alrannahstorage.Objects.Items;
 import feny.business.alrannahstorage.Objects.Storage;
 import feny.business.alrannahstorage.R;
@@ -24,6 +26,10 @@ import feny.business.alrannahstorage.activities.MainActivity;
 import feny.business.alrannahstorage.adapters.StorageAdaper;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.database.FetchStorageFromServer;
+import feny.business.alrannahstorage.models.Branch;
+import feny.business.alrannahstorage.models.History;
+import feny.business.alrannahstorage.models.Item;
+import feny.business.alrannahstorage.models.ItemType;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,16 +46,19 @@ public class StorageFragment extends Fragment implements FetchStorageFromServer.
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private boolean extract;
+    private boolean extract,close,Import;
+
+    private Vector<Integer> quantities = new Vector<>();
 
     public StorageFragment() {
-        MainActivity.page = 2;
         // Required empty public constructor
     }
 
-    public StorageFragment(boolean b) {
+    public StorageFragment(boolean b,boolean c,boolean i) {
         extract = b;
-        MainActivity.page = 2;
+        close = c;
+        Import = i;
+        MainActivity.page = (b||c||i)?1:2;
     }
 
     /**
@@ -82,21 +91,41 @@ public class StorageFragment extends Fragment implements FetchStorageFromServer.
     }
 
     ArrayList<Storage> storages = new ArrayList<>();
-    StorageAdaper storageAdaper = new StorageAdaper(storages , getContext(),extract);
+    StorageAdaper storageAdaper = new StorageAdaper(storages , getContext(),extract,close);
     RecyclerView recyclerView ;
 
     @SuppressLint("NotifyDataSetChanged")
     public void refresh(){
         storages = new ArrayList<>();
-        for (Storage storage : Objects.requireNonNull(Branches.getBranchByID(Data.getBranchId())).getStorage()){
-            if(storage.getState() == 0){
-                storages.add(storage);
-            }
-        }
-        storageAdaper = new StorageAdaper(storages , getContext(),extract);
+        setList(storages);
+        storageAdaper = Import? new StorageAdaper(storages,getContext(),quantities) : new StorageAdaper(storages , getContext(),extract,close);
         storageAdaper.notifyDataSetChanged();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(storageAdaper);
+    }
+
+    private void setList(ArrayList<Storage> storages) {
+        if(Import){
+            for(History history : Histories.getNonFinishedOperations()){
+                if(history.getBranch_import_id() == Data.getBranchId()){
+                    Storage storage = history.getStorage();
+                    Item item = storage.getItem();
+                    ItemType itemType = storage.getStateType();
+                    storages.add(Branches.getStorageByItemItemTypeBranchID(item,itemType,Data.getBranchId()));
+                    quantities.add(history.getQuantity());
+                }
+            }
+        }
+        else {
+            for (Storage storage : Objects.requireNonNull(Branches.getBranchByID(Data.getBranchId())).getStorage()){
+                if(storage.getState() == 0 && !close){
+                    storages.add(storage);
+                }
+                else if(close && storage.getState() > 1 && storage.getQuantity() > 0){
+                    storages.add(storage);
+                }
+            }
+        }
     }
 
 
@@ -125,12 +154,19 @@ public class StorageFragment extends Fragment implements FetchStorageFromServer.
             @Override
             public void afterTextChanged(Editable editable) {
                 ArrayList<Storage> filtered = new ArrayList<>();
+                String trim = editable.toString().replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ").trim();
                 for (Storage storage : storages){
-                    if(Items.getItemByID(storage.getItemID()).getName().contains(editable.toString().replace(" ",""))){
-                        filtered.add(storage);
+                    if(close){
+                        if(Objects.requireNonNull(Items.getItemTypesByID(storage.getState())).getType().contains(trim)){
+                            filtered.add(storage);
+                        }
+                    }else{
+                        if(Objects.requireNonNull(Items.getItemByID(storage.getItemID())).getName().contains(trim)){
+                            filtered.add(storage);
+                        }
                     }
                 }
-                recyclerView.setAdapter(new StorageAdaper(filtered , getContext(),extract));
+                recyclerView.setAdapter(new StorageAdaper(filtered , getContext(),extract,close));
             }
         });
         return rootView;
