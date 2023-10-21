@@ -29,6 +29,7 @@ public class StorageAdaper extends RecyclerView.Adapter<StorageAdaper.ViewHolder
     private final Context context;
     private boolean extract, e2,Import;
     private Vector<Integer> quantities = new Vector<>();
+    private Vector<Integer> export = new Vector<>();
 
     public StorageAdaper(ArrayList<Storage> localDataSet, Context context, boolean extract, boolean e2) {
         this.localDataSet = localDataSet;
@@ -37,13 +38,14 @@ public class StorageAdaper extends RecyclerView.Adapter<StorageAdaper.ViewHolder
         this.e2 = e2;
     }
 
-    public StorageAdaper(ArrayList<Storage> storages, Context context, Vector<Integer> quantities) {
+    public StorageAdaper(ArrayList<Storage> storages, Context context, Vector<Integer> quantities, Vector<Integer> export) {
         this.localDataSet = storages;
         this.context = context;
         this.extract = false;
         this.e2 = false;
         Import = true;
         this.quantities = quantities;
+        this.export = export;
     }
 
     /**
@@ -92,7 +94,7 @@ public class StorageAdaper extends RecyclerView.Adapter<StorageAdaper.ViewHolder
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddItemDialog customDialog = new AddItemDialog(context, localDataSet.get(_position).getStorageID(), extract, Data.getBranchId(), 0, e2);
+                AddItemDialog customDialog = new AddItemDialog(context, localDataSet.get(_position).getStorageID(), extract, e2,Import,Import?export.get(_position):Data.getBranchId());
                 customDialog.show();
             }
         });

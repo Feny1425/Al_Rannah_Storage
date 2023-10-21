@@ -91,14 +91,16 @@ public class StorageFragment extends Fragment implements FetchStorageFromServer.
     }
 
     ArrayList<Storage> storages = new ArrayList<>();
+    Vector<Integer> export = new Vector<>();
     StorageAdaper storageAdaper = new StorageAdaper(storages , getContext(),extract,close);
     RecyclerView recyclerView ;
 
     @SuppressLint("NotifyDataSetChanged")
     public void refresh(){
         storages = new ArrayList<>();
+        export = new Vector<>();
         setList(storages);
-        storageAdaper = Import? new StorageAdaper(storages,getContext(),quantities) : new StorageAdaper(storages , getContext(),extract,close);
+        storageAdaper = Import? new StorageAdaper(storages,getContext(),quantities,export) : new StorageAdaper(storages , getContext(),extract,close);
         storageAdaper.notifyDataSetChanged();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(storageAdaper);
@@ -113,6 +115,7 @@ public class StorageFragment extends Fragment implements FetchStorageFromServer.
                     ItemType itemType = storage.getStateType();
                     storages.add(Branches.getStorageByItemItemTypeBranchID(item,itemType,Data.getBranchId()));
                     quantities.add(history.getQuantity());
+                    export.add(history.getBranch_export_id());
                 }
             }
         }

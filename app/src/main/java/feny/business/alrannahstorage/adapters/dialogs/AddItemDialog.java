@@ -33,16 +33,15 @@ public class AddItemDialog extends Dialog {
     private Spinner items;
     private Button save,cancel;
     private int selection = -1;
-    private int storageID;
+    private int storageID,branchImport;
     private Context context;
     private Vector<String> itemsList;
-    private boolean extract,close;
-    private int exportB;
-    private int importB;
+    private boolean extract,close,Import;
 
-    public AddItemDialog(Context context, int storageID, boolean extract, int exportB, int importB, boolean e2) {
+    public AddItemDialog(Context context, int storageID, boolean extract, boolean e2, boolean Import,int branchImport) {
         super(context); this.context=context; this.storageID = storageID;
-        this.extract = extract; close = e2;
+        this.extract = extract; close = e2; this.Import = Import;
+        this.branchImport = branchImport;
     }
 
 
@@ -50,9 +49,11 @@ public class AddItemDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean imported = branchImport != Data.getBranchId();
         setContentView(R.layout.add_item_dialog);
         dialogTitle = findViewById(R.id.label);
-        dialogTitle.setText((extract?"إخراج ":"إدخال ")+Branches.getStorageByID(storageID).getItem().getName()+(extract?" من المخزن":" إلى المخزن"));
+        dialogTitle.setText(
+        (extract?"إخراج ":(imported?"استيراد ":"إدخال "))+Branches.getStorageByID(storageID).getItem().getName()+((extract)?" من المخزن":" إلى المخزن"));
         quantity = findViewById(R.id.quantity);
         items = findViewById(R.id.types);
         save = findViewById(R.id.save_dilg);
@@ -61,7 +62,6 @@ public class AddItemDialog extends Dialog {
         if(!extract && !close){
             items.setVisibility(View.GONE);
         }
-
         if(extract){
             for (ItemType itemType : Items.getItemTypes()){
                 int index = Items.getItemTypes().indexOf(itemType);
@@ -133,7 +133,7 @@ public class AddItemDialog extends Dialog {
                                             storage.getQuantity(),
                                             !(extract || close),
                                             (selection > 3 && close)?Branches.getBranchByNameAndLocation(itemsList.get(selection)).getId():storage.getBranchID(),
-                                            storage.getBranchID(),
+                                            branchImport,
                                             close?((selection > 3)?-1:selection+1):0);
                                     if(extract) {
                                         for (Storage _storage : Branches.getBranchByID(storage.getBranchID()).getStorage()) {
@@ -178,4 +178,3 @@ public class AddItemDialog extends Dialog {
     }
 
 }
-
