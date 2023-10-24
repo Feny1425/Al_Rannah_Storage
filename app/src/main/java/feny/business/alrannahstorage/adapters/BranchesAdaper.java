@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +16,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 
 import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.data.Data;
+
+import feny.business.alrannahstorage.export.PDFExporter;
 import feny.business.alrannahstorage.models.Branch;
 
 public class BranchesAdaper extends RecyclerView.Adapter<BranchesAdaper.ViewHolder> {
@@ -87,7 +86,7 @@ public class BranchesAdaper extends RecyclerView.Adapter<BranchesAdaper.ViewHold
         viewHolder.details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                PDFExporter.exportBranchesAndStoragesToPDF(context,localDataSet.get(_position));
             }
         });
         viewHolder.delete.setOnClickListener(new View.OnClickListener() {

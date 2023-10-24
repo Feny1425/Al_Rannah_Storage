@@ -1,5 +1,9 @@
 package feny.business.alrannahstorage.data;
 
+import java.util.Random;
+
+import feny.business.alrannahstorage.models.Pages;
+
 public final class Data {
     public final static String[] ITEM_TYPES = {"Food","Reusable","NonReusable"};
     public static final String URLBASE = "https://www.eny.sa/api/database/al_rannah/";
@@ -59,4 +63,35 @@ public final class Data {
     public static final String YES = "نعم";
     public static final String CANCEL = "إلغاء";
 
+    public static String getSaltString() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@!#_/()*&";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 18) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        return salt.toString();
+
+    }
+
+    private static Pages CONTEXT = new Pages() {
+        @Override
+        public void refresh() {
+            super.refresh();
+        }
+    };
+
+    public static void setCONTEXT(Pages CONTEXT) {
+        Data.CONTEXT = CONTEXT;
+    }
+
+    public static Pages getCONTEXT() {
+        return CONTEXT;
+    }
+
+
+
+    public static boolean WAIT = false;
+    public static boolean WAIT2 = false;
 }

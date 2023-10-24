@@ -72,6 +72,7 @@ public class LoginActivity extends Pages {
             Data.setUserPermission(state);
             String user = Data.getUSER();
             new FetchBranchesFromServer(this,user);
+            login(state,user);
         } else {
             comm.setError("كلمة السر او رقم السجل التجاري خاطئ");
         }

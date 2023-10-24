@@ -18,7 +18,7 @@ public class AddHistoryHttpRequest extends AsyncTask<String, Void, String> {
     private static final String API_URL = Data.BASE_URL("add_history"); // Replace with your script URL
     Pages context;
 
-    public AddHistoryHttpRequest(Context context, int id, int quantity, int new_quantity, int old_quantity, boolean add, int importB, int exportB, int closed ) {
+    public AddHistoryHttpRequest(Context context, int id, int quantity, int new_quantity, int old_quantity, boolean add, int importB, int exportB, int closed, String operation ) {
         this.context = (Pages) context;
         execute(String.valueOf(id),
                 String.valueOf(quantity),
@@ -27,7 +27,8 @@ public class AddHistoryHttpRequest extends AsyncTask<String, Void, String> {
                 String.valueOf(add?1:0),
                 String.valueOf(importB),
                 String.valueOf(exportB),
-                String.valueOf(closed)
+                String.valueOf(closed),
+                String.valueOf(operation)
         );
     }
 
@@ -51,6 +52,7 @@ public class AddHistoryHttpRequest extends AsyncTask<String, Void, String> {
 
         String export = params[i++];
         String closed = params[i++];
+        String operation = params[i++];
 
         jsonMaker.addItem("id",id);
         jsonMaker.addItem("quantity",qunt);
@@ -60,6 +62,7 @@ public class AddHistoryHttpRequest extends AsyncTask<String, Void, String> {
         jsonMaker.addItem("import",importq);
         jsonMaker.addItem("export",export);
         jsonMaker.addItem("closed",closed);
+        jsonMaker.addItem("operation","\""+operation+"\"");
 
         String json = jsonMaker.getIntJson();
         RequestBody body = RequestBody.create(JSON,json );
@@ -81,12 +84,13 @@ public class AddHistoryHttpRequest extends AsyncTask<String, Void, String> {
             e.printStackTrace();
             return "Error: " + e.getMessage();
         }
+
     }
 
     @Override
     protected void onPostExecute(String result) {
         // Handle the response here
         // The 'result' contains the response from your PHP script
-        Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
     }
 }

@@ -13,8 +13,6 @@ public abstract class Pages extends AppCompatActivity {
     public RecyclerView recyclerView;
 
     public void refresh(){
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new BranchesAdaper(Branches.getBranches(), this));
     }
 
 }

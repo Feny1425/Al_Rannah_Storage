@@ -1,80 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activities.AdminActivity"
-    android:background="?colorPrimary">
+    tools:context=".activities.AdminActivity">
+    <data>
+        <variable
+            name="binding"
+            type="feny.business.alrannahstorage.databinding.ActivityAdminBindingImpl" />
+        <variable
+            name="branchReport"
+            type="feny.business.alrannahstorage.models.layouts.BranchReportLayout" />
+    </data>
 
-
-    <ImageView
-        android:id="@+id/upper_circle2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:scaleX="2"
-        android:scaleY="2"
-        android:src="@drawable/ic_baseline_square_24"
-        android:tint="?colorSecondary"
-        android:transitionName="upper_circle"
-        tools:ignore="UseAppTint"
-        android:contentDescription="@string/todo" />
-
-    <ImageView
-        android:id="@+id/logo2"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="@string/todo"
-        android:onClick="back"
-        android:src="@drawable/ic_baseline_warehouse_24"
-        android:transitionName="logo"
-        tools:ignore="UsingOnClickInXml,DuplicateSpeakableTextCheck" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:minWidth="70dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:id="@+id/label2"
-        android:text="@string/WarehaouseAdmin"
-        android:textColor="@color/black"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:transitionName="text"
-        tools:ignore="RelativeOverlap" />
-
-
-    <view
-        android:id="@+id/list_of_branches"
-        class="androidx.recyclerview.widget.RecyclerView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?colorPrimary">
 
-        android:layout_below="@+id/logo2"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="100dp"
-        tools:listitem="@layout/branches_list" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_add_circle_24"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"
-        android:onClick="add"
-        android:id="@+id/add_brnch"
-        android:contentDescription="@string/todo"
-        tools:ignore="UsingOnClickInXml" />
 
-</RelativeLayout>
+
+        <ImageView
+            android:id="@+id/upper_circle2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:src="@drawable/ic_baseline_square_24"
+            android:tint="?colorSecondary"
+            android:transitionName="upper_circle"
+            tools:ignore="UseAppTint"
+            android:contentDescription="@string/todo" />
+
+        <ImageView
+            android:id="@+id/logo2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/todo"
+            android:onClick="back"
+            android:src="@drawable/ic_baseline_warehouse_24"
+            android:transitionName="logo"
+            tools:ignore="UsingOnClickInXml,DuplicateSpeakableTextCheck" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:minWidth="70dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:id="@+id/label2"
+            android:text="@string/WarehaouseAdmin"
+            android:textColor="@color/black"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:transitionName="text"
+            tools:ignore="RelativeOverlap" />
+
+
+        <view
+            android:id="@+id/list_of_branches"
+            class="androidx.recyclerview.widget.RecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:layout_below="@+id/logo2"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="100dp"
+            tools:listitem="@layout/branches_list" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_add_circle_24"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="16dp"
+            android:onClick="add"
+            android:id="@+id/add_brnch"
+            android:contentDescription="@string/todo"
+            tools:ignore="UsingOnClickInXml" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="#fff"
+            android:id="@+id/container"
+            android:orientation="vertical">
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

@@ -3,6 +3,8 @@ package feny.business.alrannahstorage.database;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import org.apache.commons.lang3.StringUtils;
+
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.data.JsonMaker;
 import feny.business.alrannahstorage.models.Pages;
@@ -24,6 +26,7 @@ public class UpdateStorageFromServer extends AsyncTask<String, Void, String> {
     private int closed = 0;
     Context context;
     String branchID;
+    String salted = "nothing";
 
     public UpdateStorageFromServer(Pages context, String storageID, String _quantity, String branchID,
                                    int id, int quantity, int new_quantity, int old_quantity,
@@ -39,6 +42,23 @@ public class UpdateStorageFromServer extends AsyncTask<String, Void, String> {
         this.importB = importB;
         this.exportB = exportB;
         this.closed = closed;
+
+    }
+    public UpdateStorageFromServer(Pages context, String storageID, String _quantity, String branchID,
+                                   int id, int quantity, int new_quantity, int old_quantity,
+                                   boolean add, int importB, int exportB, int closed,String salted) {
+        this.context = context;
+        this.branchID = branchID;
+        execute(storageID,_quantity);
+        this.id = id;
+        this.quantity = quantity;
+        this.newQuantity = new_quantity;
+        this.oldQuantity = old_quantity;
+        this.add = add;
+        this.importB = importB;
+        this.exportB = exportB;
+        this.closed = closed;
+        this.salted = salted;
 
     }
 
@@ -82,7 +102,7 @@ public class UpdateStorageFromServer extends AsyncTask<String, Void, String> {
         // Handle the response here
         // The 'result' contains the response from your PHP script
         //Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
-        new FetchStorageFromServer((Pages) context, branchID);
+        new FetchStorageFromServer((Pages) context);
         new AddHistoryHttpRequest((Pages) context,
                 id,
                 quantity,
@@ -91,7 +111,8 @@ public class UpdateStorageFromServer extends AsyncTask<String, Void, String> {
                 add,
                 importB,
                 exportB,
-                closed);
+                closed,
+                (salted.equals("nothing")?Data.getSaltString():salted));
         // This is an example of calling the callback from within your adapter.
     }
 }

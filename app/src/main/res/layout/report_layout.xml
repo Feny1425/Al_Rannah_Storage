@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="210mm"
+    android:layout_height="297mm"
+    android:padding="4mm"
+    android:orientation="vertical"
+    tools:ignore="InOrMmUsage"
+    android:background="@android:color/white">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="تقرير"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="20mm"/>
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="206mm"
+        tools:ignore="InOrMmUsage,RtlHardcoded"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:gravity="right|center_vertical">
+
+        <TextView
+            android:layout_width="35mm"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="8mm"
+            android:text="المستورد"
+            android:textColor="@color/black"
+            android:layout_marginHorizontal="3mm"/>
+
+
+        <TextView
+            android:layout_width="35mm"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="8mm"
+            android:text="المصدر"
+            android:textColor="@color/black"
+            android:layout_marginHorizontal="3mm"/>
+
+        <TextView
+            android:layout_width="35mm"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="8mm"
+            android:text="المخزون"
+            android:textColor="@color/black"
+            android:layout_marginHorizontal="3mm"/>
+
+
+        <TextView
+            android:layout_width="60mm"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="9mm"
+            android:text="اسم العنصر"
+            android:textColor="@color/black"
+            android:id="@+id/item_name"
+            android:layout_marginHorizontal="6mm"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -30,13 +30,24 @@ public class Histories {
         }
         return null;
     }
+
+    public static ArrayList<History> getNonFinishedOperationsByID(int id){
+        ArrayList<History> histories = new ArrayList<>();
+        for(History history : getNonFinishedOperations()){
+            if(history.getBranch_import_id() == id){
+                histories.add(history);
+            }
+        }
+        return histories;
+    }
+
     public static ArrayList<History> getNonFinishedOperations(){
         ArrayList<History> non_finished_operations = new ArrayList<>();
         ArrayList<History> import_operations = new ArrayList<>();
         ArrayList<History> export_operations = new ArrayList<>();
         for(History history : histories){
             if(history.getBranch_export_id() != history.getBranch_import_id()){
-                if(history.getClosed() == 0){
+                if(history.getClosed() > 0){
                     import_operations.add(history);
                 }
                 else if(history.getClosed() == -1) {

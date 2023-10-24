@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,13 +44,13 @@ public class MainActivity extends Pages {
     @Override
     public void refresh() {
         super.refresh();
-
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Data.setCONTEXT(this);
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         retrieve();
         recyclerView = new RecyclerView(this);
@@ -74,8 +75,9 @@ public class MainActivity extends Pages {
     }
     @Override
     public void onBackPressed() {
-        if(page!=0)
-        super.onBackPressed();
+        if(page!=0) {
+            super.onBackPressed();
+        }
         if(page == 0){
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("تأكيد خروج");
@@ -154,7 +156,7 @@ public class MainActivity extends Pages {
 
 
     public void back(View view) {
-        /*AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("تسجيل خروج");
         alert.setMessage("تأكيد تسجيل الخروج");
         alert.setPositiveButton(Data.YES, new DialogInterface.OnClickListener() {
@@ -192,7 +194,7 @@ public class MainActivity extends Pages {
                 dialog.cancel();
             }
         });
-        alert.show();*/
+        alert.show();
     }
 /*
     public void add(View view) {

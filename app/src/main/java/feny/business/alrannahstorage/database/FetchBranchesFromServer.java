@@ -84,13 +84,12 @@ public class FetchBranchesFromServer extends AsyncTask<String, Void, String> {
                 if(!permission.equals(Data.getAdminPermssion())) {
                     Branch branch = new Branch(name, id, permission, location, user);
                     branches.add(branch);
-                    new FetchStorageFromServer(context,String.valueOf(id));
                 }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        new FetchStorageFromServer(context);
         Branches.setBranches(branches, context);
     }
 }

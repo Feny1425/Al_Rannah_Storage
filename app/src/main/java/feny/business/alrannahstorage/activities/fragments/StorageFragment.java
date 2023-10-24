@@ -1,6 +1,12 @@
 package feny.business.alrannahstorage.activities.fragments;
 
+import static feny.business.alrannahstorage.Objects.Branches.*;
+import static feny.business.alrannahstorage.data.Data.*;
+import static feny.business.alrannahstorage.data.Data.WAIT;
+import static feny.business.alrannahstorage.data.Data.WAIT2;
+
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,13 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Vector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.Objects.Histories;
@@ -30,6 +38,7 @@ import feny.business.alrannahstorage.models.Branch;
 import feny.business.alrannahstorage.models.History;
 import feny.business.alrannahstorage.models.Item;
 import feny.business.alrannahstorage.models.ItemType;
+import feny.business.alrannahstorage.models.Pages;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,19 +55,22 @@ public class StorageFragment extends Fragment implements FetchStorageFromServer.
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private boolean extract,close,Import;
+    private boolean extract, close, Import;
+    private Pages context;
+    private ArrayList<Pair<Branch, Pair<Integer, String>>> export = new ArrayList<>();
+    private ArrayList<Storage> localList = new ArrayList<>();
 
-    private Vector<Integer> quantities = new Vector<>();
 
     public StorageFragment() {
         // Required empty public constructor
     }
 
-    public StorageFragment(boolean b,boolean c,boolean i) {
+    public StorageFragment(boolean b, boolean c, boolean i) {
         extract = b;
         close = c;
         Import = i;
-        MainActivity.page = (b||c||i)?1:2;
+        MainActivity.page = (b || c) ? 1 : 2;
+        context = getCONTEXT();
     }
 
     /**
@@ -90,57 +102,91 @@ public class StorageFragment extends Fragment implements FetchStorageFromServer.
         }
     }
 
-    ArrayList<Storage> storages = new ArrayList<>();
-    Vector<Integer> export = new Vector<>();
-    StorageAdaper storageAdaper = new StorageAdaper(storages , getContext(),extract,close);
-    RecyclerView recyclerView ;
+    ArrayList<Storage> storages = getBranchByID(getBranchId()).getStorage();
+    StorageAdaper storageAdaper ;
+    RecyclerView recyclerView;
 
     @SuppressLint("NotifyDataSetChanged")
-    public void refresh(){
-        storages = new ArrayList<>();
-        export = new Vector<>();
-        setList(storages);
-        storageAdaper = Import? new StorageAdaper(storages,getContext(),quantities,export) : new StorageAdaper(storages , getContext(),extract,close);
-        storageAdaper.notifyDataSetChanged();
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(storageAdaper);
+    public void refresh(ArrayList<Storage> storages) {
+        if (!WAIT && !WAIT2) {
+            export = new ArrayList<>();
+            setList(storages);
+
+        }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void setList(ArrayList<Storage> storages) {
-        if(Import){
-            for(History history : Histories.getNonFinishedOperations()){
-                if(history.getBranch_import_id() == Data.getBranchId()){
-                    Storage storage = history.getStorage();
-                    Item item = storage.getItem();
-                    ItemType itemType = storage.getStateType();
-                    storages.add(Branches.getStorageByItemItemTypeBranchID(item,itemType,Data.getBranchId()));
-                    quantities.add(history.getQuantity());
-                    export.add(history.getBranch_export_id());
+        int id = getBranchId();
+        ArrayList<Storage> sstorages = new ArrayList<>();
+        if (Import && !WAIT) {
+            WAIT = true;
+            for (History history : Histories.getNonFinishedOperationsByID(id)) {
+                int exportBranch = history.getBranch_export_id();
+                if (history.getStorage() != null) {
+                    Storage _storage = history.getStorage();
+                    Item item = _storage.getItem();
+                    ItemType itemType = _storage.getStateType();
+                    Storage storage = new Storage(-1, id, item.getId(), history.getQuantity(), itemType.getId());
+                    sstorages.add(storage);
+                    export.add(new Pair<>(getBranchByID(exportBranch), new Pair<>(history.getQuantity(), history.getOperation())));
+
+                    if ( storageAdaper != null) {
+                        storageAdaper.setLocalDataSet(sstorages);
+                        storageAdaper.setExport(export);
+                        storageAdaper.notifyDataSetChanged();
+                    }
                 }
             }
-        }
-        else {
-            for (Storage storage : Objects.requireNonNull(Branches.getBranchByID(Data.getBranchId())).getStorage()){
+            if(Histories.getNonFinishedOperationsByID(id).size() == 0){
+
+                if ( storageAdaper != null) {
+                    storageAdaper.setLocalDataSet(new ArrayList<Storage>());
+                    storageAdaper.setExport(export);
+                    storageAdaper.notifyDataSetChanged();
+                }
+            }
+        }else {
+            for(Storage storage : storages){
                 if(storage.getState() == 0 && !close){
-                    storages.add(storage);
+                    if(extract){
+                        if(storage.getQuantity()>0){
+                            sstorages.add(storage);
+                        }
+                    }
+                    else {
+                        sstorages.add(storage);
+                    }
                 }
-                else if(close && storage.getState() > 1 && storage.getQuantity() > 0){
-                    storages.add(storage);
+                else  if(storage.getQuantity() > 0 && storage.getState()>1 && close){
+                    sstorages.add(storage);
                 }
             }
+
+            if ( storageAdaper != null) {
+                storageAdaper.setLocalDataSet(sstorages);
+                storageAdaper.notifyDataSetChanged();
+            }
         }
+
+
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_storage, container, false);
         // Inflate the layout for this fragment
         //rootView.findViewById(R.id.buy_btn).setOnClickListener(view -> {buy();});
 
         recyclerView = rootView.findViewById(R.id.storage_list);
-        refresh();
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        storageAdaper = new StorageAdaper(localList, context, extract, close, Import, export);
+        recyclerView.setAdapter(storageAdaper);
+        localList.addAll(storages);
+
+        refresh(localList);
         EditText search = rootView.findViewById(R.id.search);
 
         search.addTextChangedListener(new TextWatcher() {
@@ -156,20 +202,20 @@ public class StorageFragment extends Fragment implements FetchStorageFromServer.
 
             @Override
             public void afterTextChanged(Editable editable) {
-                ArrayList<Storage> filtered = new ArrayList<>();
+                localList = new ArrayList<>();
                 String trim = editable.toString().replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ").trim();
-                for (Storage storage : storages){
-                    if(close){
-                        if(Objects.requireNonNull(Items.getItemTypesByID(storage.getState())).getType().contains(trim)){
-                            filtered.add(storage);
+                for (Storage storage : storages) {
+                    if (close) {
+                        if (Objects.requireNonNull(Items.getItemTypesByID(storage.getState())).getType().contains(trim)) {
+                            localList.add(storage);
                         }
-                    }else{
-                        if(Objects.requireNonNull(Items.getItemByID(storage.getItemID())).getName().contains(trim)){
-                            filtered.add(storage);
+                    } else {
+                        if (Objects.requireNonNull(Items.getItemByID(storage.getItemID())).getName().contains(trim)) {
+                            localList.add(storage);
                         }
                     }
                 }
-                recyclerView.setAdapter(new StorageAdaper(filtered , getContext(),extract,close));
+                refresh(localList);
             }
         });
         return rootView;
@@ -177,6 +223,7 @@ public class StorageFragment extends Fragment implements FetchStorageFromServer.
 
     @Override
     public void onDataChanged() {
-        refresh();
+        refresh(localList);
+
     }
 }

@@ -1,16 +1,8 @@
 package feny.business.alrannahstorage.models;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 
 import feny.business.alrannahstorage.Objects.Storage;
-import feny.business.alrannahstorage.data.Data;
 
 public class Branch {
     private final String name;
@@ -30,7 +22,6 @@ public class Branch {
             if(storage.getStorageID() == id){
                 return storage;
             }
-            else return null;
         }
         return null;
     }
@@ -71,10 +62,36 @@ public class Branch {
     }
 
     public void resetStorage() {
-        storages = new ArrayList<>();
+        //storages = new ArrayList<>();
     }
 
     public ArrayList<Storage> getStorage() {
         return storages;
+    }
+    public boolean containStorageByID(int id){
+        if(storages.size() > 0){
+            for (Storage storage : storages) {
+                if(storage.getStorageID() == id){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void changeQuantityOnly(Storage storage){
+        for(Storage _storage : storages){
+            if(storage.getItem() == _storage.getItem() &&
+            storage.getState() == _storage.getState()){
+                _storage.setQuantity(storage.getQuantity());
+            }
+        }
+    }
+
+    public void addItems(Storage storage) {
+        storages.add(storage);
+    }
+    public void setItemByPos(int pos, Storage storage){
+        storages.set(pos,storage);
     }
 }

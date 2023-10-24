@@ -91,6 +91,8 @@ public class FetchHistoryFromServer extends AsyncTask<String, Void, String> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        new FetchStorageFromServer(context,String.valueOf(Data.getBranchId()));
+        new FetchBranchesFromServer(context,String.valueOf(Data.getUSER()));
+        Data.WAIT = false;
+
     }
 }

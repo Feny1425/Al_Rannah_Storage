@@ -1,19 +1,6 @@
 package feny.business.alrannahstorage.Objects;
 
-import android.content.SharedPreferences;
-import android.os.Build;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-
-import feny.business.alrannahstorage.activities.AdminActivity;
-import feny.business.alrannahstorage.activities.LoginActivity;
-import feny.business.alrannahstorage.data.Data;
-import feny.business.alrannahstorage.data.PushPullData;
+import feny.business.alrannahstorage.models.Branch;
 import feny.business.alrannahstorage.models.Item;
 import feny.business.alrannahstorage.models.ItemType;
 
@@ -23,6 +10,10 @@ public class Storage {
     int itemID;
     int quantity = 0;
     int state;
+
+    public Branch getBranch(){
+        return Branches.getBranchByID(branchID);
+    }
 
     public int getStorageID() {
         return storageID;
@@ -57,5 +48,9 @@ public class Storage {
         this.itemID = itemID;
         this.quantity = quantity;
         this.state = state;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
