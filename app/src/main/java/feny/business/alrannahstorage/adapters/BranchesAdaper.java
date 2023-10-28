@@ -20,14 +20,22 @@ import java.util.ArrayList;
 
 import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.R;
+import feny.business.alrannahstorage.adapters.dialogs.GetReportDialog;
 import feny.business.alrannahstorage.data.Data;
-
-import feny.business.alrannahstorage.export.PDFExporter;
 import feny.business.alrannahstorage.models.Branch;
 
 public class BranchesAdaper extends RecyclerView.Adapter<BranchesAdaper.ViewHolder> {
+    RecyclerView recyclerView;
 
-    private final ArrayList<Branch> localDataSet;
+    public void setLocalDataSet(ArrayList<Branch> localDataSet) {
+        this.localDataSet = localDataSet;
+    }
+
+    public ArrayList<Branch> getLocalDataSet() {
+        return localDataSet;
+    }
+
+    private ArrayList<Branch> localDataSet;
     private final Context context;
 
     public BranchesAdaper(ArrayList<Branch> localDataSet, Context context) {
@@ -86,7 +94,8 @@ public class BranchesAdaper extends RecyclerView.Adapter<BranchesAdaper.ViewHold
         viewHolder.details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PDFExporter.exportBranchesAndStoragesToPDF(context,localDataSet.get(_position));
+                GetReportDialog getReportDialog = new GetReportDialog(context,localDataSet.get(_position));
+                getReportDialog.show();
             }
         });
         viewHolder.delete.setOnClickListener(new View.OnClickListener() {

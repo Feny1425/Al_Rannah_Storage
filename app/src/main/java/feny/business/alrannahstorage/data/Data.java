@@ -17,8 +17,17 @@ public final class Data {
 
     private static String[] CLOSE = {"مباع","صدقة","إعاشة","تالف"};
 
-    public static final int EXPORTED = -1;
-
+    public static class ClosedOperations{
+        public static int EXPORT = -1;
+        public static int BUY = 0;
+        public static int SELL = 1;
+        public static int IMPORT = 2;
+        public static int SPOILED = 3;
+        public static int CHARITY = 4;
+        public static int RATION = 5;
+        public static int EXCHANGE_TO = 6;
+        public static int EXCHANGE_FROM = 7;
+    }
     public static int getBranchId() {
         return BRANCH_ID;
     }
@@ -94,4 +103,9 @@ public final class Data {
 
     public static boolean WAIT = false;
     public static boolean WAIT2 = false;
+
+    public static int countLinesInString(String text) {
+        String[] lines = text.split("\\r?\\n"); // Split by newline characters (UNIX and Windows line endings)
+        return lines.length;
+    }
 }

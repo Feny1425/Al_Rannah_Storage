@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="8dp"
+    android:background="@drawable/dialog">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="استخراج تقرير"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:id="@+id/label"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="تحديد زمن معين"
+        android:buttonTint="@color/black"
+        android:id="@+id/select_specific_date"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/fromContainer"
+        android:gravity="center"
+        android:visibility="gone">
+
+
+
+    <DatePicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fromDate"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"
+            android:visibility="gone"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="من"
+            android:buttonTint="@color/black"
+            android:id="@+id/from"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/toContainer"
+        android:gravity="center"
+        android:visibility="gone">
+
+
+
+
+    <DatePicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/toDate"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"
+            android:visibility="gone"/>
+
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="إلى"
+            android:buttonTint="@color/black"
+            android:id="@+id/to"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/cancel_dilg"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_gravity="right"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/cancel"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="ButtonStyle,RtlHardcoded,TextContrastCheck" />
+
+        <Button
+            android:id="@+id/save_dilg"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_gravity="left"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="إصدار"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="ButtonStyle,RtlHardcoded,TextContrastCheck" />
+    </LinearLayout>
+
+</LinearLayout>

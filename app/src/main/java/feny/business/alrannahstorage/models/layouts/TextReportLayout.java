@@ -1,5 +1,6 @@
 package feny.business.alrannahstorage.models.layouts;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -7,22 +8,22 @@ import android.widget.TextView;
 
 import feny.business.alrannahstorage.R;
 
-public class BranchReportLayout extends LinearLayout {
-    private final TextView branchNameTextView;
-    public BranchReportLayout(Context context, String name) {
+public class TextReportLayout extends LinearLayout {
+    private final TextView report;
+    public TextReportLayout(Context context) {
         super(context);
 
         // Inflate the custom XML layout
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.branch_report_layout, this, true);
+        inflater.inflate(R.layout.text_report_layout, this, true);
 
         // Find the TextView by its ID
-        branchNameTextView = findViewById(R.id.branch_name);
-        setBranchName(name);
+        report = findViewById(R.id.report);
     }
 
-    public void setBranchName(String branchName) {
+    @SuppressLint("SetTextI18n")
+    public void setReport(String report) {
         // Set the branchName for the TextView
-        branchNameTextView.setText(branchName);
+        this.report.setText(report);
     }
 }

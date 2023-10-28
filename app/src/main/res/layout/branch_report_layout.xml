@@ -1,82 +1,71 @@
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="wrap_content"
-    android:layout_width="206mm"
+    android:layout_height="11mm"
+    android:layout_width="210mm"
     tools:ignore="InOrMmUsage,RtlHardcoded"
-    android:layout_gravity="center_horizontal"
-    android:orientation="horizontal"
-    android:gravity="right|center_vertical">
+    android:orientation="vertical"
+    android:background="@drawable/report_storage"
+    android:id="@+id/container">
 
-    <TextView
-        android:layout_width="25mm"
-        android:gravity="center"
+    <LinearLayout
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="8mm"
-        android:text="الوحدة"
-        android:textColor="@color/black"
-        android:id="@+id/unit3"
-        />
-    <TextView
-        android:layout_width="15mm"
-        android:gravity="center"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="8mm"
-        android:text="89"
-        android:textColor="@color/black"
-        android:id="@+id/import_quantity"
-        android:layout_marginHorizontal="3mm"/>
+        android:layout_width="210mm"
+        tools:ignore="InOrMmUsage,RtlHardcoded"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:gravity="right">
 
-    <TextView
-        android:layout_width="25mm"
-        android:gravity="center"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="8mm"
-        android:text="الوحدة"
-        android:textColor="@color/black"
-        android:id="@+id/unit2"
-        />
-    <TextView
-        android:layout_width="15mm"
-        android:gravity="center"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="8mm"
-        android:text="89"
-        android:textColor="@color/black"
-        android:id="@+id/extract_quantity"
-        android:layout_marginHorizontal="3mm"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="200 وحدة"
+            android:textSize="32sp"
+            android:id="@+id/export_quantity"
+            android:gravity="center"
+            android:textColor="@color/black"/>
+        <View
+            android:layout_width="0.5mm"
+            android:layout_height="match_parent"
+            android:background="@color/gray"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="20 وحدة"
+            android:gravity="center"
+            android:textSize="32sp"
+            android:id="@+id/import_quantity"
+            android:textColor="@color/black"/>
+        <View
+            android:layout_width="0.5mm"
+            android:layout_height="match_parent"
+            android:background="@color/gray"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="20 وحدة"
+            android:gravity="center"
+            android:textSize="32sp"
+            android:id="@+id/quantity"
+            android:textColor="@color/black"/>
+        <View
+            android:layout_width="0.5mm"
+            android:layout_height="11mm"
+            android:background="@color/gray"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:text="اسم العنصر"
+            android:gravity="center"
+            android:textSize="42sp"
+            android:id="@+id/name"
+            android:textColor="@color/black"/>
 
-    <TextView
-        android:layout_width="25mm"
-        android:gravity="center"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="8mm"
-        android:text="الوحدة"
-        android:textColor="@color/black"
-        android:id="@+id/unit"
-        />
-    <TextView
-        android:layout_width="15mm"
-        android:gravity="center"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="8mm"
-        android:text="89"
-        android:textColor="@color/black"
-        android:id="@+id/quantity"
-        android:layout_marginHorizontal="3mm"/>
-    <TextView
-        android:layout_width="60mm"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="9mm"
-        android:text="اسم العنصر"
-        android:textColor="@color/black"
-        android:id="@+id/item_name"
-        android:layout_marginHorizontal="6mm"/>
+
+    </LinearLayout>
 </LinearLayout>

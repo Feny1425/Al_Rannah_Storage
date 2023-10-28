@@ -3,8 +3,6 @@ package feny.business.alrannahstorage.database;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import org.apache.commons.lang3.StringUtils;
-
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.data.JsonMaker;
 import feny.business.alrannahstorage.models.Pages;
@@ -44,12 +42,12 @@ public class UpdateStorageFromServer extends AsyncTask<String, Void, String> {
         this.closed = closed;
 
     }
-    public UpdateStorageFromServer(Pages context, String storageID, String _quantity, String branchID,
+    public UpdateStorageFromServer(Pages context, String branchID,
                                    int id, int quantity, int new_quantity, int old_quantity,
                                    boolean add, int importB, int exportB, int closed,String salted) {
         this.context = context;
         this.branchID = branchID;
-        execute(storageID,_quantity);
+        execute(String.valueOf(id),String.valueOf(quantity));
         this.id = id;
         this.quantity = quantity;
         this.newQuantity = new_quantity;

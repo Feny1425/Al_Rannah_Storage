@@ -1,8 +1,6 @@
 package feny.business.alrannahstorage.database;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,8 +9,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import feny.business.alrannahstorage.Objects.Branches;
-import feny.business.alrannahstorage.activities.AdminActivity;
-import feny.business.alrannahstorage.activities.MainActivity;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.models.Branch;
 import feny.business.alrannahstorage.models.Pages;
@@ -91,5 +87,19 @@ public class FetchBranchesFromServer extends AsyncTask<String, Void, String> {
         }
         new FetchStorageFromServer(context);
         Branches.setBranches(branches, context);
+        if (onDataChangedListener != null) {
+            onDataChangedListener.onDataChanged();
+        }
+
+
+    }
+
+
+    public interface OnDataChangedListener {
+        void onDataChanged();
+    }
+    private static FetchStorageFromServer.OnDataChangedListener onDataChangedListener;
+    public static void setOnDataChangedListener(FetchStorageFromServer.OnDataChangedListener listener) {
+        onDataChangedListener = listener;
     }
 }

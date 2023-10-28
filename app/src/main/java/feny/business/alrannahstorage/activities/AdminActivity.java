@@ -13,7 +13,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +21,7 @@ import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -33,15 +33,15 @@ import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.database.FetchBranchesFromServer;
 import feny.business.alrannahstorage.database.FetchHistoryFromServer;
 import feny.business.alrannahstorage.databinding.ActivityAdminBinding;
-import feny.business.alrannahstorage.models.Branch;
 import feny.business.alrannahstorage.models.Pages;
-import feny.business.alrannahstorage.models.layouts.BranchReportLayout;
 import feny.business.alrannahstorage.network.NetworkUtil;
 
-public class AdminActivity extends Pages {
+public class AdminActivity extends Pages implements FetchBranchesFromServer.OnDataChangedListener {
     static SharedPreferences sharedPreferences;
     BranchesAdaper branchesAdaper;
     Timer pollingTimer = new Timer();
+    int branches_number = 0;
+    RecyclerView recyclerView;
 
     public static SharedPreferences getShared() {
         return sharedPreferences;
@@ -52,7 +52,12 @@ public class AdminActivity extends Pages {
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_admin);
+        recyclerView = binding.listOfBranches;
+        branchesAdaper = new BranchesAdaper(Branches.getBranches(), this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(branchesAdaper);
 
+        FetchBranchesFromServer.setOnDataChangedListener(this::onDataChanged);
         // Create an instance of BranchReportLayout
 
 
@@ -60,11 +65,15 @@ public class AdminActivity extends Pages {
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void refresh() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new BranchesAdaper(Branches.getBranches(), this));
+        if(branchesAdaper.getLocalDataSet().size() != Branches.getSize()){
 
+           branchesAdaper.setLocalDataSet(Branches.getBranches());
+           branchesAdaper.notifyDataSetChanged();
+
+        }
         // Add the BranchReportLayout to the container
     }
 
@@ -91,11 +100,34 @@ public class AdminActivity extends Pages {
                 });
             }
         }, 0, 5000);
-        refresh();
 
         if (!NetworkUtil.isNetworkAvailable(this)) {
             Toast.makeText(this, "No Internet", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("تأكيد خروج");
+        alert.setMessage("هل تريد الخروج؟");
+        alert.setPositiveButton(Data.YES, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                pollingTimer.cancel();
+                finish();
+            }
+        });
+        alert.setNegativeButton(Data.CANCEL, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alert.show();
+        // Close the app when the back button is pressed
     }
 
     public void back(View view) {
@@ -176,5 +208,10 @@ public class AdminActivity extends Pages {
     }
 
     public void retrieveBranches(String result) {
+    }
+
+    @Override
+    public void onDataChanged() {
+        refresh();
     }
 }

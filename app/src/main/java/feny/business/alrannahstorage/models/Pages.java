@@ -10,7 +10,6 @@ import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.adapters.BranchesAdaper;
 
 public abstract class Pages extends AppCompatActivity {
-    public RecyclerView recyclerView;
 
     public void refresh(){
     }

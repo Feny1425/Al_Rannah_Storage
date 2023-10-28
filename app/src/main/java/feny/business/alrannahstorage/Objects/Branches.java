@@ -1,17 +1,16 @@
 package feny.business.alrannahstorage.Objects;
 
 import android.content.Context;
-import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Vector;
 
-import feny.business.alrannahstorage.models.Item;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.database.AddBranchHttpRequest;
 import feny.business.alrannahstorage.database.DeleteBranchHttpRequest;
 import feny.business.alrannahstorage.models.Branch;
+import feny.business.alrannahstorage.models.Item;
 import feny.business.alrannahstorage.models.ItemType;
 import feny.business.alrannahstorage.models.Pages;
 
@@ -32,9 +31,6 @@ public class Branches {
                 }
             }
         }
-        for(Branch branch : Branches.branches){int i = branch.getStorageSize();
-        i=i;}
-        pages.refresh();
     }
 
     public static boolean containBranchByID(int id) {

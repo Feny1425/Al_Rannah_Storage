@@ -2,13 +2,6 @@ package feny.business.alrannahstorage.activities;
 
 import static feny.business.alrannahstorage.data.Data.SHARED_PREFERENCES;
 
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.util.Pair;
-import androidx.core.view.ViewCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,7 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
+import androidx.core.view.ViewCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -28,7 +26,6 @@ import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.activities.fragments.AccountsFragment;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.data.PushPullData;
-import feny.business.alrannahstorage.database.FetchBranchesFromServer;
 import feny.business.alrannahstorage.database.FetchHistoryFromServer;
 import feny.business.alrannahstorage.models.Branch;
 import feny.business.alrannahstorage.models.Pages;
@@ -53,7 +50,6 @@ public class MainActivity extends Pages {
         Data.setCONTEXT(this);
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         retrieve();
-        recyclerView = new RecyclerView(this);
         fragments();
 
         pollingTimer.schedule(new TimerTask() {
@@ -86,6 +82,7 @@ public class MainActivity extends Pages {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
+                    page = 0;
                     pollingTimer.cancel();
                     finish();
                 }

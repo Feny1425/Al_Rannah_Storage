@@ -1,68 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="210mm"
-    android:layout_height="297mm"
-    android:padding="4mm"
+    android:layout_width="215mm"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
     android:orientation="vertical"
-    tools:ignore="InOrMmUsage"
-    android:background="@android:color/white">
-    <TextView
+    android:padding="8dp"
+    android:gravity="center_horizontal"
+    android:id="@+id/container"
+    android:layout_marginLeft="70dp">
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="تقرير"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="20mm"/>
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="260dp"
+            android:layout_height="170dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="تقرير"
+            android:id="@+id/label"
+            android:textColor="@color/black"
+            android:textSize="70sp" />
+    </RelativeLayout>
     <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="206mm"
+        android:layout_height="11mm"
+        android:layout_width="210mm"
+        android:layout_marginRight="1mm"
         tools:ignore="InOrMmUsage,RtlHardcoded"
-        android:layout_gravity="center_horizontal"
         android:orientation="horizontal"
-        android:gravity="right|center_vertical">
-
+        android:gravity="right|center_vertical"
+        android:id="@+id/headers"
+        android:background="@drawable/report_storage"
+        android:backgroundTint="@color/light_foreground">
         <TextView
-            android:layout_width="35mm"
-            android:gravity="center"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="8mm"
-            android:text="المستورد"
-            android:textColor="@color/black"
-            android:layout_marginHorizontal="3mm"/>
-
-
-        <TextView
-            android:layout_width="35mm"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="8mm"
+            android:layout_weight="4"
             android:text="المصدر"
-            android:textColor="@color/black"
-            android:layout_marginHorizontal="3mm"/>
-
-        <TextView
-            android:layout_width="35mm"
+            android:textStyle="bold"
+            android:textSize="32sp"
+            android:id="@+id/export_quantity"
             android:gravity="center"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="8mm"
-            android:text="المخزون"
-            android:textColor="@color/black"
-            android:layout_marginHorizontal="3mm"/>
-
-
+            android:textColor="@color/black"/>
+        <View
+            android:layout_width="0.5mm"
+            android:layout_height="match_parent"
+            android:background="@color/gray"/> <!-- Add a vertical line here -->
         <TextView
-            android:layout_width="60mm"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="المستورد"
+            android:gravity="center"
             android:textStyle="bold"
-            android:textSize="9mm"
+            android:textSize="32sp"
+            android:id="@+id/import_quantity"
+            android:textColor="@color/black"/>
+        <View
+            android:layout_width="0.5mm"
+            android:layout_height="match_parent"
+            android:background="@color/gray"/> <!-- Add a vertical line here -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="المخزون"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="32sp"
+            android:id="@+id/quantity"
+            android:textColor="@color/black"/>
+        <View
+            android:layout_width="0.5mm"
+            android:layout_height="match_parent"
+            android:background="@color/gray"/> <!-- Add a vertical line here -->
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
             android:text="اسم العنصر"
-            android:textColor="@color/black"
-            android:id="@+id/item_name"
-            android:layout_marginHorizontal="6mm"/>
+            android:gravity="center"
+            android:textSize="42sp"
+            android:id="@+id/name"
+            android:textColor="@color/black"/>
     </LinearLayout>
+
+
+
 
 </LinearLayout>

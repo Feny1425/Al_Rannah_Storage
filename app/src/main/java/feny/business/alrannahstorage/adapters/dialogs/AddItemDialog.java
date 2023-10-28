@@ -1,15 +1,26 @@
 package feny.business.alrannahstorage.adapters.dialogs;
+
+import static feny.business.alrannahstorage.data.Data.ClosedOperations.BUY;
+import static feny.business.alrannahstorage.data.Data.ClosedOperations.CHARITY;
+import static feny.business.alrannahstorage.data.Data.ClosedOperations.EXCHANGE_FROM;
+import static feny.business.alrannahstorage.data.Data.ClosedOperations.EXCHANGE_TO;
+import static feny.business.alrannahstorage.data.Data.ClosedOperations.EXPORT;
+import static feny.business.alrannahstorage.data.Data.ClosedOperations.IMPORT;
+import static feny.business.alrannahstorage.data.Data.ClosedOperations.RATION;
+import static feny.business.alrannahstorage.data.Data.ClosedOperations.SELL;
+import static feny.business.alrannahstorage.data.Data.ClosedOperations.SPOILED;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
-        import android.content.Context;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-        import android.view.View;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-        import android.widget.EditText;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -143,20 +154,46 @@ public class AddItemDialog extends Dialog {
                                 }
                                 else {
                                     if(Import) {
-                                       new UpdateStorageFromServer((Pages) context, String.valueOf(storage.getStorageID()), String.valueOf(export.second.first+storage.getQuantity()), String.valueOf(Data.getBranchId()),
-                                                storageID,
-                                                export.second.first,
-                                                storage.getQuantity()+export.second.first,
-                                                storage.getQuantity(),
-                                                true,
-                                                storage.getBranchID(),
-                                                export.first.getId(),
-                                                storage.getStateType().getId(),
-                                               export.second.second);
+                                       new UpdateStorageFromServer((Pages) context,//context
+                                               String.valueOf(Data.getBranchId()),//branch id
+                                                storageID,//storage id
+                                                export.second.first,//quantity
+                                                storage.getQuantity()+export.second.first,//new quantity
+                                                storage.getQuantity(),//old quantity
+                                                true,//add
+                                                storage.getBranchID(),//import branch
+                                                export.first.getId(),//export branch
+                                                IMPORT,//closed operation
+                                               export.second.second);//salted string
 
 
                                     }
                                     else {
+                                        int closed;
+                                        if(close){
+                                            switch (selection){
+                                                case 0:
+                                                    closed = SELL;
+                                                    break;
+                                                case 1:
+                                                    closed = CHARITY;
+                                                    break;
+                                                case 2:
+                                                    closed = RATION;
+                                                    break;
+                                                case 3:
+                                                    closed = SPOILED;
+                                                    break;
+                                                default:
+                                                    closed = EXPORT;
+                                            }
+                                        }
+                                        else if(extract){
+                                            closed = EXCHANGE_FROM;
+                                        }
+                                        else{
+                                            closed = BUY;
+                                        }
                                         new UpdateStorageFromServer((Pages) context, String.valueOf(storage.getStorageID()), String.valueOf(newQuantity), String.valueOf(Data.getBranchId()),
                                                 storage.getStorageID(),
                                                 Integer.parseInt(quantity.getText().toString()),
@@ -165,7 +202,7 @@ public class AddItemDialog extends Dialog {
                                                 !(extract || close),
                                                 (selection > 3 && close) ? Branches.getBranchByNameAndLocation(itemsList.get(selection)).getId() : storage.getBranchID(),
                                                 storage.getBranchID(),
-                                                close ? ((selection > 3) ? -1 : selection + 1) : 0);
+                                                closed);
                                     }
                                     if(extract) {
                                         for (Storage _storage : Branches.getBranchByID(storage.getBranchID()).getStorage()) {
@@ -179,7 +216,7 @@ public class AddItemDialog extends Dialog {
                                                         true,
                                                         _storage.getBranchID(),
                                                         _storage.getBranchID(),
-                                                        0);
+                                                        EXCHANGE_TO);
                                                 break;
                                             }
                                         }
