@@ -5,15 +5,15 @@ import android.os.AsyncTask;
 
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.data.JsonMaker;
-import feny.business.alrannahstorage.models.Pages;
+import feny.business.alrannahstorage.models.custom.Pages;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class UpdateStorageFromServer extends AsyncTask<String, Void, String> {
-    private static final String API_URL = Data.BASE_URL("update_quantity"); // Replace with your script URL
+public class UpdateStorage extends AsyncTask<String, Void, String> {
+    private static final String API_URL = Data.BASE_URL("storage"); // Replace with your script URL
     private final int id;
     private final int quantity;
     private final int newQuantity;
@@ -26,12 +26,12 @@ public class UpdateStorageFromServer extends AsyncTask<String, Void, String> {
     String branchID;
     String salted = "nothing";
 
-    public UpdateStorageFromServer(Pages context, String storageID, String _quantity, String branchID,
-                                   int id, int quantity, int new_quantity, int old_quantity,
-                                   boolean add, int importB, int exportB, int closed) {
+    public UpdateStorage(Pages context, String storageID, String branchID,
+                         int id, int quantity, int new_quantity, int old_quantity,
+                         boolean add, int importB, int exportB, int closed) {
         this.context = context;
         this.branchID = branchID;
-        execute(storageID,_quantity);
+        execute(storageID,String.valueOf(quantity));
         this.id = id;
         this.quantity = quantity;
         this.newQuantity = new_quantity;
@@ -42,9 +42,9 @@ public class UpdateStorageFromServer extends AsyncTask<String, Void, String> {
         this.closed = closed;
 
     }
-    public UpdateStorageFromServer(Pages context, String branchID,
-                                   int id, int quantity, int new_quantity, int old_quantity,
-                                   boolean add, int importB, int exportB, int closed,String salted) {
+    public UpdateStorage(Pages context, String branchID,
+                         int id, int quantity, int new_quantity, int old_quantity,
+                         boolean add, int importB, int exportB, int closed, String salted) {
         this.context = context;
         this.branchID = branchID;
         execute(String.valueOf(id),String.valueOf(quantity));
@@ -100,8 +100,8 @@ public class UpdateStorageFromServer extends AsyncTask<String, Void, String> {
         // Handle the response here
         // The 'result' contains the response from your PHP script
         //Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
-        new FetchStorageFromServer((Pages) context);
-        new AddHistoryHttpRequest((Pages) context,
+        new FetchStorage((Pages) context);
+        new AddHistory((Pages) context,
                 id,
                 quantity,
                 newQuantity,

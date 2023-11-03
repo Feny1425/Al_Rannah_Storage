@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.util.Pair;
 import android.widget.Toast;
 
-import feny.business.alrannahstorage.models.Branch;
+import feny.business.alrannahstorage.models.custom.Branch;
 
 public class GeneratePdfTask extends AsyncTask<Branch, Void, String> {
     private Context context;

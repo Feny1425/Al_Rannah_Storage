@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_background"
     tools:context=".activities.fragments.AccountsFragment">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?colorPrimary">
 
 
         <Button
             android:id="@+id/increase_quantities"
             android:layout_width="200dp"
+            android:layout_above="@+id/decrease_quantities"
             android:layout_height="60dp"
-            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="200dp"
             android:backgroundTint="@color/light_foreground"
+            android:drawableLeft="@drawable/ic_baseline_add_24"
+            android:drawableRight="@drawable/ic_baseline_add_24"
             android:text="اضافة كميات"
             android:textColor="@color/black"
             android:textSize="16sp"
@@ -29,7 +27,6 @@
             android:id="@+id/decrease_quantities"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:layout_below="@+id/increase_quantities"
             android:layout_centerInParent="true"
             android:layout_marginTop="23dp"
             android:backgroundTint="@color/light_foreground"
@@ -37,6 +34,8 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:drawableRight="@drawable/ic_baseline_remove_24"
+            android:drawableLeft="@drawable/ic_baseline_remove_24"
             tools:ignore="UsingOnClickInXml,TextContrastCheck" />
 
         <Button
@@ -51,8 +50,8 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:drawableRight="@drawable/ic_baseline_monitor_24"
+            android:drawableLeft="@drawable/ic_baseline_done_all_24"
             tools:ignore="UsingOnClickInXml,TextContrastCheck" />
 
 </RelativeLayout>
-
-</FrameLayout>

@@ -32,5 +32,9 @@
             android:textColor="@color/black"
             android:textSize="70sp" />
     </RelativeLayout>
+    <com.github.mikephil.charting.charts.HorizontalBarChart
+        android:id="@+id/chart"
+        android:layout_width="100mm"
+        android:layout_height="100mm"/>
 
 </LinearLayout>

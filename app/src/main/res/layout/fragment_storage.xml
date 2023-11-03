@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.fragments.StorageFragment">
+    tools:context=".activities.fragments.ItemListFragment">
 
 
     <RelativeLayout
+        android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?colorPrimary"
@@ -18,16 +19,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/input"
-            android:gravity="center"
             android:backgroundTint="#BDBDBD"
+            android:gravity="center"
             android:hint="بحث"
             android:importantForAutofill="no"
+            android:inputType="text"
             android:textColor="@color/black"
             android:textColorHint="@drawable/edit"
-            tools:ignore="TextContrastCheck"
-            android:inputType="text" />
+            tools:ignore="TextContrastCheck" />
 
         <ImageView
             android:layout_width="wrap_content"

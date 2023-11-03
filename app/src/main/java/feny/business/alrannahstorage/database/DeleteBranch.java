@@ -4,28 +4,20 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
-import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.activities.AdminActivity;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.data.JsonMaker;
-import feny.business.alrannahstorage.models.Branch;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class DeleteBranchHttpRequest extends AsyncTask<String, Void, String> {
+public class DeleteBranch extends AsyncTask<String, Void, String> {
     private static final String API_URL = Data.BASE_URL("delete_branch"); // Replace with your script URL
     AdminActivity context;
 
-    public DeleteBranchHttpRequest(Context context, String user, String permission) {
+    public DeleteBranch(Context context, String user, String permission) {
         this.context = (AdminActivity) context;
         execute(user,permission);
     }
@@ -66,7 +58,8 @@ public class DeleteBranchHttpRequest extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        new FetchBranchesFromServer(context,Data.getUSER());
+        FetchBranches fetchBranches = new FetchBranches(context, Data.getUSER());
+        fetchBranches.run();
         Toast.makeText(context,"تم الحذف بنجاح", Toast.LENGTH_LONG).show();
     }
 }

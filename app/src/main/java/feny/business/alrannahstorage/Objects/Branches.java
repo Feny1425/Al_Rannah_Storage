@@ -7,12 +7,13 @@ import java.util.Objects;
 import java.util.Vector;
 
 import feny.business.alrannahstorage.data.Data;
-import feny.business.alrannahstorage.database.AddBranchHttpRequest;
-import feny.business.alrannahstorage.database.DeleteBranchHttpRequest;
-import feny.business.alrannahstorage.models.Branch;
-import feny.business.alrannahstorage.models.Item;
-import feny.business.alrannahstorage.models.ItemType;
-import feny.business.alrannahstorage.models.Pages;
+import feny.business.alrannahstorage.database.AddBranch;
+import feny.business.alrannahstorage.database.DeleteBranch;
+import feny.business.alrannahstorage.models.custom.Branch;
+import feny.business.alrannahstorage.models.custom.Item;
+import feny.business.alrannahstorage.models.custom.ItemType;
+import feny.business.alrannahstorage.models.custom.Pages;
+import feny.business.alrannahstorage.models.custom.Storage;
 
 public class Branches {
     private static ArrayList<Branch> branches = new ArrayList<>();
@@ -57,20 +58,18 @@ public class Branches {
     }
 
     public static void addBranch(Context context,String name, String location, int permission, String username){
-        new AddBranchHttpRequest(context,String.valueOf(permission),name,location,username);
+        new AddBranch(context,String.valueOf(permission),name,location,username);
 
     }
     public static void deleteBranch(Context context, String username, String permission){
-        new DeleteBranchHttpRequest(context,username,permission);
+        new DeleteBranch(context,username,permission);
     }
     public static Branch getBranch(int position){
         return branches.get(position);
     }
     public static Branch getBranchByPermission(String permission){
-        for (int i = 0; i < getSize();i++){
-            if(getBranch(i).getPermission().equals(permission)){
-                return getBranch(i);
-            }
+        for (Branch branch : branches){
+            if(branch.getPermission().equals(permission)) return branch;
         }
         return null;
     }public static Branch getBranchByID(int id){
@@ -93,9 +92,9 @@ public class Branches {
         Branch branch = getBranchByID(branchID);
 
         for(Storage storage : branch.getStorage()){
-            if(storage.getItem() == item && storage.getState() == itemType.getId()){
+            /*if(storage.getItem() == item && storage.getState() == itemType.getId()){
                 return storage;
-            }
+            }*/
         }
         return null;
     }
@@ -123,6 +122,16 @@ public class Branches {
                     return storage;
                 }
             }
+        }
+        return new Storage(-1,branches.get(0).getId(),Items.getItems().get(0).getId(),Items.getItemTypes().get(0).getId(),-1);
+    }
+    public static Storage getStorageByItemID(int id) {
+        Branch branch = getBranchByID(Data.getBranchId());
+        for (Storage storage : branch.getStorage()) {
+            if (storage.getItem().getId() == id) {
+                return storage;
+            }
+
         }
         return null;
     }

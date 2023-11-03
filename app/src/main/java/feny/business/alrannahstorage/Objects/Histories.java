@@ -9,10 +9,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
 
-import feny.business.alrannahstorage.models.Branch;
-import feny.business.alrannahstorage.models.History;
-import feny.business.alrannahstorage.models.Item;
-import feny.business.alrannahstorage.models.ReportItem;
+import feny.business.alrannahstorage.models.custom.Branch;
+import feny.business.alrannahstorage.models.custom.Storage;
+import feny.business.alrannahstorage.models.grouping.Five;
+import feny.business.alrannahstorage.models.custom.History;
+import feny.business.alrannahstorage.models.custom.Item;
+import feny.business.alrannahstorage.models.custom.ReportItem;
 
 public class Histories {
     private static ArrayList<History> histories = new ArrayList<>();
@@ -51,8 +53,16 @@ public class Histories {
         }
         return histories;
     }
+    public static ArrayList<Storage> getAllNonFinishedOperationsByBranchIDAsStorage(int id){
+        ArrayList<Storage> storages = new ArrayList<>();
+        for(History history : getNonFinishedOperationsByID(id)){
+                storages.add(new Storage(history.getBranch_import_id(),id,history.getStorage().getItemID(),history.getStorage().getItemTypeID(),history.getQuantity()));
 
-    public static ArrayList<History> getAllHistoryByStorageID(Storage storage,ArrayList<History> histories){
+        }
+        return storages;
+    }
+
+    public static ArrayList<History> getAllHistoryByStorageID(Storage storage, ArrayList<History> histories){
         ArrayList<History> _histories = new ArrayList<>();
         for(History history : histories){
             if(history.getStorage().getItem() == storage.getItem()){
@@ -144,7 +154,7 @@ public class Histories {
             String date = history.getDate();
 
             for(ReportItem.Item item : reportItem.getItems()){
-                if(history.getItem().getId() == item.getItemID()){
+                /*if(history.getItem().getId() == item.getItemID()){
                     item.addItemType(history.getItemType().getId(),
                             history.getOld_quantity(),
                             history.getNew_quantity(),
@@ -153,10 +163,35 @@ public class Histories {
                             history.getClosed(),
                             history.getBranch_import_id(),
                             history.getBranch_export_id());
-                }
+                }*/
             }
         }
         return new Pair<>(reportItem.getItemsS(),reportItem.getItemsShort());
+    }
+    public static Pair<String,Vector<Pair<String, Five<Integer,Integer,Integer,Integer,Integer>>>> getReport2(Branch branch, Pair<int[], int[]> pair){
+        ReportItem reportItem = new ReportItem(pair);
+        ArrayList<History> histories = new ArrayList<>(getHistoryByBranchID(branch.getId()));
+        histories.sort(Comparator.comparing(History::getDate));
+        for(History history : histories){
+            reportItem.addItem(history.getItem().getId());
+        }
+        for(History history : histories){
+            String date = history.getDate();
+
+            for(ReportItem.Item item : reportItem.getItems()){
+                /*if(history.getItem().getId() == item.getItemID()){
+                    item.addItemType(history.getItemType().getId(),
+                            history.getOld_quantity(),
+                            history.getNew_quantity(),
+                            history.getQuantity(),
+                            date,
+                            history.getClosed(),
+                            history.getBranch_import_id(),
+                            history.getBranch_export_id());
+                }*/
+            }
+        }
+        return reportItem.getChartClosed();
     }
 
 

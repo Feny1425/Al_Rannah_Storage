@@ -1,7 +1,7 @@
 package feny.business.alrannahstorage.database;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import feny.business.alrannahstorage.activities.LoginActivity;
 import feny.business.alrannahstorage.data.Data;
@@ -9,6 +9,7 @@ import okhttp3.*;
 
 public class LoginHttpRequest extends AsyncTask<String, Void, String> {
     private static final String API_URL = Data.BASE_URL("login"); // Replace with your script URL
+    @SuppressLint("StaticFieldLeak")
     LoginActivity context;
 
     public LoginHttpRequest(Context context, String user, String pass) {
@@ -54,6 +55,5 @@ public class LoginHttpRequest extends AsyncTask<String, Void, String> {
             // The 'result' contains the response from your PHP script
             //Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
             context.login(result);
-            new FetchItemsFromServer(context);
         }
     }

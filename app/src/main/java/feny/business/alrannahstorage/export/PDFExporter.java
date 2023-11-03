@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Looper;
 import android.util.Pair;
 import android.view.View;
 
@@ -23,11 +24,11 @@ import java.util.Locale;
 import java.util.Vector;
 
 import feny.business.alrannahstorage.Objects.Histories;
-import feny.business.alrannahstorage.Objects.Storage;
-import feny.business.alrannahstorage.models.Branch;
+import feny.business.alrannahstorage.models.custom.Storage;
+import feny.business.alrannahstorage.models.custom.Branch;
+import feny.business.alrannahstorage.models.grouping.Five;
 import feny.business.alrannahstorage.models.layouts.ReportLayout;
 import feny.business.alrannahstorage.models.layouts.ReportLayout2;
-import feny.business.alrannahstorage.models.layouts.StorageReportLayout;
 import feny.business.alrannahstorage.models.layouts.TextReportLayout;
 
 public class PDFExporter {
@@ -45,7 +46,7 @@ public class PDFExporter {
             int quant = storage.getQuantity();
             int iH = Histories.getAllHistoryByStorageID(storage, Histories.getAllImportByID(branch.getId())).size();
             int eH = Histories.getAllHistoryByStorageID(storage, Histories.getAllExportByID(branch.getId())).size();
-            if (storage.getState() == 0) {
+            /*if (storage.getState() == 0) {
                 StorageReportLayout storageReportLayout = new StorageReportLayout(context,branch.getStorage().indexOf(storage));
                 storageReportLayout.setStorage(storage.getItem().getName(), quant, iH, eH, storage.getItem().getUnit());
                 if (views.size() == 23) {
@@ -56,7 +57,7 @@ public class PDFExporter {
                 } else {
                     views.add(storageReportLayout);
                 }
-            }
+            }*/
         }
         if (views.size() != 0) {
             ReportLayout _reportLayout = new ReportLayout(context, branch.getName() + " " + branch.getLocation(), true);
@@ -216,19 +217,39 @@ public class PDFExporter {
     }
 
     public static void exportBranchesAndStoragesToPDF2(Context context, Branch branch, Pair<int[],int[]> pair) {
+        Looper.prepare();
 
         String name = branch.getName();
         String timestamp = new SimpleDateFormat("yyyy_MM_dd__HH_mm_ss", Locale.getDefault()).format(new Date());
 
+        Vector<ReportLayout> reportLayouts = new Vector<>();
+        ArrayList<View> views = new ArrayList<>();
+        Pair<String, Vector<Pair<String, Five<Integer, Integer, Integer, Integer, Integer>>>> history = Histories.getReport2(branch, pair);
+        for (Pair<String, Five<Integer,Integer,Integer,Integer,Integer>> string : history.second) {
+            ReportLayout2 reportLayout2 = new ReportLayout2(context,name,string.first,string.second);
+            if (views.size() == 1) {
+                ReportLayout _reportLayout = new ReportLayout(context, name, false);
+                _reportLayout.addView(views);
+                reportLayouts.add(_reportLayout);
+                views = new ArrayList<>();
+            } else {
+                views.add(reportLayout2);
+            }
+        }
+        if (views.size() != 0) {
+            ReportLayout _reportLayout = new ReportLayout(context, name, false);
+            _reportLayout.addView(views);
+            reportLayouts.add(_reportLayout);
+        }
 
-        ReportLayout2 reportLayout2 = new ReportLayout2(context,branch.getName() + " " + branch.getLocation());
+
 
         PdfDocument pdfDocument = new PdfDocument();
 
         // Create a PageInfo with the desired page dimensions (e.g., A4 size) 1:1.41
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(3500, 4935, 1 ).create();
 
-        addLayout(reportLayout2,pdfDocument,pageInfo);
+        addLayouts(reportLayouts,pdfDocument,pageInfo);
 
         // Specify the custom directory where you want to save the PDF
         File customDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "al rannah");

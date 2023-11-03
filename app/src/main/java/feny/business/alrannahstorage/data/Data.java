@@ -2,7 +2,7 @@ package feny.business.alrannahstorage.data;
 
 import java.util.Random;
 
-import feny.business.alrannahstorage.models.Pages;
+import feny.business.alrannahstorage.models.custom.Pages;
 
 public final class Data {
     public final static String[] ITEM_TYPES = {"Food","Reusable","NonReusable"};
@@ -27,6 +27,14 @@ public final class Data {
         public static int RATION = 5;
         public static int EXCHANGE_TO = 6;
         public static int EXCHANGE_FROM = 7;
+    }
+    public static class Places{
+        public static int BUY = 1;
+        public static int RECIPE = 2;
+        public static int NON_FOOD = 3;
+        public static int FOOD = 4;
+        public static int CLOSE = 5;
+        public static int IMPORT = 6;
     }
     public static int getBranchId() {
         return BRANCH_ID;
@@ -98,11 +106,6 @@ public final class Data {
     public static Pages getCONTEXT() {
         return CONTEXT;
     }
-
-
-
-    public static boolean WAIT = false;
-    public static boolean WAIT2 = false;
 
     public static int countLinesInString(String text) {
         String[] lines = text.split("\\r?\\n"); // Split by newline characters (UNIX and Windows line endings)

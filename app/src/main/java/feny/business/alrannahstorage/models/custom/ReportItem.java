@@ -1,10 +1,9 @@
-package feny.business.alrannahstorage.models;
+package feny.business.alrannahstorage.models.custom;
 
-import static feny.business.alrannahstorage.models.ReportItem.MESSAGES.LINE;
-import static feny.business.alrannahstorage.models.ReportItem.MESSAGES.NEXT_LINE;
-import static feny.business.alrannahstorage.models.ReportItem.MESSAGES.SELECT_MESSAGE;
-import static feny.business.alrannahstorage.models.ReportItem.MESSAGES.SMALL_TAP;
-import static feny.business.alrannahstorage.models.ReportItem.MESSAGES.TAP;
+import static feny.business.alrannahstorage.models.custom.ReportItem.MESSAGES.LINE;
+import static feny.business.alrannahstorage.models.custom.ReportItem.MESSAGES.NEXT_LINE;
+import static feny.business.alrannahstorage.models.custom.ReportItem.MESSAGES.SELECT_MESSAGE;
+import static feny.business.alrannahstorage.models.custom.ReportItem.MESSAGES.TAP;
 
 import android.util.Pair;
 
@@ -17,6 +16,8 @@ import java.util.Vector;
 
 import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.Objects.Items;
+import feny.business.alrannahstorage.models.grouping.Five;
+import feny.business.alrannahstorage.models.grouping.Four;
 
 public class ReportItem {
     private Set<Item> items = new HashSet<>();
@@ -33,6 +34,27 @@ public class ReportItem {
             }
         }
         items.add(new Item(itemID));
+    }
+    //                             Item         Sell    Spoil   Charity Ration  Export
+    public Pair<String,Vector<Pair<String, Five<Integer,Integer,Integer,Integer,Integer>>>> getChartClosed(){
+        String date="";
+        if(select.first[0] != 0){
+            date+=("من " + select.first[0] + "/" + select.first[2] + "/" + select.first[3]);
+        }
+        if(select.second[0] != 0){
+            if(!date.equals("")){
+                date+="\n";
+            }
+            date+=("إلى " + select.second[0] + "/" + select.second[2] + "/" + select.second[3]);
+        }
+
+
+        Vector<Pair<String, Five<Integer,Integer,Integer,Integer,Integer>>> pairs = new Vector<>();
+        for(Item item : items){
+            pairs.add(item.getChart());
+        }
+
+        return new Pair<>(date,pairs);
     }
 
     public Vector<String> getItemsShort() {
@@ -76,7 +98,7 @@ public class ReportItem {
 
         public Item(int itemID) {
             this.itemID = itemID;
-            feny.business.alrannahstorage.models.Item item = Items.getItemByID(itemID);
+            feny.business.alrannahstorage.models.custom.Item item = Items.getItemByID(itemID);
             unit = item.getUnit();
             name = item.getName();
         }
@@ -103,10 +125,7 @@ public class ReportItem {
             if ( to && from) {
                 // Date is within the specified range or there's no range specified
                 // Add the item type to the list
-                feny.business.alrannahstorage.models.ItemType itemType = Items.getItemTypesByID(itemTypeID);
-                if (itemType.getType().contains(name) || itemType.getId() == 0) {
-                    itemTypes.add(new ItemType(itemTypeID, oldQuant, newQuant, Quant, Date, closedOperation, imBranch, exBranch));
-                }
+
             }
 
 
@@ -160,14 +179,46 @@ public class ReportItem {
             Vector<String> strings =  new Vector<>();
             for(Four<Integer,Integer,Integer,Integer> four : quantities){
                 StringBuilder s = new StringBuilder();
-                s.append(NEXT_LINE).append(SMALL_TAP).append(Items.getItemByID(itemID).getName()).append(" : ").append(Items.getItemTypesByID(four.first).getType()).append(" :").append(NEXT_LINE);
+                //s.append(NEXT_LINE).append(SMALL_TAP).append(Items.getItemByID(itemID).getName()).append(" : ").append(Items.getItemTypesByID(four.first).getType()).append(" :").append(NEXT_LINE);
                 s.append(TAP).append(four.third > 0 ? "تم إضافة " : "تم خصم ").append(four.third).append(" ").append(Items.getItemByID(itemID).getUnit()).append(NEXT_LINE);
                 s.append(TAP).append("الكمية القديمة ").append(four.second).append(NEXT_LINE);
                 s.append(TAP).append("الكمية الجديدة ").append(four.fourth).append(NEXT_LINE);
                 s.append(LINE);
+                if(four.third != 0)
                 strings.add(s.toString());
             }
             return strings;
+        }
+        public Pair<String,Five<Integer,Integer,Integer,Integer,Integer>> getChart() {
+            Five<Integer, Integer, Integer, Integer, Integer> quantity = new Five<>(0, 0, 0, 0, 0);
+            if (itemTypes.size() > 0) {
+                for (ItemType itemType : itemTypes) {
+                    switch (itemType.closedOperation) {
+                        case -1:
+                            quantity.fifth += itemType.getQuant();
+                            break;
+                        case 1:
+                            quantity.first += itemType.getQuant();
+                            break;
+                        case 3:
+                            quantity.second += itemType.getQuant();
+                            break;
+                        case 4:
+                            quantity.third += itemType.getQuant();
+                            break;
+                        case 5:
+                            quantity.fourth += itemType.getQuant();
+                            break;
+
+
+                    }
+                }
+            }
+
+
+            Pair<String,Five<Integer,Integer,Integer,Integer,Integer>> exports = new Pair<>(name,quantity);
+
+            return exports;
         }
 
         public class ItemType {
@@ -250,14 +301,14 @@ public class ReportItem {
 
                 Branch importBranch = Branches.getBranchByID(imBranch);
                 Branch exportBranch = Branches.getBranchByID(exBranch);
-                String itemTypeName = "|------ "+Items.getItemTypesByID(itemTypeID).getType()+NEXT_LINE;
+                //String itemTypeName = "|------ "+Items.getItemTypesByID(itemTypeID).getType()+NEXT_LINE;
                 String quantity = "|"+TAP+TAP+"+ "+SELECT_MESSAGE(closedOperation) + Quant + " " + unit+NEXT_LINE +
                         (closedOperation==-1? "|"+TAP+TAP+"+ " + "إلى : " + importBranch.getName() + " " + importBranch.getLocation() +NEXT_LINE :
                         (closedOperation== 2? "|"+TAP+TAP+"+ " + "من : " + exportBranch.getName() + " " + importBranch.getLocation() +NEXT_LINE:""));
                 String old ="|"+ TAP+TAP+"+ "+"الكمية القديمة " + oldQuant +" " +unit+NEXT_LINE;
                 String New ="|"+ TAP+TAP+"+ "+"الكمية الجديدة " + newQuant+" " +unit+NEXT_LINE;
                 String Date ="|"+ TAP+TAP+"+ "+"التاريخ : "+this.Date;
-                return head+itemTypeName+quantity+old+New+Date;
+                return head/*+itemTypeName*/+quantity+old+New+Date;
             }
         }
     }

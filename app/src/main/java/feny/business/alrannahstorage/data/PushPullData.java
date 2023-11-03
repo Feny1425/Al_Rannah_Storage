@@ -1,6 +1,5 @@
 package feny.business.alrannahstorage.data;
 
-import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
@@ -10,7 +9,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import feny.business.alrannahstorage.Objects.Branches;
-import feny.business.alrannahstorage.models.Branch;
+import feny.business.alrannahstorage.models.custom.Branch;
 
 public class PushPullData {
     SharedPreferences sharedPreferences;

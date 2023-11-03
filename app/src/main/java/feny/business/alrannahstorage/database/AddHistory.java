@@ -2,23 +2,21 @@ package feny.business.alrannahstorage.database;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
-import feny.business.alrannahstorage.activities.AdminActivity;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.data.JsonMaker;
-import feny.business.alrannahstorage.models.Pages;
+import feny.business.alrannahstorage.models.custom.Pages;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class AddHistoryHttpRequest extends AsyncTask<String, Void, String> {
+public class AddHistory extends AsyncTask<String, Void, String> {
     private static final String API_URL = Data.BASE_URL("add_history"); // Replace with your script URL
     Pages context;
 
-    public AddHistoryHttpRequest(Context context, int id, int quantity, int new_quantity, int old_quantity, boolean add, int importB, int exportB, int closed, String operation ) {
+    public AddHistory(Context context, int id, int quantity, int new_quantity, int old_quantity, boolean add, int importB, int exportB, int closed, String operation ) {
         this.context = (Pages) context;
         execute(String.valueOf(id),
                 String.valueOf(quantity),

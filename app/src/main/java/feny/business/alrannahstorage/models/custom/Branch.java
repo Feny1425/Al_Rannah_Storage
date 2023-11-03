@@ -1,8 +1,6 @@
-package feny.business.alrannahstorage.models;
+package feny.business.alrannahstorage.models.custom;
 
 import java.util.ArrayList;
-
-import feny.business.alrannahstorage.Objects.Storage;
 
 public class Branch {
     private final String name;
@@ -29,8 +27,8 @@ public class Branch {
         return (storages.get(id));
     }
 
-    public void addItems(int storageID,int branchID,int itemID,int quantity,int state){
-        storages.add(new Storage(storageID,branchID,itemID,quantity,state));
+    public void addItems(int storageID,int branchID,int itemID,int itemTypeID,int quantity){
+        storages.add(new Storage(storageID,branchID,itemID,itemTypeID,quantity));
     }
 
     public Branch(String name, int id, String permission, String location, String user) {
@@ -81,10 +79,7 @@ public class Branch {
 
     public void changeQuantityOnly(Storage storage){
         for(Storage _storage : storages){
-            if(storage.getItem() == _storage.getItem() &&
-            storage.getState() == _storage.getState()){
-                _storage.setQuantity(storage.getQuantity());
-            }
+
         }
     }
 

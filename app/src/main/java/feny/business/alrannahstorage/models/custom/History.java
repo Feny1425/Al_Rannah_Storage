@@ -1,22 +1,21 @@
-package feny.business.alrannahstorage.models;
+package feny.business.alrannahstorage.models.custom;
 
 import java.util.Objects;
 
 import feny.business.alrannahstorage.Objects.Branches;
-import feny.business.alrannahstorage.Objects.Storage;
 
 public class History {
-    int id;
-    int storage_id;
-    boolean added;
-    String date;
-    int quantity;
-    int new_quantity;
-    int old_quantity;
-    int branch_import_id;
-    int branch_export_id;
-    int closed;
-    String operation;
+    private final int id;
+    private final int storage_id;
+    private final boolean added;
+    private final String date;
+    private final int quantity;
+    private final int new_quantity;
+    private final int old_quantity;
+    private final int branch_import_id;
+    private final int branch_export_id;
+    private final int closed;
+    private final String operation;
 
     public History(int id, int storage_id, boolean added, String date,
                    int quantity, int new_quantity, int old_quantity,
@@ -89,8 +88,5 @@ public class History {
     }
     public Item getItem(){
         return Objects.requireNonNull(Branches.getStorageByID(storage_id)).getItem();
-    }
-    public ItemType getItemType(){
-        return Objects.requireNonNull(Branches.getStorageByID(storage_id)).getStateType();
     }
 }

@@ -3,42 +3,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.fragments.AddFragment">
+    tools:context=".activities.fragments.TwoChoiceFragment">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?colorPrimary">
+        android:background="@color/light_background"
+        android:orientation="vertical" android:gravity="center">
 
 
         <Button
             android:id="@+id/buy_btn"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="290dp"
             android:backgroundTint="@color/light_foreground"
             android:text="اضافة مشتريات"
             android:textColor="@color/black"
+            android:layout_margin="12dp"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:drawableLeft="@drawable/ic_baseline_attach_money_24"
+            android:drawableRight="@drawable/ic_baseline_attach_money_24"
             tools:ignore="UsingOnClickInXml,TextContrastCheck" />
 
         <Button
             android:id="@+id/import_btn"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:layout_below="@+id/buy_btn"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="23dp"
+            android:layout_margin="12dp"
             android:backgroundTint="@color/light_foreground"
-            android:text="استيراد"
+            android:text="تأكيد الاستلام من الفروع الأخرى"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             tools:ignore="UsingOnClickInXml,TextContrastCheck" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </FrameLayout>

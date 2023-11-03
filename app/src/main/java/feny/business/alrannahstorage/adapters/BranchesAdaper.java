@@ -22,7 +22,7 @@ import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.adapters.dialogs.GetReportDialog;
 import feny.business.alrannahstorage.data.Data;
-import feny.business.alrannahstorage.models.Branch;
+import feny.business.alrannahstorage.models.custom.Branch;
 
 public class BranchesAdaper extends RecyclerView.Adapter<BranchesAdaper.ViewHolder> {
     RecyclerView recyclerView;

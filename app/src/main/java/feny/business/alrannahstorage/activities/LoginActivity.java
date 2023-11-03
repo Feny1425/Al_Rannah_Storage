@@ -1,7 +1,6 @@
 package feny.business.alrannahstorage.activities;
 
 import static feny.business.alrannahstorage.data.Data.SHARED_PREFERENCES;
-import static feny.business.alrannahstorage.data.Data.getCOMMERCIAL;
 import static feny.business.alrannahstorage.data.Data.getUSER;
 
 import android.content.Context;
@@ -10,30 +9,23 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.util.Pair;
-import androidx.core.view.ViewCompat;
 
 import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.data.PushPullData;
-import feny.business.alrannahstorage.database.FetchBranchesFromServer;
-import feny.business.alrannahstorage.database.FetchHistoryFromServer;
+import feny.business.alrannahstorage.database.FetchBranches;
+import feny.business.alrannahstorage.database.FetchItemsClass;
 import feny.business.alrannahstorage.database.LoginHttpRequest;
-import feny.business.alrannahstorage.models.Pages;
+import feny.business.alrannahstorage.models.custom.Pages;
 import feny.business.alrannahstorage.network.NetworkUtil;
 
 
-public class LoginActivity extends Pages {
+public class LoginActivity extends Pages{
 
     EditText comm, pass;
     static SharedPreferences sharedPreferences;
+    String pas="",usr="";
 
     public static SharedPreferences getShared() {
         return sharedPreferences;
@@ -43,6 +35,10 @@ public class LoginActivity extends Pages {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        FetchItemsClass fetchItemsClass = new FetchItemsClass(this,"items");
+        fetchItemsClass.run();
+
+        //FetchBranches.setOnDataChangedListener(this);
 
         comm = findViewById(R.id.Commercial);
 
@@ -71,9 +67,10 @@ public class LoginActivity extends Pages {
          if (!state.contains("failed")) {
             Data.setUserPermission(state);
             String user = Data.getUSER();
-            new FetchBranchesFromServer(this,user);
-            login(state,user);
-        } else {
+            pas=state;usr=user;
+             FetchBranches fetchBranches = new FetchBranches(this, Data.getUSER());
+             fetchBranches.start();
+         } else {
             comm.setError("كلمة السر او رقم السجل التجاري خاطئ");
         }
     }
@@ -82,6 +79,8 @@ public class LoginActivity extends Pages {
     public void refresh() {
         if(Branches.getSize() > 0){
             login(Data.getUserPermission(), comm.getText().toString().isEmpty()?sharedPreferences.getString("user",""):comm.getText().toString());
+            login(pas,usr);
+
         }
     }
 
@@ -113,25 +112,19 @@ public class LoginActivity extends Pages {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         Intent intent = new Intent(this, permission.equals(Data.getAdminPermssion()) ?AdminActivity.class:MainActivity.class);
-        ImageView img = findViewById(R.id.upper_circle);
-        ImageView login = findViewById(R.id.logo);
-        TextView label = findViewById(R.id.label);
-        Pair<View, String>[] pairs = new Pair[3];
-        Pair<View, String> p1 = Pair.create(img, ViewCompat.getTransitionName(img));
-        Pair<View, String> p2 = Pair.create(login, ViewCompat.getTransitionName(login));
-        Pair<View, String> p3 = Pair.create(label, ViewCompat.getTransitionName(label));
-        pairs[0] = p1;
-        pairs[1] = p2;
-        pairs[2] = p3;
-        ActivityOptionsCompat b =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(this, pairs);
 
-        startActivity(intent, b.toBundle());
         editor.putBoolean("login", true);
         editor.putString("permission", permission);
         editor.putString("user", user);
         Data.setUSER(user);
-        editor.commit();
+        editor.apply();
+        FetchBranches.setOnDataChangedListener(null);
+        startActivity(intent);
         finish();
+    }
+
+
+    public void onDataChanged() {
+        refresh();
     }
 }

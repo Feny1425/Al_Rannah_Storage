@@ -18,7 +18,7 @@ import java.util.Calendar;
 
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.export.GeneratePdfTask;
-import feny.business.alrannahstorage.models.Branch;
+import feny.business.alrannahstorage.models.custom.Branch;
 
 public class GetReportDialog extends Dialog {
 

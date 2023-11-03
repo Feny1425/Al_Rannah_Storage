@@ -26,17 +26,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
 import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.adapters.BranchesAdaper;
 import feny.business.alrannahstorage.data.Data;
-import feny.business.alrannahstorage.database.FetchBranchesFromServer;
-import feny.business.alrannahstorage.database.FetchHistoryFromServer;
+import feny.business.alrannahstorage.database.FetchBranches;
+import feny.business.alrannahstorage.database.FetchHistory;
 import feny.business.alrannahstorage.databinding.ActivityAdminBinding;
-import feny.business.alrannahstorage.models.Pages;
+import feny.business.alrannahstorage.models.custom.Pages;
 import feny.business.alrannahstorage.network.NetworkUtil;
 
-public class AdminActivity extends Pages implements FetchBranchesFromServer.OnDataChangedListener {
+public class AdminActivity extends Pages implements FetchBranches.OnDataChangedListener {
     static SharedPreferences sharedPreferences;
     BranchesAdaper branchesAdaper;
     Timer pollingTimer = new Timer();
@@ -57,7 +58,7 @@ public class AdminActivity extends Pages implements FetchBranchesFromServer.OnDa
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(branchesAdaper);
 
-        FetchBranchesFromServer.setOnDataChangedListener(this::onDataChanged);
+        FetchBranches.setOnDataChangedListener(this::onDataChanged);
         // Create an instance of BranchReportLayout
 
 
@@ -94,7 +95,7 @@ public class AdminActivity extends Pages implements FetchBranchesFromServer.OnDa
                     Toast.makeText(AdminActivity.this, "No Internet", Toast.LENGTH_LONG).show();
                 }
                 runOnUiThread(() -> {
-                    new FetchHistoryFromServer(AdminActivity.this);
+                    new FetchHistory(AdminActivity.this);
 //                    Toast.makeText(AdminActivity.this, Histories.getNonFinishedOperations().size()+"", Toast.LENGTH_SHORT).show();
 
                 });
@@ -204,10 +205,8 @@ public class AdminActivity extends Pages implements FetchBranchesFromServer.OnDa
     @SuppressLint("NotifyDataSetChanged")
     public void addResult(String result) {
         Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-        new FetchBranchesFromServer(this, Data.getUSER());
-    }
-
-    public void retrieveBranches(String result) {
+        FetchBranches fetchBranches = new FetchBranches(this, Data.getUSER());
+        fetchBranches.run();
     }
 
     @Override

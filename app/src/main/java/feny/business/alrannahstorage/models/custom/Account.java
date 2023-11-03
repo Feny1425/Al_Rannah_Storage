@@ -1,4 +1,4 @@
-package feny.business.alrannahstorage.models;
+package feny.business.alrannahstorage.models.custom;
 
 public class Account {
     private String name;

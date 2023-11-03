@@ -1,35 +1,26 @@
 package feny.business.alrannahstorage.database;
 
-import static feny.business.alrannahstorage.data.Data.WAIT2;
-
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Objects;
-
 import feny.business.alrannahstorage.Objects.Branches;
-import feny.business.alrannahstorage.Objects.Storage;
 import feny.business.alrannahstorage.data.Data;
-import feny.business.alrannahstorage.models.Branch;
-import feny.business.alrannahstorage.models.Pages;
-import okhttp3.MediaType;
+import feny.business.alrannahstorage.models.custom.Branch;
+import feny.business.alrannahstorage.models.custom.Pages;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class FetchStorageFromServer extends AsyncTask<String, Void, String> {
-    private static final String API_URL = Data.BASE_URL("fetch_storages"); // Replace with your script URL
+public class FetchStorage extends AsyncTask<String, Void, String> {
+    private static final String API_URL = Data.BASE_URL("storage"); // Replace with your script URL
     Context context;
 
 
-    public FetchStorageFromServer(Pages context) {
+    public FetchStorage(Pages context) {
         this.context = context;
 
         execute();
@@ -39,17 +30,11 @@ public class FetchStorageFromServer extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
         OkHttpClient client = new OkHttpClient();
 
-        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
-
         // Construct a JSON object with username and password
-
-
-        RequestBody body = RequestBody.create(JSON, "{}");
 
         Request request = new Request.Builder()
                 .url(API_URL)
-                .post(body)
+                .get()
                 .addHeader("Content-Type", "application/json")
                 .build();
 
@@ -80,21 +65,30 @@ public class FetchStorageFromServer extends AsyncTask<String, Void, String> {
 
                     int storageID = jsonObject.getInt("storage_id");
                     int branchID = jsonObject.getInt("id");
-                    int itemID = jsonObject.getInt("item_id");
+                    int itemID;
+                    if (!jsonObject.isNull("item_id")) {
+                        itemID = jsonObject.getInt("item_id");
+                    } else {
+                        itemID = -1; // Set a default value or handle it as needed
+                    }
+                    int itemTypeID;
+                    if (!jsonObject.isNull("item_type_id")) {
+                        itemTypeID = jsonObject.getInt("item_type_id");
+                    } else {
+                        itemTypeID = -1; // Set a default value or handle it as needed
+                    }
                     int quantity = jsonObject.getInt("quantity");
-                    int state = jsonObject.getInt("state");
                     Branch branch = Branches.getBranchByID(branchID);
 
                     if (branch != null) {
                         if (branch.getStorageByID(storageID) == null) {
-                            branch.addItems(storageID,branchID,itemID,quantity,state);
+                            branch.addItems(storageID,branchID,itemID,itemTypeID,quantity);
                         }
                         else if (branch.getStorageByID(storageID).getQuantity() != quantity){
                             branch.getStorageByID(storageID).setQuantity(quantity);
                         }
                     }
                 }
-                WAIT2 = false;
 
 
 

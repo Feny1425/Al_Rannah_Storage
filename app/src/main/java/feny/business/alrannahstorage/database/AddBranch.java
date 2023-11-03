@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import feny.business.alrannahstorage.activities.AdminActivity;
-import feny.business.alrannahstorage.activities.LoginActivity;
 import feny.business.alrannahstorage.data.Data;
 import feny.business.alrannahstorage.data.JsonMaker;
 import okhttp3.MediaType;
@@ -13,11 +12,11 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class AddBranchHttpRequest extends AsyncTask<String, Void, String> {
-    private static final String API_URL = Data.BASE_URL("add_branch"); // Replace with your script URL
+public class AddBranch extends AsyncTask<String, Void, String> {
+    private static final String API_URL = Data.BASE_URL("branches"); // Replace with your script URL
     AdminActivity context;
 
-    public AddBranchHttpRequest(Context context,String permission, String name, String pass,String username) {
+    public AddBranch(Context context, String permission, String name, String pass, String username) {
         this.context = (AdminActivity) context;
         execute(permission,name,pass,username);
     }

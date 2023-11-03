@@ -1,4 +1,4 @@
-package feny.business.alrannahstorage.models;
+package feny.business.alrannahstorage.models.grouping;
 
 public class Three<T,E,B> {
     public T first;

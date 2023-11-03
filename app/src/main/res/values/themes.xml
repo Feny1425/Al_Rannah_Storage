@@ -15,4 +15,10 @@
         <item name="android:windowContentTransitions">true</item>
         <item name="android:layoutDirection">ltr</item> <!-- or "rtl" as needed -->
     </style>
+    <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/exit</item>
+        <item name="android:activityCloseExitAnimation">@anim/enter</item>
+        <item name="android:activityCloseEnterAnimation">@anim/exit</item>
+    </style>
 </resources>
