@@ -29,6 +29,7 @@
             android:layout_height="50dp"
             android:background="@drawable/input"
             android:id="@+id/types"
+            android:visibility="gone"
             android:textColorHint="@drawable/edit"
             android:hint="اكتب ما تريد اضافته ثم اختار"
             style="@style/MyAutoCompleteTextView"

@@ -22,12 +22,12 @@ import java.util.ArrayList;
 import feny.business.alrannahstorage.Objects.Histories;
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.adapters.ItemListAdaper;
-import feny.business.alrannahstorage.adapters.dialogs.AddItemDialog;
+import feny.business.alrannahstorage.database.FetchStorage;
 import feny.business.alrannahstorage.models.custom.Branch;
 import feny.business.alrannahstorage.models.custom.Pages;
 import feny.business.alrannahstorage.models.custom.Storage;
 
-public class ItemListFragment extends Fragment implements AddItemDialog.OnDataChangedListener {
+public class ItemListFragment extends Fragment implements FetchStorage.OnDataChangedListener {
     private Pages context;
     private ArrayList<Storage> localList = new ArrayList<>();
     private int place;
@@ -38,7 +38,7 @@ public class ItemListFragment extends Fragment implements AddItemDialog.OnDataCh
 
     public ItemListFragment() {
         // Required empty public constructor
-        AddItemDialog.setOnDataChangedListener(this::onDataChanged);
+        FetchStorage.setOnDataChangedListener(this::onDataChanged);
     }
 
     public static ItemListFragment setData(Pages context, int place) {
@@ -64,31 +64,36 @@ public class ItemListFragment extends Fragment implements AddItemDialog.OnDataCh
             _storages.addAll(branch.getStorage());
         }
         if (_storages.size() != this._storages.size() || force) {
+            storages = new ArrayList<>();
             this._storages = new ArrayList<>();
             this._storages.addAll(_storages);
             for (Storage storage : this._storages) {
                 if (place == Places.BUY) {
                     // Handle the BUY situation
-                    storages.add(storage);
+                    if(storage.isItem()){
+                        storages.add(storage);
+                    }
                 } else if (place == Places.RECIPE) {
                     // Handle the RECIPE situation
-                    if (storage.getItemType() != null && storage.getItemType().CanBeCooked()) {
+                    if (storage.getItemType() != null) {
                         storage.setRecipe(true);
                         storages.add(storage);
                     }
                 } else if (place == Places.NON_FOOD) {
                     // Handle the NON_FOOD situation
-                    if (!storage.isFood() && storage.getItem() != null && storage.getQuantity() > 0) {
+                    if (!storage.isFood() && storage.isItem() && storage.getQuantity() > 0) {
+                        storage.setExtracted(true);
                         storages.add(storage);
                     }
                 } else if (place == Places.FOOD) {
                     // Handle the FOOD situation
                     if (storage.isFood() && storage.getQuantity()>0) {
+                        storage.setExtracted(true);
                         storages.add(storage);
                     }
                 } else if (place == Places.CLOSE) {
                     // Handle the CLOSE situation
-                    if (storage.isRecipe() && storage.getQuantity() > 0) {
+                    if (storage.canBeSold() && storage.getQuantity() > 0) {
                         storage.setClose(true);
                         storages.add(storage);
                     }
@@ -100,7 +105,12 @@ public class ItemListFragment extends Fragment implements AddItemDialog.OnDataCh
                     // Handle the default situation
                 }
             }
+            if(itemListAdaper != null) {
+                itemListAdaper.setLocalDataSet(storages);
+                itemListAdaper.notifyDataSetChanged();
+            }
         }
+
     }
 
 
@@ -109,13 +119,14 @@ public class ItemListFragment extends Fragment implements AddItemDialog.OnDataCh
         View rootView = inflater.inflate(R.layout.fragment_storage, container, false);
         // Inflate the layout for this fragment
         //rootView.findViewById(R.id.buy_btn).setOnClickListener(view -> {buy();});
-        if (context != null) refresh(false);
         recyclerView = rootView.findViewById(R.id.storage_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         localList.addAll(storages);
 
         itemListAdaper = new ItemListAdaper(localList, context);
+        if (context != null) refresh(false);
+
 
         recyclerView.setAdapter(itemListAdaper);
 
@@ -150,7 +161,7 @@ public class ItemListFragment extends Fragment implements AddItemDialog.OnDataCh
     }
 
     @Override
-    public void onDataChanged() {
-        refresh(true);
+    public void onDataChanged(boolean force) {
+        refresh(force);
     }
 }

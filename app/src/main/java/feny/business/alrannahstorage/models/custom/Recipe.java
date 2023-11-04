@@ -67,6 +67,6 @@ public class Recipe {
         else {
             return 0;
         }
-        return low*quantity;
+        return low;
     }
 }

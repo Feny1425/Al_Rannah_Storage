@@ -38,6 +38,7 @@ public class AccountsFragment extends Fragment {
         close = v.findViewById(R.id.close_day);
         add.setOnClickListener(view -> add());
         drop.setOnClickListener(view -> drop());
+        close.setOnClickListener(view -> close());
 
 
         return v;

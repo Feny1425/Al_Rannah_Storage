@@ -18,9 +18,10 @@ import okhttp3.Response;
 public class FetchStorage extends AsyncTask<String, Void, String> {
     private static final String API_URL = Data.BASE_URL("storage"); // Replace with your script URL
     Context context;
+    boolean force = false;
 
 
-    public FetchStorage(Pages context) {
+    public FetchStorage(Pages context,boolean force) {
         this.context = context;
 
         execute();
@@ -96,7 +97,7 @@ public class FetchStorage extends AsyncTask<String, Void, String> {
                 e.printStackTrace();
             }
         }if (onDataChangedListener != null) {
-            onDataChangedListener.onDataChanged();
+            onDataChangedListener.onDataChanged(force);
         }
 
 
@@ -104,7 +105,7 @@ public class FetchStorage extends AsyncTask<String, Void, String> {
 
 
     public interface OnDataChangedListener {
-        void onDataChanged();
+        void onDataChanged(boolean force);
     }
     private static OnDataChangedListener onDataChangedListener;
     public static void setOnDataChangedListener(OnDataChangedListener listener) {

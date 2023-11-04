@@ -79,6 +79,9 @@ public class Storage implements ListItem {
     public Item getItem(){
         return Items.getItemByID(itemID);
     }
+    public boolean isItem(){
+        return getItem().getId()!=-1;
+    }
 
     public ItemType getItemType(){
         return Items.getItemTypeByID(itemTypeID);
@@ -143,6 +146,11 @@ public class Storage implements ListItem {
 
     public int getItemTypeID() {
         return itemTypeID;
+    }
+
+    public boolean canBeSold(){
+        if(isItem()){return false;}
+        else return getItemType().isCanBeSold();
     }
 
     public Storage(int storageID, int branchID, int itemID, int itemTypeID, int quantity) {

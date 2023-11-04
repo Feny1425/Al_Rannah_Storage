@@ -84,7 +84,7 @@ public class FetchBranches extends Thread {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            new FetchStorage(context);
+            new FetchStorage(context,false);
             Branches.setBranches(branches, context);
             context.refresh();
 

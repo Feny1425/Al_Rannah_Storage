@@ -31,7 +31,7 @@ public class UpdateStorage extends AsyncTask<String, Void, String> {
                          boolean add, int importB, int exportB, int closed) {
         this.context = context;
         this.branchID = branchID;
-        execute(storageID,String.valueOf(quantity));
+        execute(storageID,String.valueOf(new_quantity));
         this.id = id;
         this.quantity = quantity;
         this.newQuantity = new_quantity;
@@ -47,7 +47,7 @@ public class UpdateStorage extends AsyncTask<String, Void, String> {
                          boolean add, int importB, int exportB, int closed, String salted) {
         this.context = context;
         this.branchID = branchID;
-        execute(String.valueOf(id),String.valueOf(quantity));
+        execute(String.valueOf(id),String.valueOf(new_quantity));
         this.id = id;
         this.quantity = quantity;
         this.newQuantity = new_quantity;
@@ -100,7 +100,7 @@ public class UpdateStorage extends AsyncTask<String, Void, String> {
         // Handle the response here
         // The 'result' contains the response from your PHP script
         //Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
-        new FetchStorage((Pages) context);
+        new FetchStorage((Pages) context,true);
         new AddHistory((Pages) context,
                 id,
                 quantity,

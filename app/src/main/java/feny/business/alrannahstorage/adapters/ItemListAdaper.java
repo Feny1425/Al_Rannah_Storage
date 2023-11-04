@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.adapters.dialogs.AddItemDialog;
+import feny.business.alrannahstorage.adapters.dialogs.DetailsDialog;
 import feny.business.alrannahstorage.models.custom.Pages;
 import feny.business.alrannahstorage.models.custom.Storage;
 
@@ -36,8 +37,9 @@ public class ItemListAdaper extends RecyclerView.Adapter<ItemListAdaper.ViewHold
      * (custom ViewHolder)
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView name, quantity;
+        private final TextView name, quantity, detailes;
         private final LinearLayout layout;
+
 
         public ViewHolder(View view) {
             super(view);
@@ -45,6 +47,7 @@ public class ItemListAdaper extends RecyclerView.Adapter<ItemListAdaper.ViewHold
 
             name = view.findViewById(R.id.name);
             quantity = view.findViewById(R.id.quantity);
+            detailes = view.findViewById(R.id.det);
             layout = view.findViewById(R.id.layout);
 
         }
@@ -69,16 +72,21 @@ public class ItemListAdaper extends RecyclerView.Adapter<ItemListAdaper.ViewHold
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.name.setText(localDataSet.get(position).getName());
-        viewHolder.quantity.setText((localDataSet.get(position).isRecipe()?localDataSet.get(position).getItemType().getRecipe().HowManyCanBeCooked()+"":localDataSet.get(position).getQuantity()) + "  " + localDataSet.get(position).getUnit());
+        Storage storage = localDataSet.get(position);
+        viewHolder.name.setText(storage.getName());
+        if(storage.isRecipe()&&!storage.isClose()) {
+            viewHolder.detailes.setVisibility(View.VISIBLE);
+        }
+        viewHolder.quantity.setText((((storage.isRecipe()&&!storage.isClose()))?storage.getItemType().getRecipe().HowManyCanBeCooked()+"":storage.getQuantity()) + "  " + ((storage.isRecipe()&&!storage.isClose())?"حصة":storage.getUnit()));
         int _position = position;
-        viewHolder.layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AddItemDialog customDialog = new AddItemDialog(context, localDataSet.get(_position));
-                customDialog.show();
+        viewHolder.layout.setOnClickListener(view -> {
+            AddItemDialog customDialog = new AddItemDialog(context, storage);
+            customDialog.show();
 
-            }
+        });
+        viewHolder.detailes.setOnClickListener(view -> {
+            DetailsDialog detailsDialog = new DetailsDialog(context,storage);
+            detailsDialog.show();
         });
     }
 

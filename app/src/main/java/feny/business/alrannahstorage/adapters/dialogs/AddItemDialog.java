@@ -24,12 +24,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Vector;
 
 import feny.business.alrannahstorage.Objects.Branches;
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.data.Data;
-import feny.business.alrannahstorage.database.FetchStorage;
 import feny.business.alrannahstorage.database.UpdateStorage;
 import feny.business.alrannahstorage.models.custom.Pages;
 import feny.business.alrannahstorage.models.custom.RecipeItem;
@@ -71,27 +72,30 @@ public class AddItemDialog extends Dialog {
 
 
         dialogTitle.setText(storage.isImported() ? titels[3] : storage.isClose() ? titels[1] : storage.isExtracted() ? titels[0] : storage.isRecipe() ? titels[4] : titels[2]);
-        if (storage.isImported()) {
-            dialogTitle.setTextSize(20);
-            quantity.setVisibility(View.GONE);
-            save.setText("تأكيد");
-        }
+
         quantity = findViewById(R.id.quantity);
         items = findViewById(R.id.types);
         save = findViewById(R.id.save_dilg);
         cancel = findViewById(R.id.cancel_dilg);
         itemsList = new Vector<>();
+        if (storage.isImported()) {
+            dialogTitle.setTextSize(20);
+            quantity.setVisibility(View.GONE);
+            save.setText("تأكيد");
+        }
 
-        items.setVisibility(View.GONE);
+        if((storage.isClose()||storage.isImported())) {
+            items.setVisibility(View.VISIBLE);
+        }
 
-        /*if(close){
+        if(storage.isClose()){
             itemsList.addAll(Arrays.asList(Data.getCLOSE()));
             for (Integer id : Branches.getAllBranchesIDs()){
                     if(Data.getBranchId() != id){
                         itemsList.add(Objects.requireNonNull(Branches.getBranchByID(id)).getName() + " " + Objects.requireNonNull(Branches.getBranchByID(id)).getLocation());
                     }
             }
-        }*/
+        }
         if (itemsList.size() == 0) {
             //itemsList.add(Items.getItemTypes().get(1).getType());
         }
@@ -126,10 +130,10 @@ public class AddItemDialog extends Dialog {
                         && !storage.isImported()) {
                     quantity.setError("لم يتم إدخال كمية");
                 } else {
-                    boolean extract = storage.isExtracted() || storage.isRecipe();
+                    boolean extract = storage.isExtracted() || storage.isRecipe() || storage.isClose();
                     AlertDialog.Builder alert = new AlertDialog.Builder(context);
                     alert.setTitle(extract ? "إخراج كمية" : "إضافة كمية");
-                    alert.setMessage((storage.isExtracted() ? "متأكد بأنك تريد إخراج\n" : storage.isRecipe() ? "متأكد بأنك تريد أن تطبخ\n" : "متأكد بأنك تريد أن تضيف\n") + (storage.isImported() ? storage.getQuantity() : Integer.parseInt(quantity.getText().toString())) + " " + storage.getUnit() + " " + storage.getName());
+                    alert.setMessage((storage.isExtracted()||storage.isClose() ? "متأكد بأنك تريد إخراج\n" : storage.isRecipe() ? "متأكد بأنك تريد أن تطبخ\n" : "متأكد بأنك تريد أن تضيف\n") + (storage.isImported() ? storage.getQuantity() : storage.isRecipe()? (quant*storage.getItemType().getRecipe().getQuantity()) :quant) + " " + storage.getUnit() + " " + storage.getName());
                     alert.setPositiveButton(Data.YES, new DialogInterface.OnClickListener() {
 
                         @Override
@@ -140,8 +144,8 @@ public class AddItemDialog extends Dialog {
                             }
                             if ((storage.isExtracted() || storage.isClose()) & newQuantity < 0) {
                                 quantity.setError("الكمية غير متوفرة في المخزون");
-                            }  else if(storage.isRecipe() && quant>storage.getItemType().getRecipe().HowManyCanBeCooked()) {
-                                quantity.setError("الكميات الموجودة في المخزون \n لا يمكنها تغطية عدد الحصص المطلوبة");
+                            }  else if((storage.isRecipe()&&!storage.isClose()) && quant>storage.getItemType().getRecipe().HowManyCanBeCooked()) {
+                                quantity.setError("الكميات الموجودة في المخزون \n لا يمكنها تغطية عدد الحصص المطلوبة" + "\n" + "رجاء اضغط القِ نظرة على التفاصيل");
                             }
                             else {
                                 if (storage.isImported()) {
@@ -228,9 +232,6 @@ public class AddItemDialog extends Dialog {
                                 }
 
                                 dismiss();
-                                if(onDataChangedListener != null){
-                                    onDataChangedListener.onDataChanged();
-                                }
                             }
                         }
                     });
@@ -254,12 +255,5 @@ public class AddItemDialog extends Dialog {
         });
     }
 
-    public interface OnDataChangedListener {
-        void onDataChanged();
-    }
-    private static FetchStorage.OnDataChangedListener onDataChangedListener;
-    public static void setOnDataChangedListener(FetchStorage.OnDataChangedListener listener) {
-        onDataChangedListener = listener;
-    }
 
 }

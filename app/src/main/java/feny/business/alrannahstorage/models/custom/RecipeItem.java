@@ -1,5 +1,7 @@
 package feny.business.alrannahstorage.models.custom;
 
+import feny.business.alrannahstorage.Objects.Items;
+
 public class RecipeItem {
     private final int recipe_item_id;
     private final int recipe_id;
@@ -23,6 +25,10 @@ public class RecipeItem {
 
     public int getItem_id() {
         return item_id;
+    }
+
+    public Item getItem(){
+        return Items.getItemByID(item_id);
     }
 
     public int getQuantity() {

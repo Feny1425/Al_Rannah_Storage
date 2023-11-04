@@ -92,6 +92,10 @@ public class MainActivity extends Pages {
                 });
             }
         }, 0, 5000);
+        if (branch==null){
+            startActivity(new Intent(this,LoginActivity.class));
+            finish();
+        }
     }
 
 
