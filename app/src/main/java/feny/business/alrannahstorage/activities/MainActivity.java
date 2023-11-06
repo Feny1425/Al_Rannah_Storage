@@ -16,6 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import feny.business.alrannahstorage.Objects.Branches;
+import feny.business.alrannahstorage.Objects.Histories;
 import feny.business.alrannahstorage.R;
 import feny.business.alrannahstorage.activities.fragments.AccountsFragment;
 import feny.business.alrannahstorage.data.Data;
@@ -28,11 +29,12 @@ public class MainActivity extends Pages {
     static Branch branch;
     SharedPreferences sharedPreferences;
     Timer pollingTimer = new Timer();
-
+    AccountsFragment accountsFragment;
 
     @SuppressLint("SetTextI18n")
     @Override
     public void refresh() {
+        accountsFragment.setError(Histories.getNonFinishedOperationsByBranchID(Data.getBranchId()).size() > 0);
     }
 
     @Override
@@ -49,15 +51,15 @@ public class MainActivity extends Pages {
 
 
     private void fragments() {
-        AccountsFragment accountsFragment = AccountsFragment.setContext(this);
-        changeFragment(accountsFragment,"acc");
+        accountsFragment = AccountsFragment.setContext(this);
+        changeFragment(accountsFragment, "acc");
     }
 
     public void previous(View view) {
         super.onBackPressed();
     }
 
-    class MyThread extends Thread{
+    class MyThread extends Thread {
         @Override
         public void run() {
             super.run();
@@ -85,15 +87,14 @@ public class MainActivity extends Pages {
                 if (!NetworkUtil.isNetworkAvailable(MainActivity.this)) {
                     Toast.makeText(MainActivity.this, "No Internet", Toast.LENGTH_LONG).show();
                 }
-                runOnUiThread(() ->{
+                runOnUiThread(() -> {
                     new FetchHistory(MainActivity.this);
-//                    Toast.makeText(AdminActivity.this, Histories.getNonFinishedOperations().size()+"", Toast.LENGTH_SHORT).show();
 
                 });
             }
         }, 0, 5000);
-        if (branch==null){
-            startActivity(new Intent(this,LoginActivity.class));
+        if (branch == null) {
+            startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
     }

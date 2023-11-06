@@ -73,7 +73,9 @@ public class FetchHistory extends AsyncTask<String, Void, String> {
                 Histories.AddHistory(id,storage_id,added,date,
                         quantity,new_quantity,old_quantity,branch_import_id,
                         branch_export_id,closed,operation);
+                //context.refresh();
             }
+            Histories.getNonClosedOperationsByBranch(context);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -22,6 +22,7 @@ public class AccountsFragment extends Fragment {
     private Button add;
     private Button drop;
     private Button close;
+    private boolean b = false;
 
     public static AccountsFragment setContext(Pages context) {
         AccountsFragment accountsFragment = new AccountsFragment();
@@ -29,10 +30,21 @@ public class AccountsFragment extends Fragment {
         return accountsFragment;
     }
 
+    public void setError(boolean b) {
+        if (add != null) {
+            add.setError(b ? "e" : null);
+        }
+
+        if (addFragment != null && addFragment.getPage()==1) {
+            addFragment.setError(false,b);
+        }
+        this.b = b;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_accounts,container,false);
+        View v = inflater.inflate(R.layout.fragment_accounts, container, false);
         add = v.findViewById(R.id.increase_quantities);
         drop = v.findViewById(R.id.decrease_quantities);
         close = v.findViewById(R.id.close_day);
@@ -44,27 +56,36 @@ public class AccountsFragment extends Fragment {
         return v;
     }
 
+    TwoChoiceFragment addFragment;
+
     private void add() {
         ItemListFragment buyfrag = ItemListFragment.setData(context, Data.Places.BUY);
         ItemListFragment importfrag = ItemListFragment.setData(context, Data.Places.IMPORT);
-        TwoChoiceFragment twoChoiceFragment = TwoChoiceFragment.setData(
+        addFragment = TwoChoiceFragment.setData(
                 context,
-                "اضافة مشتريات",R.drawable.ic_baseline_attach_money_24,buyfrag,
-                "تأكيد الاستلام من الفروع الأخرى",0,importfrag
-                );
-        context.changeFragment(twoChoiceFragment, "add_fragment_tag");
-    }private void drop() {
+                "اضافة مشتريات", R.drawable.ic_baseline_attach_money_24, buyfrag,
+                "تأكيد الاستلام من الفروع الأخرى", 0, importfrag,
+                1,false,b
+        );
+        context.changeFragment(addFragment, "add_fragment_tag");
+    }
+
+    private void drop() {
         TwoChoiceFragment isFood = TwoChoiceFragment.setData(context,
-                "مواد غذائية",0, ItemListFragment.setData(context,Data.Places.FOOD),
-                "مواد غير غذائية",0, ItemListFragment.setData(context,Data.Places.NON_FOOD));
-        ItemListFragment recipe = ItemListFragment.setData(context,Data.Places.RECIPE);
+                "مواد غذائية", 0, ItemListFragment.setData(context, Data.Places.FOOD),
+                "مواد غير غذائية", 0, ItemListFragment.setData(context, Data.Places.NON_FOOD),
+                3,false,false);
+        ItemListFragment recipe = ItemListFragment.setData(context, Data.Places.RECIPE);
         TwoChoiceFragment twoChoiceFragment = TwoChoiceFragment.setData(context,
-                "المخزن", 0 , isFood,
-                "الوصفات", 0, recipe
-                );
+                "المخزن", 0, isFood,
+                "الوصفات", 0, recipe,
+                2,false,false
+        );
         context.changeFragment(twoChoiceFragment, "add_fragment_tag");
-    }private void close(){
-        ItemListFragment close = ItemListFragment.setData(context,Data.Places.CLOSE);
+    }
+
+    private void close() {
+        ItemListFragment close = ItemListFragment.setData(context, Data.Places.CLOSE);
         context.changeFragment(close, "add_fragment_tag");
 
     }

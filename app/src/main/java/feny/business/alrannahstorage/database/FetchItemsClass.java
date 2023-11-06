@@ -126,9 +126,10 @@ public class FetchItemsClass extends Thread {
         // Example:
         int ID = jsonObject.getInt("id");
         int sold = jsonObject.getInt("can_be_sold");
+        int expire_by_hours = jsonObject.getInt("expire_by_hours");
         String name = jsonObject.getString("type_name");
         String unit = jsonObject.getString("unit");
-        return new ItemType(ID, name, unit, sold);
+        return new ItemType(ID, name, unit, sold, expire_by_hours);
     }
 
     private Item itemFromJSON(JSONObject jsonObject) throws JSONException {

@@ -18,6 +18,7 @@ public final class Data {
     private static String[] CLOSE = {"مباع","صدقة","إعاشة","تالف"};
 
     public static class ClosedOperations{
+        public static int EXPIRE = -2;
         public static int EXPORT = -1;
         public static int BUY = 0;
         public static int SELL = 1;
